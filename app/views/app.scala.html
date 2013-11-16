@@ -51,9 +51,9 @@
 								<button class="close" ng-click="toggleFilters()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h3>
+								<h4>
 									Filters
-								</h3>
+								</h4>
 							</div>
 							<ul>
 								<li ng-repeat="(catName, cat) in cats">
@@ -71,9 +71,9 @@
 								<button class="close" ng-click="toggleComments()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h3>
+								<h4>
 									Comments on {{focus.fpapDsc}}
-								</h3>
+								</h4>
 							</div>
 
 							<div class="user-comment">
@@ -81,7 +81,6 @@
 									Sign up / Log in to comment!
 								</a>
 								<form ui-if="loggedIn" ng-submit="submitComment()">
-									<h4>Comment:</h4>
 									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
 									<button type="submit">Submit</button>
 								</form>
