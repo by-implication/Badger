@@ -10,9 +10,7 @@ import budget.support._
 
 object Leaf extends LeafGen {
 
-  def query(id: Int): Option[JsObject] = {
-    None
-  }
+  def query(id: Int): Option[JsObject] = findById(id).map(_.toJson)
 
 }
 
@@ -36,6 +34,27 @@ case class Leaf(
   id: Pk[Int] = NA
 ) extends LeafCCGen with Entity[Leaf]
 // GENERATED case class end
+{
+  lazy val toJson: JsObject = Json.obj(
+    "dptCd" -> dptCd,
+    "dptDsc" -> dptDsc,
+    "agyType" -> agyType,
+    "ownerCd" -> ownerCd,
+    "ownerDsc" -> ownerDsc,
+    "fpapCd" -> fpapCd,
+    "fpapDsc" -> fpapDsc,
+    "areaCd" -> areaCd,
+    "areaDsc" -> areaDsc,
+    "ps" -> ps,
+    "mooe" -> mooe,
+    "co" -> co,
+    "net" -> net,
+    "year" -> year,
+    "xkind" -> kind,
+    "id" -> id.get,
+    "kind" -> "leaf"
+  )
+}
 
 // GENERATED object start
 trait LeafGen extends EntityCompanion[Leaf] {

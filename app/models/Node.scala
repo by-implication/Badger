@@ -15,9 +15,7 @@ object Node extends NodeGen {
       SELECT * FROM nodes
       WHERE node_id = {nodeId}
     """).on('nodeId -> id).singleOpt(Node.simple)
-    .map { n =>
-      Json.obj("node" -> n.toJson(withComments = comments))
-    }
+    .map(_.toJson(withComments = comments))
   }
 
 }

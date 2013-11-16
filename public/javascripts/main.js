@@ -5,82 +5,38 @@ app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 function App($scope, $http, $location){
 
 	$scope.focus = {
-		id: 1,
+		id: 0,
+		kind: 'loc',
 		parent: null,
-		children: [],
-		comments: []
+		children: []
 	}
 
-	// $scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
-	// 	$http.get('/meta', {params: $location.search()})
-	// 	.success(function(r){ $scope.focus = r.node; });
-	// });
-
-	$scope.nodeLink = function(nodeId){
-		return '/app?id=' + nodeId + (!$location.search().comments ? '' : '&comments=true');
+	$scope.nodeLink = function(node){
+		return '/app?id='
+			+ node.id
+			+ '&kind=' + node.kind
+			+ (!$location.search().comments ? '' : '&comments=true');
 	}
 
-	$scope.toggleCommentsLink = function(){
-		return '/app?id=' + $scope.focus.id + ($location.search().comments ? '' : '&comments=true');
+	$scope.parentLink = function(node){
+		return '/app?id='
+			+ node.parent.id
+			+ '&kind=loc'
+			+ (!$location.search().comments ? '' : '&comments=true');
 	}
 
-	$scope.hideCommentsLink = function(){
-		return '/app?id=' + $scope.focus.id;
+	if(!$location.search().id || !isNaN($location.search().id)){
+		$location.search({id: 0, kind: 'loc'});
 	}
 
-	$scope.commentState = function(){
-		return $location.search().comments ? 'Hide' : 'Show';
-	}
+	$scope.commentsVisible = false;
+	$scope.showComments = function(){ $scope.commentsVisible = true; }
+	$scope.hideComments = function(){ $scope.commentsVisible = false; }
 
-	// if(!$location.search().id) $location.search({id: 1});
-
-	$scope.commentsVisible = false
-
-	$scope.showComments = function(){
-		$scope.commentsVisible = true
-	}
-	$scope.hideComments = function(){
-		$scope.commentsVisible = false
-	}
-	
-	$scope.focus = {
-		"name": "Pepe Bawagan",
-		"rating": 3.5,
-		"ratings": 1000,
-		"amount": "huge sum",
-		"parent": "pepe's dad",
-		"userrating": null, //this is supposed to be your rating. this prolly doesn't belong here.
-		"children": [
-			{
-				"name": "Daniel Fordan",
-				"amount": 20000000,
-				"date": "Jan 12, 2013",
-				"rating": 3.5,
-				"ratings": 1000
-			},
-			{
-				"name": "Philip Cheang",
-				"amount": 20000000,
-				"date": "Jan 12, 2013",
-				"rating": 3.5,
-				"ratings": 1000
-			}
-		],
-		"comments": [
-			{
-				"user": "Coffeeman",
-				"rating": 3.5,
-				"content": "lol u suk",
-				"timestamp": "when?"
-			},
-			{
-				"user": "Coffeeman",
-				"rating": 2.5,
-				"content": null,
-				"timestamp": "dunno"
-			}
-		]
-	}
+	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
+		$http.get('/meta', {params: $location.search()})
+		.success(function(r){ $scope.focus = r; });
+	});
 
 	$scope.cats = {
 		"academia": [
