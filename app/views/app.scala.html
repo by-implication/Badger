@@ -22,19 +22,26 @@
 		<h1>Children</h1>
 		<div ng-repeat="child in node.children">
 			<a ng-href="{{nodeLink(child.id)}}">
-				{{child}}
+				{{child.content}}
 			</a>
 		</div>
 
 		<h1>
 			<a ng-href="{{toggleCommentsLink()}}">
-				Comments are currently {{commentState()}}
+				{{commentState()}} comments
 			</a>
 		</h1>
-		<div ui-if="node.comments.length">
-			<p ng-repeat="comment in node.comments">
-				{{comment}}
-			</p>
+		<div ui-if="node.comments">
+			<div ui-if="node.comments.length">
+				<p ng-repeat="comment in node.comments | orderBy:timestamp ">
+					{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
+				</p>
+			</div>
+			<div ui-if="!node.comments.length">
+				<p>
+					No comments
+				</p>
+			</div>
 		</div>
 
 	</div>

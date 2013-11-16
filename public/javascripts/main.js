@@ -25,7 +25,7 @@ function App($scope, $http, $location){
 	}
 
 	$scope.commentState = function(){
-		return $location.search().comments ? 'on' : 'off';
+		return $location.search().comments ? 'Hide' : 'Show';
 	}
 
 	if(!$location.search().id) $location.search({id: 1});

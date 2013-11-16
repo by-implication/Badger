@@ -29,7 +29,7 @@ case class Comment(
     "user" -> userName,
     "content" -> content,
     "rating" -> rating,
-    "timetamp" -> timestamp
+    "timestamp" -> timestamp
   )
 
 }
