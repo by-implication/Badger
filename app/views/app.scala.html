@@ -26,9 +26,24 @@
 						<h2 ui-if="focus.kind == 'leaf'">
 							LEAF
 						</h2>
+						<!--<ng-include src="'/assets/templates/rateStub.html'"
+						onload="item = focus"></ng-include>-->
+						<star-rating item="focus"></star-rating>
 
-						<ng-include src="'/assets/templates/rateStub.html'"
-						onload="item = focus"></ng-include>
+						<!--<ng-include src="'/assets/templates/leafRateStub.html'"
+						onload="item = focus"
+						ui-if="focus.kind == 'leaf'"></ng-include>-->
+
+						<!--<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+						  <span class="ratings">
+						    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+						      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
+						    </span>
+						    <span class="apply-rating">
+						      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+						    </span>
+						  </span>
+						</div>-->
 
 						<a ui-if="focus.kind =='leaf'" href="#" ng-click="toggleComments()">
 							{{commentsShowHide()}} comments
