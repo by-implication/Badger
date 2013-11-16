@@ -163,6 +163,26 @@ function App($scope, $http, $location){
 		});
 	}
 
+	$scope.share = {
+		facebook: function(){
+			return 'http://www.facebook.com/sharer.php?s=100&p[title]='
+				+ encodeURIComponent('BudgetBadger')
+				+ '&p[summary]='
+				+ encodeURIComponent('Keep track of where your taxes go!')
+				+ '&p[url]='
+				+ encodeURIComponent($location.absUrl())
+				+ '&p[images][0]='
+				+ encodeURIComponent('http://budgetbadger.com/preview.png');
+		},
+		twitter: function(){
+			var s = 'Check out #BudgetBadger! ' + $location.absUrl()
+			return 'http://twitter.com/home?status=' + escape(s);
+		},
+		googlePlus: function(){
+			return 'https://plus.google.com/share?url=' + escape($location.absUrl());
+		}
+	}
+
 	$scope.cats = {
 		"academia": [
 			"Department of Science and Technology",
