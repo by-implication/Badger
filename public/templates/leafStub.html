@@ -1,0 +1,15 @@
+<ng-include src="'/assets/templates/rateStub.html'"
+onload="item = child"></ng-include>
+<div>
+	<a ng-href="{{nodeLink(child)}}">
+		{{child.year}} {{child.xkind}}
+		{{child.dptDsc}}
+		{{child.ownerDsc}}
+		{{child.fpapDsc}}
+	</a>
+</div>
+<div>
+	ps: {{child.ps}}
+	mooe: {{child.mooe}}
+	co: {{child.co}}
+</div>

@@ -34,7 +34,7 @@ case class Location(
 
     val leaves = SQL("""
       SELECT * from leafs
-      WHERE leaf_areaDsc = {areaDsc}
+      WHERE leaf_area_dsc = {areaDsc}
       AND leaf_ps > 0
       AND leaf_mooe > 0
       AND leaf_co > 0
@@ -45,7 +45,15 @@ case class Location(
   }
 
   def toJson(expand: Boolean = false): JsObject = {
-    var r = Json.obj("id" -> 0, "parent" -> parent)
+    var r = Json.obj(
+      "id" -> id.get,
+      "kind" -> "loc",
+      "name" -> name,
+      "parent" -> parent.map(p => Json.obj(
+        "id" -> p,
+        "name" -> Location.findById(p).get.name
+      ))
+    )
     if(expand){
       val (locs, leaves) = children
       r ++= Json.obj("children" -> Map(

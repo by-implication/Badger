@@ -50,8 +50,9 @@ case class Leaf(
     "co" -> co,
     "net" -> net,
     "year" -> year,
-    "kind" -> kind,
-    "id" -> id.get
+    "xkind" -> kind,
+    "id" -> id.get,
+    "kind" -> "leaf"
   )
 }
 

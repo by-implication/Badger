@@ -5,54 +5,69 @@ app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 function App($scope, $http, $location){
 
 	$scope.focus = {
-		id: 1,
+		id: 0,
+		kind: 'loc',
 		parent: null,
-		children: [],
-		comments: []
+		children: []
 	}
 
-	// $scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
-	// 	$http.get('/meta', {params: $location.search()})
-	// 	.success(function(r){ $scope.focus = r.node; });
-	// });
+	$scope.nodeLink = function(node){
+		return '/app?id='
+			+ node.id
+			+ '&kind=' + node.kind
+			+ (!$location.search().comments ? '' : '&comments=true');
+	}
 
-	$scope.nodeLink = function(nodeId){
-		return '/app?id=' + nodeId + (!$location.search().comments ? '' : '&comments=true');
+	$scope.parentLink = function(node){
+		return '/app?id='
+			+ node.parent.id
+			+ '&kind=loc'
+			+ (!$location.search().comments ? '' : '&comments=true');
 	}
 
 	$scope.toggleCommentsLink = function(){
-		return '/app?id=' + $scope.focus.id + ($location.search().comments ? '' : '&comments=true');
+		return '/app?id='
+			+ $scope.focus.id
+			+ '&kind=' + $scope.focus.kind
+			+ ($location.search().comments ? '' : '&comments=true');
 	}
 
 	$scope.commentState = function(){
 		return $location.search().comments ? 'Hide' : 'Show';
 	}
 
-	// if(!$location.search().id) $location.search({id: 1});
-	
-	$scope.focus = {
-		"name": "Pepe Bawagan",
-		"rating": 3.5,
-		"numrates": 1000,
-		"amount": "huge sum",
-		"parent": "pepe's dad",
-		"children": [
-			{
-				"name": "Daniel Fordan",
-				"amount": 20000000,
-				"date": "Jan 12, 2013",
-				"rating": 3.5,
-				"numrates": 1000
-			},
-			{
-				"name": "Philip Cheang",
-				"amount": 20000000,
-				"date": "Jan 12, 2013",
-				"rating": 3.5,
-				"numrates": 1000
-			}
-		]
+	if(!$location.search().id || !isNaN($location.search().id)){
+		$location.search({id: 0, kind: 'loc'});
 	}
+
+	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
+		$http.get('/meta', {params: $location.search()})
+		.success(function(r){ $scope.focus = r; });
+	});
+	
+	// $scope.focus = {
+	// 	"name": "Pepe Bawagan",
+	// 	"rating": 3.5,
+	// 	"numrates": 1000,
+	// 	"amount": "huge sum",
+	// 	"parent": "pepe's dad",
+	// 	"children": [
+	// 		{
+	// 			"name": "Daniel Fordan",
+	// 			"amount": 20000000,
+	// 			"date": "Jan 12, 2013",
+	// 			"rating": 3.5,
+	// 			"numrates": 1000
+	// 		},
+	// 		{
+	// 			"name": "Philip Cheang",
+	// 			"amount": 20000000,
+	// 			"date": "Jan 12, 2013",
+	// 			"rating": 3.5,
+	// 			"numrates": 1000
+	// 		}
+	// 	]
+	// }
 
 	$scope.cats = {
 		"academia": [
