@@ -13,6 +13,10 @@ $color: #0FF
 	outline-color: transparent
 	color: #333
 
+=reset-textarea
+	outline: none
+	outline-color: transparent
+
 body
 	+reset-and-normalize
 	margin: 0px
@@ -21,6 +25,10 @@ body
 
 	h2
 		font-size: 36px
+		margin-bottom: 10px
+
+	h3
+		font-size: 24px
 
 
 h1 
@@ -114,11 +122,17 @@ main
 				+reset-button
 				float: right
 			.header
-				margin-bottom: 20px
 				padding: 20px
+				border-bottom: 1px solid rgba(0,0,0,0.1)
 			.user-rating
 				padding: 20px
+				border-bottom: 1px solid rgba(0,0,0,0.1)
+				button
+					+button
+					outline: none
+					outline-color: transparent
 				.rating
+					margin-bottom: 10px
 					&.rated i
 						color: #EB0
 					.apply-rating
@@ -134,12 +148,14 @@ main
 						.rating
 							display: none
 				textarea
+					+reset-textarea
 					width: 100%
 					min-height: 72px
 					max-height: 220px
 					font-family: $helvetica
 					border-radius: 3px
 					border: 1px solid rgba(0,0,0,0.2)
+					margin-bottom: 10px
 
 			.comment
 				padding: 20px

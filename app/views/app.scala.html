@@ -32,11 +32,13 @@
 							</li>
 						</ul>
 					</div>
+					<!--
 					<div class="sort-n-filter">
 						<button>
 							<i class="fa fa-filter"></i>
 						</button>
 					</div>
+					-->
 					<ul class="children">
 						<li ng-repeat="child in focus.children"
 							ng-include="'/assets/templates/itemStub.html'">
@@ -57,20 +59,20 @@
 							</h3>
 						</div>
 						<div class="user-rating">
+							<h4>Rate:</h4>
 							<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
 							  <span class="ratings">
 							    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
-							      <i class="fa" ng-repeat="star in stars" ng-class="starClass(focus, star)"></i>
+							      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
 							    </span>
 							    <span class="apply-rating">
 							      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
 							    </span>
 							  </span>
-							  <span class="numrates">
-							    ({{focus.ratings}} rating<span ui-if="focus.ratings > 1">s</span>)
-							  </span>
 							</div>
+							<h4>Comment:</h4>
 							<textarea></textarea>
+							<button>Submit</button>
 						</div>
 						<div ui-if="focus.comments">
 							<div ui-if="focus.comments.length">
