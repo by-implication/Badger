@@ -7,7 +7,7 @@ $color: #0FF
 =reset-button
 	background: transparent
 	border-width: 0px
-	font-family: $helvetica
+	font-family: "Gotham HTF"
 	padding: 0px
 	outline: none
 	outline-color: transparent
@@ -20,7 +20,7 @@ $color: #0FF
 body
 	+reset-and-normalize
 	margin: 0px
-	font-family: $helvetica
+	font-family: "Gotham HTF"
 	color: #333
 
 	a
@@ -151,10 +151,7 @@ main
 					// position: relative
 					ul
 						+reset-list
-						+position(absolute, 0px 0px 0px 0px)
-						position: absolute
-						top: 250px
-						bottom: 0px
+						+position(absolute, 250px 0px 0px 0px)
 						overflow-x: hidden
 						overflow-y: scroll
 
@@ -164,7 +161,7 @@ main
 				.header
 					padding: 20px
 					border-bottom: 1px solid rgba(0,0,0,0.1)
-				.user-rating
+				.user-comment
 					padding: 20px
 					border-bottom: 1px solid rgba(0,0,0,0.1)
 					button
@@ -180,7 +177,7 @@ main
 						max-height: 72px
 						padding: 6px
 						margin: 0px -6px 10px -6px
-						font-family: $helvetica
+						font-family: "Gotham HTF"
 						border-radius: 3px
 						border: 1px solid rgba(0,0,0,0.2)
 						&+button
