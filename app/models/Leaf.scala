@@ -35,6 +35,14 @@ case class Leaf(
 ) extends LeafCCGen with Entity[Leaf]
 // GENERATED case class end
 {
+
+  lazy val parent: JsObject = {
+    Location.findOne("location_name", areaDsc).map(l => Json.obj(
+      "id" -> l.id.get,
+      "name" -> l.name
+    )).get
+  }
+
   lazy val toJson: JsObject = Json.obj(
     "dptCd" -> dptCd,
     "dptDsc" -> dptDsc,
@@ -52,7 +60,8 @@ case class Leaf(
     "year" -> year,
     "xkind" -> kind,
     "id" -> id.get,
-    "kind" -> "leaf"
+    "kind" -> "leaf",
+    "parent" -> parent
   )
 }
 

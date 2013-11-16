@@ -9,13 +9,21 @@ import budget.support._
 import play.api.libs.json._
 
 object Comment extends CommentGen {
+
+  def getForLeaf(id: Int): Seq[Comment] = DB.withConnection { implicit c =>
+    SQL("""
+      SELECT * FROM comments
+      WHERE leaf_id = {id}
+    """).on('id -> id).list(simple)
+  }
+
 }
 
 // GENERATED case class start
 case class Comment(
   id: Pk[Int] = NA,
   userId: Int = 0,
-  nodeId: Int = 0,
+  leafId: Int = 0,
   content: Option[String] = None,
   rating: Option[Int] = None,
   timestamp: Timestamp = Time.now
@@ -39,12 +47,12 @@ trait CommentGen extends EntityCompanion[Comment] {
   val simple = {
     get[Pk[Int]]("comment_id") ~
     get[Int]("user_id") ~
-    get[Int]("node_id") ~
+    get[Int]("leaf_id") ~
     get[Option[String]]("comment_content") ~
     get[Option[Int]]("comment_rating") ~
     get[Timestamp]("comment_timestamp") map {
-      case id~userId~nodeId~content~rating~timestamp =>
-        Comment(id, userId, nodeId, content, rating, timestamp)
+      case id~userId~leafId~content~rating~timestamp =>
+        Comment(id, userId, leafId, content, rating, timestamp)
     }
   }
 
@@ -71,14 +79,14 @@ trait CommentGen extends EntityCompanion[Comment] {
           insert into comments (
             comment_id,
             user_id,
-            node_id,
+            leaf_id,
             comment_content,
             comment_rating,
             comment_timestamp
           ) VALUES (
             DEFAULT,
             {userId},
-            {nodeId},
+            {leafId},
             {content},
             {rating},
             {timestamp}
@@ -86,7 +94,7 @@ trait CommentGen extends EntityCompanion[Comment] {
         """).on(
           'id -> o.id,
           'userId -> o.userId,
-          'nodeId -> o.nodeId,
+          'leafId -> o.leafId,
           'content -> o.content,
           'rating -> o.rating,
           'timestamp -> o.timestamp
@@ -98,14 +106,14 @@ trait CommentGen extends EntityCompanion[Comment] {
           insert into comments (
             comment_id,
             user_id,
-            node_id,
+            leaf_id,
             comment_content,
             comment_rating,
             comment_timestamp
           ) VALUES (
             {id},
             {userId},
-            {nodeId},
+            {leafId},
             {content},
             {rating},
             {timestamp}
@@ -113,7 +121,7 @@ trait CommentGen extends EntityCompanion[Comment] {
         """).on(
           'id -> o.id,
           'userId -> o.userId,
-          'nodeId -> o.nodeId,
+          'leafId -> o.leafId,
           'content -> o.content,
           'rating -> o.rating,
           'timestamp -> o.timestamp
@@ -126,7 +134,7 @@ trait CommentGen extends EntityCompanion[Comment] {
     SQL("""
       update comments set
         user_id={userId},
-        node_id={nodeId},
+        leaf_id={leafId},
         comment_content={content},
         comment_rating={rating},
         comment_timestamp={timestamp}
@@ -134,7 +142,7 @@ trait CommentGen extends EntityCompanion[Comment] {
     """).on(
       'id -> o.id,
       'userId -> o.userId,
-      'nodeId -> o.nodeId,
+      'leafId -> o.leafId,
       'content -> o.content,
       'rating -> o.rating,
       'timestamp -> o.timestamp

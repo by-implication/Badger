@@ -10,4 +10,5 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /app			controllers.Application.app()
 GET			/account	controllers.Application.account()
-GET			/meta			controllers.Application.meta(kind: String, id: Int, comments: Boolean ?= false)
+GET			/meta			controllers.Application.meta(kind: String, id: Int)
+GET			/comments	controllers.Application.comments(id: Int)

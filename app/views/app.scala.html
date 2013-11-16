@@ -29,7 +29,11 @@
 
 						<ng-include src="'/assets/templates/rateStub.html'"
 						onload="item = focus"></ng-include>
-						<a href="#" ng-click="showComments()">view comments</a>
+
+						<a ui-if="focus.kind =='leaf'" href="#" ng-click="toggleComments()">
+							{{commentsShowHide()}} comments
+						</a>
+
 						<ul>
 							<li>
 								{{focus.date}}
@@ -59,7 +63,7 @@
 					</div>
 					<div id="comments" ng-show="commentsVisible">
 						<div class="header">
-							<button class="close" ng-click="hideComments()">
+							<button class="close" ng-click="toggleComments()">
 								<i class="fa fa-times"></i>
 							</button>
 							<h3>
@@ -82,13 +86,13 @@
 							</div>
 							<textarea></textarea>
 						</div>
-						<div ui-if="focus.comments">
-							<div ui-if="focus.comments.length">
-								<div ng-repeat="comment in focus.comments | orderBy:timestamp ">
+						<div ui-if="currentComments()">
+							<div ui-if="currentComments().length">
+								<div ng-repeat="comment in currentComments() | orderBy:timestamp ">
 									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
 								</div>
 							</div>
-							<div ui-if="!focus.comments.length">
+							<div ui-if="!currentComments().length">
 								<p>
 									No comments
 								</p>
