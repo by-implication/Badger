@@ -24,7 +24,7 @@ case class Comment(
   id: Pk[Int] = NA,
   userId: Int = 0,
   leafId: Int = 0,
-  content: Option[String] = None,
+  content: String = "",
   timestamp: Timestamp = Time.now
 ) extends CommentCCGen with Entity[Comment]
 // GENERATED case class end
@@ -46,7 +46,7 @@ trait CommentGen extends EntityCompanion[Comment] {
     get[Pk[Int]]("comment_id") ~
     get[Int]("user_id") ~
     get[Int]("leaf_id") ~
-    get[Option[String]]("comment_content") ~
+    get[String]("comment_content") ~
     get[Timestamp]("comment_timestamp") map {
       case id~userId~leafId~content~timestamp =>
         Comment(id, userId, leafId, content, timestamp)

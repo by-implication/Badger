@@ -10,13 +10,14 @@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("style.css")">
 		<link rel="stylesheet" href="@routes.Assets.at("leaflet/leaflet.css")">
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.timeago.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
 	</head>
 	<body ng-controller="Main" ng-init="
 		curNav = '@curNav';
-		loggedIn = @(!currentUser.isAnonymous);
+		loggedIn = '@currentUser.handle';
 	">
 		<header>
 			<nav class="left">
@@ -38,6 +39,9 @@
 					<li ng-class="{current: curNav == 'signup'}">
 						<a ui-if="!loggedIn" href="@routes.Application.account" target="_self">
 							sign up / log in
+						</a>
+						<a ui-if="loggedIn">
+							hello, {{loggedIn}}!
 						</a>
 						<a ui-if="loggedIn" href="@routes.Application.logout" target="_self">
 							logout
