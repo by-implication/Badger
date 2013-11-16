@@ -22,7 +22,7 @@
 						</h2>
 						<ng-include src="'/assets/templates/rateStub.html'"
 						onload="item = focus"></ng-include>
-						<a href="#">{{focus.numrates}} comments</a>
+						<a href="#" ng-click="showComments()">{{focus.numrates}} comments</a>
 						<ul>
 							<li>
 								{{focus.date}}
@@ -47,12 +47,11 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="comments">
+					<div id="comments" ng-show="commentsVisible">
 						<div class="header">
-							<a class="close" ng-href="{{hideCommentsLink()}}">
-								<i class="fa fa-remove"></i>
-								close
-							</a>
+							<button class="close" ng-click="hideComments()">
+								<i class="fa fa-times"></i>
+							</button>
 							<h3>
 								Comments on {{focus.name}}
 							</h3>

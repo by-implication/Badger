@@ -33,6 +33,15 @@ function App($scope, $http, $location){
 	}
 
 	// if(!$location.search().id) $location.search({id: 1});
+
+	$scope.commentsVisible = false
+
+	$scope.showComments = function(){
+		$scope.commentsVisible = true
+	}
+	$scope.hideComments = function(){
+		$scope.commentsVisible = false
+	}
 	
 	$scope.focus = {
 		"name": "Pepe Bawagan",
