@@ -34,7 +34,8 @@ main
 	bottom: 0px
 
 	#sidebar
-		+span-columns(1 of 3)
+		// +span-columns(1 of 3, "block-collapse")
+		width: 33%
 		background-color: #eee
 		position: absolute
 		bottom: 0px
@@ -64,6 +65,7 @@ main
 
 		.sort-n-filter
 			padding: 20px
+			border-bottom: 1px solid #ddd
 			button
 				+reset-button
 
@@ -71,9 +73,10 @@ main
 			+reset-list
 			+fill-parent
 			li
+				+transition(all 0.4s)
 				padding: 20px
-				&:hover
-					background-color: pink
+				&:hover, &.active
+					background-color: white
 				a
 					display: block
 				
@@ -82,3 +85,13 @@ main
 				// button
 					// +unstyled-button
 
+	#main-view
+		// +span-columns(2 of 3, block-collapse)				
+		width: 67%
+		margin-left: 33%
+		position: absolute
+		top: 0px
+		bottom: 0px
+		background-color: green
+		#comments
+			background-color: white
