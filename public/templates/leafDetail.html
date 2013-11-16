@@ -1,34 +1,50 @@
 <h2>
 	{{focus.fpapDsc}}
 </h2>
-<a target="_blank" ng-href="{{share.facebook()}}">Facebook</a>
-<a target="_blank" ng-href="{{share.twitter()}}">Twitter</a>
-<a target="_blank" ng-href="{{share.googlePlus()}}">Google Plus</a>
 
-<a class="show-hide" href="#" ng-click="toggleComments()">
-	{{commentsShowHide()}} comments
-</a>
+
 <star-rating logged-in="loggedIn" item="focus"></star-rating>
 
+<div class="share">
+	<a id="fb" target="_blank" ng-href="{{share.facebook()}}">
+		<i class="fa fa-facebook-square"></i>
+	</a>
+	<a id="twitter" target="_blank" ng-href="{{share.twitter()}}">
+		<i class="fa fa-twitter-square"></i>
+	</a>
+	<a id="gplus" target="_blank" ng-href="{{share.googlePlus()}}">
+		<i class="fa fa-google-plus-square"></i>
+	</a>
+	<a class="show-hide" href="#" ng-click="toggleComments()">
+		{{currentComments().length}} comments
+		<i class="fa fa-comment"></i>
+	</a>
+</div>
 <div class="moolah">
-	<span class="monospace italic ">{{comatose((focus.ps + focus.mooe + focus.co) * 1000)}}</span> PhP
+
+	<h4>Total:</h4>
+	<div class="total">
+		<span class="monospace italic ">{{comatose((focus.ps + focus.mooe + focus.co) * 1000)}}</span> PhP
+	</div>
+
+	<h4>Breakdown:</h4>
+	<ul>
+		<li ng-show="focus.ps">
+			<h5>Personnel Services</h5>
+			<span class="monospace italic">{{comatose(focus.ps * 1000)}}</span> PhP
+		</li>
+		<li ng-show="focus.mooe">
+			<h5>Maintenance and Other Operating Expenses</h5>
+			<span class="monospace italic">{{comatose(focus.mooe * 1000)}}</span> PhP
+		</li>
+		<li ng-show="focus.co">
+			<h5>Capital Outlay</h5>
+			<span class="monospace italic">{{comatose(focus.co * 1000)}}</span> PhP
+		</li>
+	</ul>
 </div>
 
-<h4>Breakdown:</h4>
-<ul>
-	<li ng-show="focus.ps">
-		<h5>Personnel Services</h5>
-		<span class="monospace italic">{{comatose(focus.ps * 1000)}}</span> PhP
-	</li>
-	<li ng-show="focus.mooe">
-		<h5>Maintenance and Other Operating Expenses</h5>
-		<span class="monospace italic">{{comatose(focus.mooe * 1000)}}</span> PhP
-	</li>
-	<li ng-show="focus.co">
-		<h5>Capital Outlay</h5>
-		<span class="monospace italic">{{comatose(focus.co * 1000)}}</span> PhP
-	</li>
-</ul>
+
 
 <h4>Ownership:</h4>
 <ul>
