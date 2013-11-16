@@ -111,10 +111,25 @@ main
 				float: right
 			.header
 				margin-bottom: 20px
+			.rating
+				&.rated i
+					color: #EB0
+				.apply-rating
+					display: none
+					i:hover
+						cursor: pointer
+						~ i
+							&:before
+								content: "\f006"
+				.ratings:hover
+					.apply-rating
+						display: inline
+					.rating
+						display: none
 			textarea
 				width: 100%
-				min-height: 220px
-				max-height: 400px
+				min-height: 72px
+				max-height: 220px
 				font-family: $helvetica
 				border-radius: 3px
 				border: 1px solid rgba(0,0,0,0.2)
