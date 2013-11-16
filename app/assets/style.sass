@@ -131,9 +131,17 @@ main
 			width: 100%
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			position: relative
+			.back
+				width: 200px
+				overflow: hidden
+				white-space: nowrap
+				text-overflow: ellipsis
+				display: block
 			button.filter-button
 				+reset-button
 				float: right
+				line-height: 22px
 				text-transform: capitalize
 			a, button.filter-button
 				+transition(all 0.3s)
