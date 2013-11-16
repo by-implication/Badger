@@ -10,7 +10,7 @@ import budget.support._
 
 object Leaf extends LeafGen {
 
-  def query(id: Int): Option[JsObject] = findById(id).map(_.toJson)
+  def query(id: Int)(implicit user: User): Option[JsObject] = findById(id).map(_.toJson(user))
 
 }
 
@@ -38,14 +38,19 @@ case class Leaf(
 // GENERATED case class end
 {
 
-  lazy val parent: JsObject = {
-    Location.findOne("location_name", areaDsc).map(l => Json.obj(
-      "id" -> l.id.get,
-      "name" -> l.name
-    )).get
+  def changeRating(oldStars: Int, newStars: Int) = {
+    copy(stars = stars - oldStars + newStars).save()
+    parent.cascadeChangeRating(oldStars, newStars)
   }
 
-  lazy val toJson: JsObject = Json.obj(
+  def addRating(newStars: Int) = {
+    copy(stars = stars + newStars, ratings = ratings + 1).save()
+    parent.cascadeAddRating(newStars)
+  }
+
+  lazy val parent: Location = Location.findOne("location_name", areaDsc).get
+
+  def toJson(user: User): JsObject = Json.obj(
     "dptCd" -> dptCd,
     "dptDsc" -> dptDsc,
     "agyType" -> agyType,
@@ -63,7 +68,14 @@ case class Leaf(
     "xkind" -> kind,
     "id" -> id.get,
     "kind" -> "leaf",
-    "parent" -> parent
+    "parent" -> Json.obj(
+      "id" -> parent.id.get,
+      "name" -> parent.name
+    ),
+    "id" -> id.get,
+    "stars" -> stars,
+    "ratings" -> ratings,
+    "userRating" -> user.ratingFor(this)
   )
 }
 

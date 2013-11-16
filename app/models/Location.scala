@@ -10,7 +10,7 @@ import budget.support._
 
 object Location extends LocationGen {
 
-  def query(id: Int): Option[JsObject] = DB.withConnection { implicit c =>
+  def query(id: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
     Location.findById(id).map(_.toJson(expand = true))
   }
 
@@ -20,7 +20,7 @@ object Location extends LocationGen {
 case class Location(
   id: Pk[Int] = NA,
   name: Option[String] = None,
-  parent: Option[Int] = None,
+  locationParentId: Option[Int] = None,
   lat: BigDecimal = 0,
   lng: BigDecimal = 0,
   ps: Int = 0,
@@ -32,11 +32,23 @@ case class Location(
 // GENERATED case class end
 {
 
+  lazy val parent: Option[Location] = locationParentId.map(Location.findById(_).get)
+
+  def cascadeChangeRating(oldStars: Int, newStars: Int): Boolean = {
+    copy(stars = stars - oldStars + newStars).save()
+    parent.map(_.cascadeChangeRating(oldStars, newStars)).isDefined
+  }
+
+  def cascadeAddRating(newStars: Int): Boolean = {
+    copy(stars = stars + newStars, ratings = ratings + 1).save()
+    parent.map(_.cascadeAddRating(newStars)).isDefined
+  }
+
   lazy val children: (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
 
     val locs = SQL("""
       SELECT * from locations
-      WHERE location_parent = {id}
+      WHERE location_parent_id = {id}
     """).on('id -> id).list(Location.simple)
 
     val leaves = SQL("""
@@ -51,7 +63,7 @@ case class Location(
 
   }
 
-  def toJson(expand: Boolean = false): JsObject = {
+  def toJson(expand: Boolean = false)(implicit user: User): JsObject = {
     var r = Json.obj(
       "id" -> id.get,
       "kind" -> "loc",
@@ -59,15 +71,15 @@ case class Location(
       "lat" -> lat,
       "lng" -> lng,
       "parent" -> parent.map(p => Json.obj(
-        "id" -> p,
-        "name" -> Location.findById(p).get.name
+        "id" -> p.id.get,
+        "name" -> p.name
       ))
     )
     if(expand){
       val (locs, leaves) = children
       r ++= Json.obj("children" -> Map(
         "locs" -> locs.map(_.toJson()),
-        "leaves" -> leaves.map(_.toJson)
+        "leaves" -> leaves.map(_.toJson(user))
       ))
     }
     r
@@ -79,7 +91,7 @@ trait LocationGen extends EntityCompanion[Location] {
   val simple = {
     get[Pk[Int]]("location_id") ~
     get[Option[String]]("location_name") ~
-    get[Option[Int]]("location_parent") ~
+    get[Option[Int]]("location_parent_id") ~
     get[java.math.BigDecimal]("location_lat") ~
     get[java.math.BigDecimal]("location_lng") ~
     get[Int]("location_ps") ~
@@ -87,8 +99,8 @@ trait LocationGen extends EntityCompanion[Location] {
     get[Int]("location_co") ~
     get[Int]("location_stars") ~
     get[Int]("location_ratings") map {
-      case id~name~parent~lat~lng~ps~mooe~co~stars~ratings =>
-        Location(id, name, parent, lat, lng, ps, mooe, co, stars, ratings)
+      case id~name~locationParentId~lat~lng~ps~mooe~co~stars~ratings =>
+        Location(id, name, locationParentId, lat, lng, ps, mooe, co, stars, ratings)
     }
   }
 
@@ -115,7 +127,7 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent,
+            location_parent_id,
             location_lat,
             location_lng,
             location_ps,
@@ -126,7 +138,7 @@ trait LocationGen extends EntityCompanion[Location] {
           ) VALUES (
             DEFAULT,
             {name},
-            {parent},
+            {locationParentId},
             {lat},
             {lng},
             {ps},
@@ -138,7 +150,7 @@ trait LocationGen extends EntityCompanion[Location] {
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent,
+          'locationParentId -> o.locationParentId,
           'lat -> o.lat.bigDecimal,
           'lng -> o.lng.bigDecimal,
           'ps -> o.ps,
@@ -154,7 +166,7 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent,
+            location_parent_id,
             location_lat,
             location_lng,
             location_ps,
@@ -165,7 +177,7 @@ trait LocationGen extends EntityCompanion[Location] {
           ) VALUES (
             {id},
             {name},
-            {parent},
+            {locationParentId},
             {lat},
             {lng},
             {ps},
@@ -177,7 +189,7 @@ trait LocationGen extends EntityCompanion[Location] {
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent,
+          'locationParentId -> o.locationParentId,
           'lat -> o.lat.bigDecimal,
           'lng -> o.lng.bigDecimal,
           'ps -> o.ps,
@@ -194,7 +206,7 @@ trait LocationGen extends EntityCompanion[Location] {
     SQL("""
       update locations set
         location_name={name},
-        location_parent={parent},
+        location_parent_id={locationParentId},
         location_lat={lat},
         location_lng={lng},
         location_ps={ps},
@@ -206,7 +218,7 @@ trait LocationGen extends EntityCompanion[Location] {
     """).on(
       'id -> o.id,
       'name -> o.name,
-      'parent -> o.parent,
+      'locationParentId -> o.locationParentId,
       'lat -> o.lat.bigDecimal,
       'lng -> o.lng.bigDecimal,
       'ps -> o.ps,
