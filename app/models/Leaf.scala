@@ -31,7 +31,9 @@ case class Leaf(
   net: Option[Int] = None,
   year: Option[Int] = None,
   kind: Option[String] = None,
-  id: Pk[Int] = NA
+  id: Pk[Int] = NA,
+  stars: Int = 0,
+  ratings: Int = 0
 ) extends LeafCCGen with Entity[Leaf]
 // GENERATED case class end
 {
@@ -83,9 +85,11 @@ trait LeafGen extends EntityCompanion[Leaf] {
     get[Option[Int]]("leaf_net") ~
     get[Option[Int]]("leaf_year") ~
     get[Option[String]]("leaf_kind") ~
-    get[Pk[Int]]("leaf_id") map {
-      case dptCd~dptDsc~agyType~ownerCd~ownerDsc~fpapCd~fpapDsc~areaCd~areaDsc~ps~mooe~co~net~year~kind~id =>
-        Leaf(dptCd, dptDsc, agyType, ownerCd, ownerDsc, fpapCd, fpapDsc, areaCd, areaDsc, ps, mooe, co, net, year, kind, id)
+    get[Pk[Int]]("leaf_id") ~
+    get[Int]("leaf_stars") ~
+    get[Int]("leaf_ratings") map {
+      case dptCd~dptDsc~agyType~ownerCd~ownerDsc~fpapCd~fpapDsc~areaCd~areaDsc~ps~mooe~co~net~year~kind~id~stars~ratings =>
+        Leaf(dptCd, dptDsc, agyType, ownerCd, ownerDsc, fpapCd, fpapDsc, areaCd, areaDsc, ps, mooe, co, net, year, kind, id, stars, ratings)
     }
   }
 
@@ -125,7 +129,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
             leaf_net,
             leaf_year,
             leaf_kind,
-            leaf_id
+            leaf_id,
+            leaf_stars,
+            leaf_ratings
           ) VALUES (
             {dptCd},
             {dptDsc},
@@ -142,7 +148,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
             {net},
             {year},
             {kind},
-            DEFAULT
+            DEFAULT,
+            {stars},
+            {ratings}
           )
         """).on(
           'dptCd -> o.dptCd,
@@ -160,7 +168,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
           'net -> o.net,
           'year -> o.year,
           'kind -> o.kind,
-          'id -> o.id
+          'id -> o.id,
+          'stars -> o.stars,
+          'ratings -> o.ratings
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
       }
@@ -182,7 +192,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
             leaf_net,
             leaf_year,
             leaf_kind,
-            leaf_id
+            leaf_id,
+            leaf_stars,
+            leaf_ratings
           ) VALUES (
             {dptCd},
             {dptDsc},
@@ -199,7 +211,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
             {net},
             {year},
             {kind},
-            {id}
+            {id},
+            {stars},
+            {ratings}
           )
         """).on(
           'dptCd -> o.dptCd,
@@ -217,7 +231,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
           'net -> o.net,
           'year -> o.year,
           'kind -> o.kind,
-          'id -> o.id
+          'id -> o.id,
+          'stars -> o.stars,
+          'ratings -> o.ratings
         ).executeInsert().flatMap(x => Some(o))
       }
     }
@@ -240,7 +256,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
         leaf_net={net},
         leaf_year={year},
         leaf_kind={kind},
-        leaf_id={id}
+        leaf_id={id},
+        leaf_stars={stars},
+        leaf_ratings={ratings}
       where leaf_id={id}
     """).on(
       'dptCd -> o.dptCd,
@@ -258,7 +276,9 @@ trait LeafGen extends EntityCompanion[Leaf] {
       'net -> o.net,
       'year -> o.year,
       'kind -> o.kind,
-      'id -> o.id
+      'id -> o.id,
+      'stars -> o.stars,
+      'ratings -> o.ratings
     ).executeUpdate() > 0
   }
 

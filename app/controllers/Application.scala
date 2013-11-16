@@ -8,6 +8,10 @@ import play.api.Play.current
 import budget.models._
 import budget.support._
 
+// forms
+import play.api.data.Form
+import play.api.data.Forms._
+
 // json
 import play.api.libs.json._
 import play.api.libs.json.Json
@@ -29,19 +33,15 @@ import scala.concurrent._
 
 object Application extends Controller with Secured {
   
-  def landing = Action {
+  def landing = UserAction(){ user => request =>
     Ok(views.html.landing("Landing"))
   }
 
-  def app = Action {
+  def app = UserAction(){ user => request =>
     Ok(views.html.app("App"))
   }
 
-  def account = Action {
-    Ok(views.html.account("Account"))
-  }
-
-  def meta(kind: String, id: Int) = Action {
+  def meta(kind: String, id: Int) = UserAction(){ user => request =>
     kind match {
       case "leaf" | "loc" => {
         (kind match {
@@ -53,16 +53,108 @@ object Application extends Controller with Secured {
     }
   }
 
-  def comments(id: Int) = Action {
+  def comments(id: Int) = UserAction(){ user => request =>
     Ok(Json.toJson(Comment.getForLeaf(id).map(_.toJson)))
   }
 
-  def comment(id: Int) = UserAction(){ user =>
-    Ok("comment")
+  def comment(id: Int) = UserAction(){ user => request =>
+    if(!user.isAnonymous){
+      Ok("comment")
+    } else {
+      Unauthorized("unauthorized")
+    }
   }
 
-  def rate(id: Int) = UserAction(){ user =>
-    Ok("rate")
+  def rate(id: Int) = UserAction(){ user => request =>
+    if(!user.isAnonymous){
+      Ok("rate")
+    } else {
+      Unauthorized("unauthorized")
+    }
   }
+
+  //////////////// login & signup ///////////////
   
+  val loginForm = Form(
+    mapping(
+      "hp" -> tuple(
+        "handle" -> nonEmptyText,
+        "password" -> nonEmptyText
+      ).verifying(
+        "Invalid credentials!",
+        _ match {
+          case (handle, password) => User.authenticate(handle, password).isDefined
+        }
+      )
+    )
+    (hp => User.authenticate(hp._1, hp._2).get)
+    ((user: User) => Some((user.handle, "")))
+  )
+
+  val signupForm = Form(
+    mapping(
+      "handle" -> nonEmptyText,
+      "email" -> email,
+      "passwords" -> tuple(
+        "first" -> nonEmptyText,
+        "second" -> nonEmptyText
+      ).verifying(
+        "Passwords do not match!",
+        _ match { case (p1, p2) => (p1 == p2) }
+      )
+    )
+    ((handle, email, passwords) => {
+      User(NA, handle, email, passwords._1).create().get
+    })
+    ((user: User) => Some(user.handle, user.email, ("", "")))
+  )
+  
+  
+  def account = UserAction(){ user => request =>
+    if(user.isAnonymous){
+      Ok(views.html.account(signupForm, loginForm))
+    } else {
+      Redirect(routes.Application.app)
+    }
+  }
+
+  def signup() = UserAction(){ user => implicit request =>
+    if(user.isAnonymous){
+      signupForm.bindFromRequest.fold(
+        errors => {
+          play.Logger.info(errors.toString)
+          BadRequest(views.html.account(errors, loginForm))
+        },
+        newUser => {
+          Redirect(routes.Application.app)
+          .withSession(request.session + ("user_id" -> newUser.id.toString))
+        }
+      )
+    } else {
+      Redirect(routes.Application.app)
+    }
+  }
+
+  def login() = UserAction(){ user => implicit request =>
+    if(user.isAnonymous){
+      loginForm.bindFromRequest.fold(
+        errors => BadRequest(views.html.account(signupForm, errors)),
+        newUser => {
+          Redirect(routes.Application.app)
+          .withSession(request.session + ("user_id" -> newUser.id.toString))
+        }
+      )
+    } else {
+      Redirect(routes.Application.app)
+    }
+  }
+
+  def logout() = UserAction(){ user => request =>
+    if(user.isAnonymous){
+      Redirect(routes.Application.account)
+    } else {
+      Redirect(routes.Application.landing).withNewSession
+    }
+  }
+
 }

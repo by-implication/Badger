@@ -1,5 +1,7 @@
 # --- !Ups
 
+CREATE EXTENSION pgcrypto;;
+
 CREATE TABLE users (
   user_id serial PRIMARY KEY,
   user_handle text NOT NULL UNIQUE,

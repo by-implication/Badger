@@ -20,7 +20,12 @@ object Location extends LocationGen {
 case class Location(
   id: Pk[Int] = NA,
   name: Option[String] = None,
-  parent: Option[Int] = None
+  parent: Option[Int] = None,
+  ps: Int = 0,
+  mooe: Int = 0,
+  co: Int = 0,
+  stars: Int = 0,
+  ratings: Int = 0
 ) extends LocationCCGen with Entity[Location]
 // GENERATED case class end
 {
@@ -70,9 +75,14 @@ trait LocationGen extends EntityCompanion[Location] {
   val simple = {
     get[Pk[Int]]("location_id") ~
     get[Option[String]]("location_name") ~
-    get[Option[Int]]("location_parent") map {
-      case id~name~parent =>
-        Location(id, name, parent)
+    get[Option[Int]]("location_parent") ~
+    get[Int]("location_ps") ~
+    get[Int]("location_mooe") ~
+    get[Int]("location_co") ~
+    get[Int]("location_stars") ~
+    get[Int]("location_ratings") map {
+      case id~name~parent~ps~mooe~co~stars~ratings =>
+        Location(id, name, parent, ps, mooe, co, stars, ratings)
     }
   }
 
@@ -99,16 +109,31 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent
+            location_parent,
+            location_ps,
+            location_mooe,
+            location_co,
+            location_stars,
+            location_ratings
           ) VALUES (
             DEFAULT,
             {name},
-            {parent}
+            {parent},
+            {ps},
+            {mooe},
+            {co},
+            {stars},
+            {ratings}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent
+          'parent -> o.parent,
+          'ps -> o.ps,
+          'mooe -> o.mooe,
+          'co -> o.co,
+          'stars -> o.stars,
+          'ratings -> o.ratings
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
       }
@@ -117,16 +142,31 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent
+            location_parent,
+            location_ps,
+            location_mooe,
+            location_co,
+            location_stars,
+            location_ratings
           ) VALUES (
             {id},
             {name},
-            {parent}
+            {parent},
+            {ps},
+            {mooe},
+            {co},
+            {stars},
+            {ratings}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent
+          'parent -> o.parent,
+          'ps -> o.ps,
+          'mooe -> o.mooe,
+          'co -> o.co,
+          'stars -> o.stars,
+          'ratings -> o.ratings
         ).executeInsert().flatMap(x => Some(o))
       }
     }
@@ -136,12 +176,22 @@ trait LocationGen extends EntityCompanion[Location] {
     SQL("""
       update locations set
         location_name={name},
-        location_parent={parent}
+        location_parent={parent},
+        location_ps={ps},
+        location_mooe={mooe},
+        location_co={co},
+        location_stars={stars},
+        location_ratings={ratings}
       where location_id={id}
     """).on(
       'id -> o.id,
       'name -> o.name,
-      'parent -> o.parent
+      'parent -> o.parent,
+      'ps -> o.ps,
+      'mooe -> o.mooe,
+      'co -> o.co,
+      'stars -> o.stars,
+      'ratings -> o.ratings
     ).executeUpdate() > 0
   }
 

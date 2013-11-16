@@ -9,6 +9,12 @@ import budget.support._
 
 object User extends UserGen {
 
+  def authenticate(handle: String, password: String): Option[User] = DB.withConnection { implicit c =>
+    SQL("select * from users where user_handle ilike {handle} and user_password = crypt({password}, user_password)")
+    .on('handle -> handle, 'password -> password)
+    .singleOpt(simple)
+  }
+
   lazy val ANON = User(Id(-1))
 
   override def insert(o: User): Option[User] = DB.withConnection { implicit c =>
