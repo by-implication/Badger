@@ -8,17 +8,17 @@
 			<main>
 				<div id="sidebar">
 					<nav>
-						<a ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
+						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
+							{{activeFilter || 'Showing All'}}
+							<i class="fa fa-filter"></i>
+						</button>
+						<a class="back" ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
 							<i class="fa fa-chevron-left"></i>
 							{{focus.parent.name}}
 						</a>
 						<span ui-if="!focus.parent">
 							Top level
 						</span>
-						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
-							{{activeFilter}}
-							<i class="fa fa-filter"></i>
-						</button>
 					</nav>
 
 					<div ui-if="focus.kind == 'loc'">
@@ -80,7 +80,7 @@
 								<a ui-if="!loggedIn" target="_self" href="@routes.Application.account">
 									Sign up / Log in to comment!
 								</a>
-								<form ui-if="loggedIn" class="user-comment" ng-submit="submitComment()">
+								<form ui-if="loggedIn" ng-submit="submitComment()">
 									<h4>Comment:</h4>
 									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
 									<button type="submit">Submit</button>
@@ -106,6 +106,5 @@
 		</section>
 	</div>
 	<script src="@routes.Assets.at("leaflet/leaflet.js")"></script>
-    <script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
-    
+  <script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
 }

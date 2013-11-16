@@ -50,6 +50,7 @@ body
 
 	.monospace
 		font-family: $monospace
+		font-weight: bold
 
 	.italic
 		font-style: oblique
@@ -130,9 +131,18 @@ main
 			width: 100%
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			position: relative
+			.back
+				width: 200px
+				overflow: hidden
+				white-space: nowrap
+				text-overflow: ellipsis
+				display: block
 			button.filter-button
 				+reset-button
 				float: right
+				line-height: 22px
+				text-transform: capitalize
 			a, button.filter-button
 				+transition(all 0.3s)
 				color: #ccc
@@ -143,6 +153,20 @@ main
 		.data
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			.share
+				margin-bottom: 20px
+				a
+					text-decoration: none
+					i 
+						font-size: 24px
+					&#fb:hover
+						color: #44619D
+					&#twitter:hover
+						color: #00ACEE
+					&#gplus:hover
+						color: #DC4B39
+					&.show-hide:hover
+						text-decoration: underline
 			.rating
 				margin-bottom: 10px
 			.show-hide
@@ -152,14 +176,17 @@ main
 			.moolah
 				padding: 10px
 				margin-left: -10px
-				background-color: rgba(yellow, 0.05)
-				border: 1px solid darken(yellow, 5%)
+				background-color: rgba(wheat, 0.8)
+				border: 1px solid darken(wheat, 5%)
+				color: darken(wheat, 60%)
 				border-radius: 3px
 				margin-bottom: 10px
+				.total
+					margin-bottom: 20px
 			ul
 				+reset-list
 				+fill-parent
-				margin-bottom: 40px
+				// margin-top: 40px
 				li
 					margin-bottom: 10px
 					h5
@@ -221,12 +248,14 @@ main
 				width: 256px
 			ul
 				padding: 20px
+				margin-left: -6px
 				li
 					button
 						+reset-button
 						padding: 4px 6px 4px 6px
 						border-radius: 3px
 						color: #333
+						text-transform: capitalize
 						&:hover
 							color: teal
 						&.active
@@ -267,3 +296,10 @@ main
 
 			.comment
 				padding: 20px
+				border-bottom: 1px solid rgba(0,0,0,0.05)
+				.user
+					color: rgba(black, 0.5)
+				.timestamp
+					float: right
+					color: rgba(black, 0.5)
+					font-size: 14px

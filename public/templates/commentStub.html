@@ -1,6 +1,9 @@
 <div class="comment">
-	{{comment.user}} : {{comment.content}}
-	<div class="timestamp" title="{{getDate(comment.timestamp)}}">
-		{{timeago(comment.timestamp)}}
+	<div>
+		<span class="user">{{comment.user}}</span>
+		<span class="timestamp" title="{{getDate(comment.timestamp)}}">
+		posted {{timeago(comment.timestamp)}}
+	</span>
 	</div>
+	<p>{{comment.content}}</p>
 </div>

@@ -46,10 +46,8 @@ var app = angular.module('budget', ['ui'])
 app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
 function Main($scope){
-
 	$scope.timeago = $.timeago;
 	$scope.getDate = function(time){ return new Date(time).toString(); }
-
 }
 
 function App($scope, $http, $location){
@@ -143,8 +141,10 @@ function App($scope, $http, $location){
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		$http.get('/meta', {params: $location.search()})
 		.success(function(r){ 
-			$scope.focus = r; 
-			if(r.lat&&r.lng){
+			$scope.focus = r;
+			if(r.userClick){
+				map.setView([r.userClick.lat, r.userClick.lng], 10);
+			} else if(r.lat && r.lng){
 				map.setView([r.lat, r.lng], $scope.zoomLevel);
 			}
 		});
@@ -179,6 +179,7 @@ function App($scope, $http, $location){
 		$scope.comment.input = null;
 		$http.post('/comment/' + $scope.focus.id, {comment: comment})
 		.success(function(r){
+			console.log(r);
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,
@@ -205,6 +206,29 @@ function App($scope, $http, $location){
 		googlePlus: function(){
 			return 'https://plus.google.com/share?url=' + escape($location.absUrl());
 		}
+	}
+
+	$scope.click = {
+		listener: function(e){
+			map.off('click', this.listener);
+			var lat = e.latlng.lat;
+			var lng = e.latlng.lng;
+			var f = $scope.focus;
+			$http.post('/click/' + $scope.focus.id + '/' + lat + '/' + lng)
+			.success(function(r){
+				L.marker([lat, lng]).addTo(map)
+  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
+  			.openPopup();
+  			f.userClick = {lat: lat, lng: lng};
+			});
+		},
+		active: false,
+		toggle: function(){
+			this.active = !this.active;
+			var action = this.active ? 'on' : 'off';
+			map[action]('click', this.listener);
+		},
+		text: function(){ return this.active ? 'Cancel' : 'Point this out!'; }
 	}
 
 	$scope.cats = {
