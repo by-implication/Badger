@@ -100,23 +100,32 @@ main
 		#map
 			width: 100%
 			height: 100%
-		#comments
-			position: absolute
-			top: 0px
-			left: 0px
-			right: 0px
-			bottom: 0px
+		#comment-view
+			+position(absolute, 0px 0px 0px 0px)
 			background-color: rgba(black, 0.7)
 			z-index: 1001
 			.content
 				+box-sizing(border-box)
+				+position(absolute, 0px 0px 0px 0px)
 				background-color: white
 				margin: 20px
 				border-radius: 3px
 				box-shadow: 0px 2px 2px rgba(0,0,0,0.2)
-				ul
-					overflow-x: hidden
-					overflow-y: scroll
+				// position: absolute
+				// top: 0px
+				// left: 0px
+				// right: 0px
+				// bottom: 0px
+				.comments
+					// position: relative
+					ul
+						+reset-list
+						+position(absolute, 0px 0px 0px 0px)
+						position: absolute
+						top: 250px
+						bottom: 0px
+						overflow-x: hidden
+						overflow-y: scroll
 
 				.close
 					+reset-button
@@ -150,13 +159,16 @@ main
 					textarea
 						+reset-textarea
 						width: 100%
+						max-width: 100%
 						min-height: 72px
-						max-height: 220px
-						padding: 10px
+						max-height: 72px
+						padding: 6px
+						margin: 0px -6px 10px -6px
 						font-family: $helvetica
 						border-radius: 3px
 						border: 1px solid rgba(0,0,0,0.2)
-						margin-bottom: 10px
+						&+button
+							margin-left: -6px
 				.empty
 					padding: 20px
 
