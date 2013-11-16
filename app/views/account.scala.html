@@ -3,73 +3,71 @@
 @import helper._
 
 @main("signup", currentUser) {
+  <div id="signup">
+  	@form(action = routes.Application.signup) {
 
-	<a href="@routes.Application.landing">Landing</a>
-	<a href="@routes.Application.app">App</a>
+  		<h1>Sign up</h1>
 
-	@form(action = routes.Application.signup) {
+      @inputText(
+        signupForm("handle"),
+        '_label -> "Username",
+        '_error -> signupForm.globalError,
+        '_showConstraints -> false,
+        'placeholder -> "Username",
+        '_label -> ""
+      )
 
-		<h1>Sign up</h1>
+      @inputText(
+        signupForm("email"),
+        '_error -> signupForm.globalError,
+        '_showConstraints -> false,
+        'placeholder -> "Email Address",
+        '_label -> ""
+      )
 
-    @inputText(
-      signupForm("handle"),
-      '_label -> "Username",
-      '_error -> signupForm.globalError,
-      '_showConstraints -> false,
-      'placeholder -> "Username",
-      '_label -> ""
-    )
+      @inputPassword(
+        signupForm("passwords.first"),
+        '_error -> signupForm.error("passwords.first"),
+        '_showConstraints -> false,
+        'placeholder -> "Password",
+        '_label -> ""
+      )
 
-    @inputText(
-      signupForm("email"),
-      '_error -> signupForm.globalError,
-      '_showConstraints -> false,
-      'placeholder -> "Email Address",
-      '_label -> ""
-    )
+      @inputPassword(
+        signupForm("passwords.second"),
+        '_error -> signupForm.error("passwords.second"),
+        '_showConstraints -> false,
+        'placeholder -> "Confirm Password",
+        '_label -> ""
+      )
 
-    @inputPassword(
-      signupForm("passwords.first"),
-      '_error -> signupForm.error("passwords.first"),
-      '_showConstraints -> false,
-      'placeholder -> "Password",
-      '_label -> ""
-    )
+      <button type="submit">Sign up</button>
 
-    @inputPassword(
-      signupForm("passwords.second"),
-      '_error -> signupForm.error("passwords.second"),
-      '_showConstraints -> false,
-      'placeholder -> "Confirm Password",
-      '_label -> ""
-    )
+  	}
 
-    <button type="submit" class="btn btn-block btn-success">Sign up</button>
+  	@form(action = routes.Application.login) {
 
-	}
+  		<h1>Log in</h1>
 
-	@form(action = routes.Application.login) {
+  		@inputText(
+  		  loginForm("hp.handle"),
+  		  '_showConstraints -> false,
+  		  'placeholder -> "Username",
+  		  '_label -> "",
+  		  'autofocus -> "true"
+  		)
 
-		<h1>Log in</h1>
+  		@inputPassword(
+  		  loginForm("hp.password"),
+  		  '_error -> loginForm.globalError,
+  		  '_showConstraints -> false,
+  		  'placeholder -> "Password",
+  		  '_label -> ""
+  		)
 
-		@inputText(
-		  loginForm("hp.handle"),
-		  '_showConstraints -> false,
-		  'placeholder -> "Username",
-		  '_label -> "",
-		  'autofocus -> "true"
-		)
+      <button type="submit">Log in</button>
 
-		@inputPassword(
-		  loginForm("hp.password"),
-		  '_error -> loginForm.globalError,
-		  '_showConstraints -> false,
-		  'placeholder -> "Password",
-		  '_label -> ""
-		)
-
-    <button type="submit" class="btn btn-block btn-success">Log in</button>
-
-	}
+  	}
+  </div>
     
 }
