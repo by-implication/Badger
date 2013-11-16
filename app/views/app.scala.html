@@ -63,7 +63,7 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="comments" ng-show="commentsVisible">
+					<div id="comment-view" ng-show="commentsVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleComments()">
@@ -90,7 +90,7 @@
 								<button>Submit</button>
 							</div>
 
-							<div>
+							<div class="comments">
 								<ul ui-if="currentComments().length">
 									<li ng-repeat="comment in currentComments() | orderBy:timestamp ">
 										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
