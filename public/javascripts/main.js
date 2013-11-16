@@ -4,24 +4,30 @@ app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
 function App($scope, $http, $location){
 
-	$scope.$on('$locationChangeSuccess', function(e, newPath, oldPath){
-		if(newPath == oldPath) return;
-		$http.get('/meta?' + newPath.split('?')[1])
-		.success(function(r){ $scope.state = r.node; });
-	})
+	$scope.node = {
+		id: 1,
+		parent: null,
+		children: [],
+		comments: []
+	}
+
+	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
+		$http.get('/meta', {params: $location.search()})
+		.success(function(r){ $scope.node = r.node; });
+	});
 
 	$scope.nodeLink = function(nodeId){
-		return '/meta?id=' + nodeId;
+		return '/app?id=' + nodeId + (!$location.search().comments ? '' : '&comments=true');
+	}
+
+	$scope.toggleCommentsLink = function(){
+		return '/app?id=' + $scope.node.id + ($location.search().comments ? '' : '&comments=true');
 	}
 
 	$scope.commentState = function(){
-		return $scope.state.comments.length ? 'on' : 'off';
+		return $location.search().comments ? 'on' : 'off';
 	}
-	
-	$scope.state = {
-		id: 2,
-		parent: 1,
-		comments: []
-	};
+
+	if(!$location.search().id) $location.search({id: 1});
 
 }

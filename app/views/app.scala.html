@@ -8,20 +8,34 @@
 
 	<div ng-controller="App">
 
-		<a ng-href="{{nodeLink(state.parent)}}">Parent</a>
+		{{node}}
 
-		<a ng-repeat="child in children" ng-href="{{nodeLink(child)}}">
-			{{child}}
-		</a>
+		<h1>
+			<a ui-if="node.parent" ng-href="{{nodeLink(node.parent)}}">
+				Parent
+			</a>
+			<span ui-if="!node.parent">
+				Parent
+			</span>
+		</h1>
 
-		<a ng-href="{{toggleCommentsLink()}}">Comments are currently {{commentState()}}</a>
-		<div ui-if="state.comments.length">
-			<p ng-repeat="comment in state.comments">
-
-			</p>
+		<h1>Children</h1>
+		<div ng-repeat="child in node.children">
+			<a ng-href="{{nodeLink(child.id)}}">
+				{{child}}
+			</a>
 		</div>
 
-		{{state}}
+		<h1>
+			<a ng-href="{{toggleCommentsLink()}}">
+				Comments are currently {{commentState()}}
+			</a>
+		</h1>
+		<div ui-if="node.comments.length">
+			<p ng-repeat="comment in node.comments">
+				{{comment}}
+			</p>
+		</div>
 
 	</div>
     

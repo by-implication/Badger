@@ -41,9 +41,7 @@ object Application extends Controller {
   }
 
   def meta(id: Int, comments: Boolean) = Action {
-
     Node.query(id, comments).map(Ok(_)).getOrElse(NotFound("no such node"))
-
   }
   
 }

@@ -10,4 +10,4 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /app			controllers.Application.app()
 GET			/account	controllers.Application.account()
-GET			/meta			controllers.Application.meta(id: Int, comments: Boolean)
+GET			/meta			controllers.Application.meta(id: Int, comments: Boolean ?= false)

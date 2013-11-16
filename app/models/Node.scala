@@ -45,16 +45,21 @@ case class Node(
     """).on('nodeId -> id).list(Comment.simple)
   }
 
-  def toJson(withComments: Boolean): JsObject = {
+  def toJson(expand: Boolean = true, withComments: Boolean = false): JsObject = {
 
     var result = Json.obj(
       "id" -> id.get,
       "parent" -> parent,
-      "content" -> content,
-      "children" -> children.map(_.toJson(withComments = false))
+      "content" -> content
     )
 
-    if(withComments) result ++= Json.obj("comments" -> comments.map(_.toJson))
+    if(expand){
+      result ++= Json.obj("children" -> children.map(_.toJson(expand = false)))
+    }
+
+    if(withComments){
+      result ++= Json.obj("comments" -> comments.map(_.toJson))
+    }
 
     result
 
