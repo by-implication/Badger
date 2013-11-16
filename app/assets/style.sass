@@ -9,14 +9,18 @@ $color: #0FF
 	border-width: 0px
 	font-family: $helvetica
 	padding: 0px
+	outline: none
+	outline-color: transparent
+	color: #333
 
 body
 	+reset-and-normalize
 	margin: 0px
 	font-family: $helvetica
+	color: #333
 
 	h2
-		font-size: 24px
+		font-size: 36px
 
 
 h1 
@@ -41,15 +45,27 @@ main
 		nav
 			width: 100%
 			padding: 20px
+			border-bottom: 1px solid #ddd
 			button
 				+reset-button
+				+transition(all 0.4s)
+				color: #ccc
+				&:hover
+					color: #333
 
 		.data
 			padding: 20px
+			border-bottom: 1px solid #ddd
+			.rating
+				margin-bottom: 10px
 			ul
 				+reset-list
 				+fill-parent
 
+		.sort-n-filter
+			padding: 20px
+			button
+				+reset-button
 
 		ul.children
 			+reset-list
