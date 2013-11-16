@@ -2,29 +2,40 @@
 	{{focus.fpapDsc}}
 </h2>
 
-<star-rating logged-in="loggedIn" item="focus"></star-rating>
-
-<a href="#" ng-click="toggleComments()">
+<a class="show-hide" href="#" ng-click="toggleComments()">
 	{{commentsShowHide()}} comments
 </a>
+<star-rating logged-in="loggedIn" item="focus"></star-rating>
 
+<div class="moolah">
+	<span class="monospace italic ">{{comatose((focus.ps + focus.mooe + focus.co) * 1000)}}</span> PhP
+</div>
+
+<h4>Breakdown:</h4>
+<ul>
+	<li ng-show="focus.ps">
+		<h5>Personnel Services</h5>
+		<span class="monospace italic">{{comatose(focus.ps * 1000)}}</span> PhP
+	</li>
+	<li ng-show="focus.mooe">
+		<h5>Maintenance and Other Operating Expenses</h5>
+		<span class="monospace italic">{{comatose(focus.mooe * 1000)}}</span> PhP
+	</li>
+	<li ng-show="focus.co">
+		<h5>Capital Outlay</h5>
+		<span class="monospace italic">{{comatose(focus.co * 1000)}}</span> PhP
+	</li>
+</ul>
+
+<h4>Ownership:</h4>
 <ul>
 	<li>
-		{{focus.stars}} {{focus.ratings}}
-	</li>
-	<li>
+		<h5>Department or Region</h5>
 		{{focus.dptDsc}}
 	</li>
 	<li>
+		<h5>Owner</h5>
 		{{focus.ownerDsc}}
 	</li>
-	<li>
-		{{focus.ps}}
-	</li>
-	<li>
-		{{focus.moe}}
-	</li>
-	<li>
-		{{focus.co}}
-	</li>
 </ul>
+

@@ -50,14 +50,17 @@
 									Comments on {{focus.fpapDsc}}
 								</h3>
 							</div>
-							<a target="_self" ui-if="!loggedIn" href="@routes.Application.account">
-								Sign up / Log in to comment!
-							</a>
-							<form ui-if="loggedIn" class="user-comment" ng-submit="submitComment()">
-								<h4>Comment:</h4>
-								<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
-								<button type="submit">Submit</button>
-							</form>
+
+							<div class="user-comment">
+								<a ui-if="!loggedIn" target="_self" href="@routes.Application.account">
+									Sign up / Log in to comment!
+								</a>
+								<form ui-if="loggedIn" class="user-comment" ng-submit="submitComment()">
+									<h4>Comment:</h4>
+									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
+									<button type="submit">Submit</button>
+								</form>
+							</div>
 
 							<div class="comments">
 								<ul ui-if="currentComments().length">

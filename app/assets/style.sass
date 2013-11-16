@@ -23,19 +23,20 @@ body
 	margin: 0px
 	font-family: $font
 	color: #333
+	line-height: 1.4
 
 	a
 		color: #333
 
 	h2
 		font-size: 36px
-		margin-bottom: 10px
 		font-weight: 100
 
 	h3
 		font-size: 24px
 
 	h4
+		font-weight: bold
 		margin-bottom: 10px
 
 	input
@@ -46,6 +47,12 @@ body
 		padding: 6px
 		font-family: $font
 		margin-bottom: 10px
+
+	.monospace
+		font-family: $monospace
+
+	.italic
+		font-style: oblique
 
 
 h1 
@@ -127,9 +134,28 @@ main
 			border-bottom: 1px solid rgba(black, 0.05)
 			.rating
 				margin-bottom: 10px
+			.show-hide
+				display: block
+				margin-bottom: 20px
+				float: right
+			.moolah
+				padding: 10px
+				margin-left: -10px
+				background-color: rgba(yellow, 0.05)
+				border: 1px solid darken(yellow, 5%)
+				border-radius: 3px
+				margin-bottom: 10px
 			ul
 				+reset-list
 				+fill-parent
+				margin-bottom: 40px
+				li
+					margin-bottom: 10px
+					h5
+						font-size: 12px
+						font-weight: bold
+						color: rgba(black, 0.3)
+
 
 		.sort-n-filter
 			padding: 20px
