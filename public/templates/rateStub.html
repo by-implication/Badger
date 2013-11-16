@@ -1,12 +1,13 @@
 <div class="rating-group" ng-class="{'ratable': item.kind == 'leaf'}">
 	<span class="rating">
 		<span class="current-rating">
-			<i class="fa" 
+			<i class="fa"
 				ng-repeat="star in stars"
 				ng-class="starClass(item, star)"></i>
 		</span>
 		<span class="apply-rating">
-      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+      <i ng-show="loggedIn" ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+      <a target="_self" ng-hide="loggedIn" href="/login">Sign up / Log in to rate!</span>
     </span>
   </span>
 	<span ng-show="item.ratings">

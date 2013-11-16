@@ -38,12 +38,17 @@ case class Leaf(
 // GENERATED case class end
 {
 
-  lazy val parent: JsObject = {
-    Location.findOne("location_name", areaDsc).map(l => Json.obj(
-      "id" -> l.id.get,
-      "name" -> l.name
-    )).get
+  def changeRating(oldStars: Int, newStars: Int) = {
+    copy(stars = stars - oldStars + newStars).save()
+    parent.cascadeChangeRating(oldStars, newStars)
   }
+
+  def addRating(newStars: Int) = {
+    copy(stars = stars + newStars, ratings = ratings + 1).save()
+    parent.cascadeAddRating(newStars)
+  }
+
+  lazy val parent: Location = Location.findOne("location_name", areaDsc).get
 
   lazy val toJson: JsObject = Json.obj(
     "dptCd" -> dptCd,
@@ -63,7 +68,13 @@ case class Leaf(
     "xkind" -> kind,
     "id" -> id.get,
     "kind" -> "leaf",
-    "parent" -> parent
+    "parent" -> Json.obj(
+      "id" -> parent.id.get,
+      "name" -> parent.name
+    ),
+    "id" -> id.get,
+    "stars" -> stars,
+    "ratings" -> ratings
   )
 }
 

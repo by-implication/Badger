@@ -3,12 +3,12 @@
 CREATE TABLE locations (
 	location_id serial PRIMARY KEY,
   location_name text,
-  location_parent int REFERENCES locations(location_id),
+  location_parent_id int REFERENCES locations(location_id),
 	location_lat numeric(10,7) NOT NULL,
 	location_lng numeric(10,7) NOT NULL
 );;
 
-INSERT INTO locations (location_id, location_name, location_parent, location_lat, location_lng) VALUES
+INSERT INTO locations (location_id, location_name, location_parent_id, location_lat, location_lng) VALUES
 	(0, 'All', NULL, 0, 0),
 	(1, 'Foreign', 0, 90, 0),
 	(2, 'Local', 0, 12.879721, 121.774017),

@@ -2,13 +2,16 @@
 	{{focus.fpapDsc}}
 </h2>
 
-<star-rating item="focus"></star-rating>
+<star-rating logged-in="loggedIn" item="focus"></star-rating>
 
 <a href="#" ng-click="toggleComments()">
 	{{commentsShowHide()}} comments
 </a>
 
 <ul>
+	<li>
+		{{focus.stars}} {{focus.ratings}}
+	</li>
 	<li>
 		{{focus.dptDsc}}
 	</li>

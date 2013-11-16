@@ -3,7 +3,8 @@ var app = angular.module('budget', ['ui'])
 		return {
 			restrict: 'E',
 			scope: {
-				item: '=item'
+				item: '=item',
+				loggedIn: '=loggedIn'
 			},
 			templateUrl: '/assets/templates/rateStub.html',
 			transclude: true,
@@ -100,7 +101,7 @@ function App($scope, $http, $location){
 	}
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
-		$http.get('/meta', {params: $location.search()})
+		$http.get('/meta', { params: $location.search() })
 		.success(function(r){ $scope.focus = r; });
 	});
 

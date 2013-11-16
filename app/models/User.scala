@@ -87,7 +87,24 @@ case class User(
 ) extends UserCCGen with Entity[User]
 // GENERATED case class end
 {
+
   def isAnonymous = (this.id.get == -1)
+
+  def rate(leaf: Leaf, stars: Int): Boolean = {
+    Rating.findByUserAndLeaf(this, leaf) match {
+      case Some(rating) => {
+        rating.copy(stars = stars).save().map { r => 
+          r.leaf.changeRating(rating.stars, stars)
+        }.isDefined
+      }
+      case None => {
+        Rating(NA, id, leaf.id, stars).create().map { r =>
+          r.leaf.addRating(stars)
+        }.isDefined
+      }
+    }
+  }
+
 }
 
 // GENERATED object start

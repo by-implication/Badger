@@ -8,6 +8,18 @@ import play.api.Play.current
 import budget.support._
 
 object Rating extends RatingGen {
+
+  def findByUserAndLeaf(user: User, leaf: Leaf): Option[Rating] = DB.withConnection { implicit c =>
+    SQL("""
+      SELECT * FROM ratings
+      WHERE user_id = {userId}
+      AND leaf_id = {leafId}
+    """).on(
+      'userId -> user.id,
+      'leafId -> leaf.id
+    ).singleOpt(simple)
+  }
+
 }
 
 // GENERATED case class start
@@ -18,6 +30,9 @@ case class Rating(
   stars: Int = 0
 ) extends RatingCCGen with Entity[Rating]
 // GENERATED case class end
+{
+  lazy val leaf = Leaf.findById(leafId).get
+}
 
 // GENERATED object start
 trait RatingGen extends EntityCompanion[Rating] {
