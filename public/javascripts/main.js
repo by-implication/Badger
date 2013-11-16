@@ -86,6 +86,7 @@ function App($scope, $http, $location){
 
 	$scope.commentCache = [];
 	$scope.toggleComments = function(){
+		$scope.filtersVisible = false;
 		$scope.commentsVisible = !$scope.commentsVisible;
 		var fid = $scope.focus.id;
 		if($scope.commentsVisible &&
@@ -107,6 +108,31 @@ function App($scope, $http, $location){
 					
 				});
 		}
+	}
+
+	$scope.activeFilter = null;
+
+	$scope.toggleFilters = function(){
+		$scope.commentsVisible = false;
+		$scope.filtersVisible = !$scope.filtersVisible;
+	}
+
+	$scope.clearFilter = function(){
+		$scope.activeFilter = null;
+	}
+
+	$scope.setFilter = function(filter){
+		$scope.activeFilter = filter;
+	}
+	$scope.appearsInActiveFilter = function(item){
+		// group.indexOf(thing) >= 0
+		if(!$scope.activeFilter) return true;
+
+		return $scope.cats[$scope.activeFilter].indexOf(item.dptDsc) >= 0
+		// } else {
+		// 	return false;
+		// }
+		// return true;
 	}
 	
 	$scope.zoomLevel = 6;
@@ -142,6 +168,8 @@ function App($scope, $http, $location){
 		}
 		// $scope.zoomLevel++;
 	}
+
+
 
 	$scope.cats = {
 		"academia": [
