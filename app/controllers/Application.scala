@@ -34,7 +34,7 @@ object Application extends Controller with Secured {
     Ok(views.html.app(user))
   }
 
-  def meta(kind: String, id: Int) = UserAction(){ user => request =>
+  def meta(kind: String, id: Int) = UserAction(){ implicit user => request =>
     kind match {
       case "leaf" | "loc" => {
         (kind match {

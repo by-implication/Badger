@@ -22,7 +22,7 @@ var app = angular.module('budget', ['ui'])
 				}
 
 				$scope.starClass = function(item, star){
-				  var rating = item.rating && $scope.round(item.rating * 2, 0) / 2;
+				  var rating = item.userRating || (item.ratings && $scope.round((item.stars / item.ratings) * 2, 0) / 2) || 0;
 				  if(rating >= star){
 				    return "fa-star";
 				  } else if(rating >= star - 0.5){
@@ -31,8 +31,13 @@ var app = angular.module('budget', ['ui'])
 				    return "fa-star-o";
 				  }
 				}
-				$scope.rateProject = function(item, star) {
-					$scope.item.userrating = star
+				
+				$scope.rateProject = function(item, stars) {
+					$http.post('/rate/' + item.id + '/' + stars)
+					.success(function(r){
+						if(!item.userRating) item.ratings++;
+						item.userRating = stars;
+					});
 				}
 			}
 		}

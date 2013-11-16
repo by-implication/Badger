@@ -10,7 +10,7 @@ import budget.support._
 
 object Location extends LocationGen {
 
-  def query(id: Int): Option[JsObject] = DB.withConnection { implicit c =>
+  def query(id: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
     Location.findById(id).map(_.toJson(expand = true))
   }
 
@@ -63,7 +63,7 @@ case class Location(
 
   }
 
-  def toJson(expand: Boolean = false): JsObject = {
+  def toJson(expand: Boolean = false)(implicit user: User): JsObject = {
     var r = Json.obj(
       "id" -> id.get,
       "kind" -> "loc",
@@ -79,7 +79,7 @@ case class Location(
       val (locs, leaves) = children
       r ++= Json.obj("children" -> Map(
         "locs" -> locs.map(_.toJson()),
-        "leaves" -> leaves.map(_.toJson)
+        "leaves" -> leaves.map(_.toJson(user))
       ))
     }
     r

@@ -10,7 +10,7 @@ import budget.support._
 
 object Leaf extends LeafGen {
 
-  def query(id: Int): Option[JsObject] = findById(id).map(_.toJson)
+  def query(id: Int)(implicit user: User): Option[JsObject] = findById(id).map(_.toJson(user))
 
 }
 
@@ -50,7 +50,7 @@ case class Leaf(
 
   lazy val parent: Location = Location.findOne("location_name", areaDsc).get
 
-  lazy val toJson: JsObject = Json.obj(
+  def toJson(user: User): JsObject = Json.obj(
     "dptCd" -> dptCd,
     "dptDsc" -> dptDsc,
     "agyType" -> agyType,
@@ -74,7 +74,8 @@ case class Leaf(
     ),
     "id" -> id.get,
     "stars" -> stars,
-    "ratings" -> ratings
+    "ratings" -> ratings,
+    "userRating" -> user.ratingFor(this)
   )
 }
 
