@@ -10,8 +10,8 @@ import budget.support._
 
 object Location extends LocationGen {
 
-  def query(id: Int): Option[JsObject] = {
-    None
+  def query(id: Int): Option[JsObject] = DB.withConnection { implicit c =>
+    Location.findById(id).map(_.toJson(expand = true))
   }
 
 }
@@ -23,6 +23,47 @@ case class Location(
   parent: Option[Int] = None
 ) extends LocationCCGen with Entity[Location]
 // GENERATED case class end
+{
+
+  lazy val children: (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
+
+    val locs = SQL("""
+      SELECT * from locations
+      WHERE location_parent = {id}
+    """).on('id -> id).list(Location.simple)
+
+    val leaves = SQL("""
+      SELECT * from leafs
+      WHERE leaf_area_dsc = {areaDsc}
+      AND leaf_ps > 0
+      AND leaf_mooe > 0
+      AND leaf_co > 0
+    """).on('areaDsc -> name).list(Leaf.simple)
+
+    (locs, leaves)
+
+  }
+
+  def toJson(expand: Boolean = false): JsObject = {
+    var r = Json.obj(
+      "id" -> id.get,
+      "kind" -> "loc",
+      "name" -> name,
+      "parent" -> parent.map(p => Json.obj(
+        "id" -> p,
+        "name" -> Location.findById(p).get.name
+      ))
+    )
+    if(expand){
+      val (locs, leaves) = children
+      r ++= Json.obj("children" -> Map(
+        "locs" -> locs.map(_.toJson()),
+        "leaves" -> leaves.map(_.toJson)
+      ))
+    }
+    r
+  }
+}
 
 // GENERATED object start
 trait LocationGen extends EntityCompanion[Location] {

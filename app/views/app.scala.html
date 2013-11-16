@@ -8,21 +8,28 @@
 			<main>
 				<div id="sidebar">
 					<nav>
-						<a ui-if="node.parent" ng-href="{{nodeLink(node.parent)}}">
-							<i class="fa fa-chevron-left"></i> {{focus.parent}}
+						<a ui-if="focus.parent" ng-href="{{parentLink(focus)}}">
+							<i class="fa fa-chevron-left"></i>
+							{{focus.parent.name}}
 						</a>
-						<span ui-if="!node.parent">
-							ORPHAN
+						<span ui-if="!focus.parent">
+							Top level
 						</span>
 					</nav>
-
+					
 					<div class="data">
-						<h2>
+
+						<h2 ui-if="focus.kind == 'loc'">
 							{{focus.name}}
 						</h2>
+
+						<h2 ui-if="focus.kind == 'leaf'">
+							LEAF
+						</h2>
+
 						<ng-include src="'/assets/templates/rateStub.html'"
 						onload="item = focus"></ng-include>
-						<a href="#">{{focus.numrates}} comments</a>
+						<a href="#" ng-click="showComments()">view comments</a>
 						<ul>
 							<li>
 								{{focus.date}}
@@ -38,8 +45,11 @@
 						</button>
 					</div>
 					<ul class="children">
-						<li ng-repeat="child in focus.children"
-							ng-include="'/assets/templates/itemStub.html'">
+						<li ng-repeat="child in focus.children.locs"
+							ng-include="'/assets/templates/locStub.html'">
+						</li>
+						<li ng-repeat="child in focus.children.leaves"
+							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 					</ul>
 				</div>
@@ -47,34 +57,35 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="comments">
+					<div id="comments" ng-show="commentsVisible">
 						<div class="header">
-							<a class="close" ng-href="{{hideCommentsLink()}}">
-								<i class="fa fa-remove"></i>
-								close
-							</a>
+							<button class="close" ng-click="hideComments()">
+								<i class="fa fa-times"></i>
+							</button>
 							<h3>
 								Comments on {{focus.name}}
 							</h3>
 						</div>
-						<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
-						  <span class="ratings">
-						    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
-						      <i class="fa" ng-repeat="star in stars" ng-class="starClass(focus, star)"></i>
-						    </span>
-						    <span class="apply-rating">
-						      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
-						    </span>
-						  </span>
-						  <span class="numrates">
-						    ({{focus.ratings}} rating<span ui-if="focus.ratings > 1">s</span>)
-						  </span>
+						<div class="user-rating">
+							<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+							  <span class="ratings">
+							    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+							      <i class="fa" ng-repeat="star in stars" ng-class="starClass(focus, star)"></i>
+							    </span>
+							    <span class="apply-rating">
+							      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+							    </span>
+							  </span>
+							  <span class="numrates">
+							    ({{focus.ratings}} rating<span ui-if="focus.ratings > 1">s</span>)
+							  </span>
+							</div>
+							<textarea></textarea>
 						</div>
-						<textarea></textarea>
 						<div ui-if="focus.comments">
 							<div ui-if="focus.comments.length">
 								<div ng-repeat="comment in focus.comments | orderBy:timestamp ">
-									{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
+									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
 								</div>
 							</div>
 							<div ui-if="!focus.comments.length">

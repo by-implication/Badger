@@ -7,8 +7,9 @@ CREATE TABLE locations (
 );;
 
 INSERT INTO locations (location_id, location_name, location_parent) VALUES
-	(1, 'Foreign', NULL),
-	(2, 'Local', NULL),
+	(0, 'All', NULL),
+	(1, 'Foreign', 0),
+	(2, 'Local', 0),
 	(3, 'Nationwide', 2),
 	(4, 'Region VI', 28),
 	(5, 'CO', 2),
@@ -37,7 +38,7 @@ INSERT INTO locations (location_id, location_name, location_parent) VALUES
 	(28, 'Visayas', 3),
 	(29, 'Cagayan', 13),
 	(30, 'Switzerland, Geneva', 1),
-	(31, '', NULL),
+	(31, '', 0),
 	(32, 'U.S.A., New York', 1),
 	(33, 'China, Beijing', 1),
 	(34, 'Caracas, Venezuela', 1),

@@ -22,6 +22,11 @@ COPY leafs FROM '/haha-absolute-path/gaa_na.csv' DELIMITER ',' CSV ENCODING 'ISO
 
 ALTER TABLE leafs ADD leaf_id serial PRIMARY KEY;
 
+CREATE INDEX leafs_leaf_area_dsc ON leafs(leaf_area_dsc);;
+CREATE INDEX leafs_leaf_ps ON leafs(leaf_ps);;
+CREATE INDEX leafs_leaf_mooe ON leafs(leaf_mooe);;
+CREATE INDEX leafs_leaf_co ON leafs(leaf_co);;
+
 # --- !Downs
 
 DROP TABLE IF EXISTS leafs;;
