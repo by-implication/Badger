@@ -2,7 +2,7 @@
 
 CREATE TABLE stuff (
   id serial PRIMARY KEY,
-  content TEXT
+  content text
 );;
 
 # --- !Downs

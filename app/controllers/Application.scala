@@ -13,19 +13,25 @@ import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent._
 
+// val q: Future[ws.Response] = WS.url("http://google.com").get()
+// Async {
+//   q.map { response =>
+//     Ok(views.html.index("Async (Future), WS, and DB online."))
+//   }
+// }
+
 object Application extends Controller {
   
-  def index = Action {
-		DB.withConnection { implicit c =>
+  def landing = Action {
+    Ok(views.html.landing("Landing"))
+  }
 
-      // val q: Future[ws.Response] = WS.url("http://google.com").get()
-      // Async {
-      //   q.map { response =>
-          Ok(views.html.index("Async (Future), WS, and DB online."))
-      //   }
-      // }
+  def app = Action {
+    Ok(views.html.app("App"))
+  }
 
-		}
+  def account = Action {
+    Ok(views.html.account("Account"))
   }
   
 }

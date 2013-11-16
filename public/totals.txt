@@ -1,0 +1,19 @@
+2009
+gaa_total: 1415000000
+new_appro_total: 1170318753
+
+2010
+gaa_total: 1541000000
+new_appro_total: 1304406400
+
+2011
+gaa_total: 1645000000
+new_appro_total: 1000387764
+
+2012
+gaa_total: 1816000000
+new_appro_total: 1245193270
+
+2013
+gaa_total: 2005900000
+new_appro_total: 1368229156
