@@ -4,6 +4,9 @@
 <a target="_blank" ng-href="{{share.facebook()}}">Facebook</a>
 <a target="_blank" ng-href="{{share.twitter()}}">Twitter</a>
 <a target="_blank" ng-href="{{share.googlePlus()}}">Google Plus</a>
+<button ui-if="loggedIn && !focus.userClick" ng-click="click.toggle()">
+	{{click.text()}}
+</button>
 
 <a class="show-hide" href="#" ng-click="toggleComments()">
 	{{commentsShowHide()}} comments

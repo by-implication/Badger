@@ -7,6 +7,9 @@ import play.api.db._
 import play.api.Play.current
 import budget.support._
 
+import play.api.libs.json._
+import play.api.libs.json.Json
+
 object User extends UserGen {
 
   def authenticate(handle: String, password: String): Option[User] = DB.withConnection { implicit c =>
@@ -99,21 +102,40 @@ case class User(
     ).singleOpt(Rating.simple).map(_.stars).getOrElse(0)
   }
 
+  def clickFor(leaf: Leaf) = DB.withConnection { implicit c =>
+    SQL("""
+      SELECT * FROM clicks
+      WHERE user_id = {id}
+      AND leaf_id = {leafId}
+    """).on(
+      'id -> id.get,
+      'leafId -> leaf.id.get
+    ).singleOpt(Click.simple).map(c => Json.obj("lat" -> c.lat, "lng" -> c.lng))
+    .getOrElse(JsNull)
+  }
+
   def isAnonymous = (this.id.get == -1)
 
   def rate(leaf: Leaf, stars: Int): Boolean = {
-    Rating.findByUserAndLeaf(this, leaf) match {
+    (Rating.findByUserAndLeaf(this, leaf) match {
       case Some(rating) => {
         rating.copy(stars = stars).save().map { r => 
           r.leaf.changeRating(rating.stars, stars)
-        }.isDefined
+        }
       }
       case None => {
         Rating(NA, id, leaf.id, stars).create().map { r =>
           r.leaf.addRating(stars)
-        }.isDefined
+        }
       }
-    }
+    }).isDefined
+  }
+
+  def click(leaf: Leaf, lat: Double, lng: Double): Boolean = {
+    (Click.findByUserAndLeaf(this, leaf) match {
+      case Some(click) => click.copy(lat = lat, lng = lng).save()
+      case None => Click(NA, id, leaf.id, lat, lng).create()
+    }).isDefined
   }
 
 }

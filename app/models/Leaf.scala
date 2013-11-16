@@ -51,19 +51,19 @@ case class Leaf(
   lazy val parent: Location = Location.findOne("location_name", areaDsc).get
 
   def toJson(user: User): JsObject = Json.obj(
-    "dptCd" -> dptCd,
+    // "dptCd" -> dptCd,
     "dptDsc" -> dptDsc,
-    "agyType" -> agyType,
-    "ownerCd" -> ownerCd,
+    // "agyType" -> agyType,
+    // "ownerCd" -> ownerCd,
     "ownerDsc" -> ownerDsc,
-    "fpapCd" -> fpapCd,
+    // "fpapCd" -> fpapCd,
     "fpapDsc" -> fpapDsc,
-    "areaCd" -> areaCd,
-    "areaDsc" -> areaDsc,
+    // "areaCd" -> areaCd,
+    // "areaDsc" -> areaDsc,
     "ps" -> ps,
     "mooe" -> mooe,
     "co" -> co,
-    "net" -> net,
+    // "net" -> net,
     "year" -> year,
     "xkind" -> kind,
     "id" -> id.get,
@@ -75,7 +75,8 @@ case class Leaf(
     "id" -> id.get,
     "stars" -> stars,
     "ratings" -> ratings,
-    "userRating" -> user.ratingFor(this)
+    "userRating" -> user.ratingFor(this),
+    "userClick" -> user.clickFor(this)
   )
 }
 
