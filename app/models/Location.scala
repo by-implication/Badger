@@ -21,6 +21,8 @@ case class Location(
   id: Pk[Int] = NA,
   name: Option[String] = None,
   parent: Option[Int] = None,
+  lat: BigDecimal = 0,
+  lng: BigDecimal = 0,
   ps: Int = 0,
   mooe: Int = 0,
   co: Int = 0,
@@ -54,6 +56,8 @@ case class Location(
       "id" -> id.get,
       "kind" -> "loc",
       "name" -> name,
+      "lat" -> lat,
+      "lng" -> lng,
       "parent" -> parent.map(p => Json.obj(
         "id" -> p,
         "name" -> Location.findById(p).get.name
@@ -76,13 +80,15 @@ trait LocationGen extends EntityCompanion[Location] {
     get[Pk[Int]]("location_id") ~
     get[Option[String]]("location_name") ~
     get[Option[Int]]("location_parent") ~
+    get[java.math.BigDecimal]("location_lat") ~
+    get[java.math.BigDecimal]("location_lng") ~
     get[Int]("location_ps") ~
     get[Int]("location_mooe") ~
     get[Int]("location_co") ~
     get[Int]("location_stars") ~
     get[Int]("location_ratings") map {
-      case id~name~parent~ps~mooe~co~stars~ratings =>
-        Location(id, name, parent, ps, mooe, co, stars, ratings)
+      case id~name~parent~lat~lng~ps~mooe~co~stars~ratings =>
+        Location(id, name, parent, lat, lng, ps, mooe, co, stars, ratings)
     }
   }
 
@@ -110,6 +116,8 @@ trait LocationGen extends EntityCompanion[Location] {
             location_id,
             location_name,
             location_parent,
+            location_lat,
+            location_lng,
             location_ps,
             location_mooe,
             location_co,
@@ -119,6 +127,8 @@ trait LocationGen extends EntityCompanion[Location] {
             DEFAULT,
             {name},
             {parent},
+            {lat},
+            {lng},
             {ps},
             {mooe},
             {co},
@@ -129,6 +139,8 @@ trait LocationGen extends EntityCompanion[Location] {
           'id -> o.id,
           'name -> o.name,
           'parent -> o.parent,
+          'lat -> o.lat.bigDecimal,
+          'lng -> o.lng.bigDecimal,
           'ps -> o.ps,
           'mooe -> o.mooe,
           'co -> o.co,
@@ -143,6 +155,8 @@ trait LocationGen extends EntityCompanion[Location] {
             location_id,
             location_name,
             location_parent,
+            location_lat,
+            location_lng,
             location_ps,
             location_mooe,
             location_co,
@@ -152,6 +166,8 @@ trait LocationGen extends EntityCompanion[Location] {
             {id},
             {name},
             {parent},
+            {lat},
+            {lng},
             {ps},
             {mooe},
             {co},
@@ -162,6 +178,8 @@ trait LocationGen extends EntityCompanion[Location] {
           'id -> o.id,
           'name -> o.name,
           'parent -> o.parent,
+          'lat -> o.lat.bigDecimal,
+          'lng -> o.lng.bigDecimal,
           'ps -> o.ps,
           'mooe -> o.mooe,
           'co -> o.co,
@@ -177,6 +195,8 @@ trait LocationGen extends EntityCompanion[Location] {
       update locations set
         location_name={name},
         location_parent={parent},
+        location_lat={lat},
+        location_lng={lng},
         location_ps={ps},
         location_mooe={mooe},
         location_co={co},
@@ -187,6 +207,8 @@ trait LocationGen extends EntityCompanion[Location] {
       'id -> o.id,
       'name -> o.name,
       'parent -> o.parent,
+      'lat -> o.lat.bigDecimal,
+      'lng -> o.lng.bigDecimal,
       'ps -> o.ps,
       'mooe -> o.mooe,
       'co -> o.co,
