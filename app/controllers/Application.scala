@@ -50,7 +50,7 @@ object Application extends Controller with Secured {
     Ok(Json.toJson(Comment.getForLeaf(id).map(_.toJson)))
   }
 
-  //////////////// rating & commenting /////////////////
+  //////////////// feedback /////////////////
 
   def rate(id: Int, stars: Int) = UserAction(){ user => request =>
     if(!user.isAnonymous){
@@ -77,6 +77,20 @@ object Application extends Controller with Secured {
             c => Ok(Json.toJson(c.timestamp))
           ).getOrElse(InternalServerError("failed to save comment"))
         )
+      }.getOrElse(BadRequest("no such leaf"))
+    } else {
+      Unauthorized("unauthorized")
+    }
+  }
+
+  def click(leafId: Int, lat: Double, lng: Double) = UserAction(){ user => request =>
+    if(!user.isAnonymous){
+      Leaf.findById(leafId).map { leaf =>
+        if(user.click(leaf, lat, lng)){
+          Ok("successfully clicked")
+        } else {
+          InternalServerError("failed to rate")
+        }
       }.getOrElse(BadRequest("no such leaf"))
     } else {
       Unauthorized("unauthorized")
@@ -204,11 +218,8 @@ object Application extends Controller with Secured {
   }
 
   def sampleData = UserAction(){ user => request =>
-
     // todo: generate sample ratings, maybe comments
-
     Redirect(routes.Application.app)
-
-  }
+  }  
 
 }
