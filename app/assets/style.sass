@@ -1,5 +1,6 @@
 @import bourbon/bourbon
 @import neat/neat
+@import font-awesome/font-awesome
 
 $color: #0FF
 
@@ -14,6 +15,9 @@ body
 	margin: 0px
 	font-family: $helvetica
 
+	h2
+		font-size: 24px
+
 
 h1 
 	color: $color
@@ -21,23 +25,42 @@ h1
 main
 	+fill-parent
 	+clearfix
+	position: absolute
+	top: 0px
+	bottom: 0px
 
 	#sidebar
 		+span-columns(1 of 3)
 		background-color: #eee
+		position: absolute
+		bottom: 0px
+		top: 0px
+		overflow-y: scroll
+		overflow-x: hidden
+
 		nav
 			width: 100%
 			padding: 20px
 			button
 				+reset-button
 
-		ul
+		.data
+			padding: 20px
+			ul
+				+reset-list
+				+fill-parent
+
+
+		ul.children
 			+reset-list
 			+fill-parent
 			li
+				padding: 20px
+				&:hover
+					background-color: pink
 				a
 					display: block
-					padding: 20px
+					
 				// button
 					// +unstyled-button
 
