@@ -78,7 +78,7 @@ main
 		nav
 			width: 100%
 			padding: 20px
-			border-bottom: 1px solid #ddd
+			border-bottom: 1px solid rgba(black, 0.05)
 			a
 				+transition(all 0.3s)
 				color: #ccc
@@ -88,7 +88,7 @@ main
 
 		.data
 			padding: 20px
-			border-bottom: 1px solid #ddd
+			border-bottom: 1px solid rgba(black, 0.05)
 			.rating
 				margin-bottom: 10px
 			ul
@@ -107,9 +107,9 @@ main
 			li
 				+transition(all 0.4s)
 				padding: 20px
-				border-bottom: 1px solid rgba(black, 0.1)
+				border-bottom: 1px solid rgba(black, 0.05)
 				&:hover, &.active
-					background-color: white
+					background-color: #eee
 				a
 					display: block
 
@@ -133,11 +133,6 @@ main
 				margin: 20px
 				border-radius: 3px
 				box-shadow: 0px 2px 2px rgba(0,0,0,0.2)
-				// position: absolute
-				// top: 0px
-				// left: 0px
-				// right: 0px
-				// bottom: 0px
 				.comments
 					// position: relative
 					ul
