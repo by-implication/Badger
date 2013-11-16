@@ -42,27 +42,32 @@
 						</li>
 					</ul>
 				</div>
+
+				<div id="main-view">
+					<div id="comments">
+						<h1>
+							<a ng-href="{{toggleCommentsLink()}}">
+								{{commentState()}} comments
+							</a>
+						</h1>
+						<div ui-if="focus.comments">
+							<div ui-if="focus.comments.length">
+								<p ng-repeat="comment in focus.comments | orderBy:timestamp ">
+									{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
+								</p>
+							</div>
+							<div ui-if="!focus.comments.length">
+								<p>
+									No comments
+								</p>
+							</div>
+						</div>
+					</div>
+					<div id="map">
+					</div>
+				</div>
 			</main>
 		</section>
-
-		<!-- <h1>
-			<a ng-href="{{toggleCommentsLink()}}">
-				{{commentState()}} comments
-			</a>
-		</h1>
-		<div ui-if="focus.comments">
-			<div ui-if="focus.comments.length">
-				<p ng-repeat="comment in focus.comments | orderBy:timestamp ">
-					{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
-				</p>
-			</div>
-			<div ui-if="!focus.comments.length">
-				<p>
-					No comments
-				</p>
-			</div>
-		</div> -->
-
 	</div>
     
 }

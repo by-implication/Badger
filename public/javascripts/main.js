@@ -11,10 +11,10 @@ function App($scope, $http, $location){
 		comments: []
 	}
 
-	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
-		$http.get('/meta', {params: $location.search()})
-		.success(function(r){ $scope.focus = r.node; });
-	});
+	// $scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
+	// 	$http.get('/meta', {params: $location.search()})
+	// 	.success(function(r){ $scope.focus = r.node; });
+	// });
 
 	$scope.nodeLink = function(nodeId){
 		return '/app?id=' + nodeId + (!$location.search().comments ? '' : '&comments=true');
@@ -28,7 +28,7 @@ function App($scope, $http, $location){
 		return $location.search().comments ? 'Hide' : 'Show';
 	}
 
-	if(!$location.search().id) $location.search({id: 1});
+	// if(!$location.search().id) $location.search({id: 1});
 	
 	$scope.focus = {
 		"name": "Pepe Bawagan",

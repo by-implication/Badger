@@ -34,7 +34,7 @@ main
 	bottom: 0px
 
 	#sidebar
-		+span-columns(1 of 3)
+		+span-columns(1 of 3, "block-collapse")
 		background-color: #eee
 		position: absolute
 		bottom: 0px
@@ -71,9 +71,10 @@ main
 			+reset-list
 			+fill-parent
 			li
+				+transition(all 0.4s)
 				padding: 20px
 				&:hover
-					background-color: pink
+					background-color: white
 				a
 					display: block
 				
@@ -82,3 +83,7 @@ main
 				// button
 					// +unstyled-button
 
+	#main-view
+		+span-columns(2 of 3, block-collapse)				
+		#comments
+			background-color: green
