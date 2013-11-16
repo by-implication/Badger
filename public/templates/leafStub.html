@@ -7,8 +7,8 @@
 	</a>
 </div>
 <div>
-	ps: {{child.ps}}
-	mooe: {{child.mooe}}
-	co: {{child.co}}
+	<span class="italic monospace">
+		{{comatose((child.ps + child.mooe + child.co) * 1000)}}
+	</span> PhP
 </div>
 <star-rating logged-in="loggedIn" item="child"></star-rating>

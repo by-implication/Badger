@@ -68,6 +68,10 @@ function App($scope, $http, $location){
 			+ '&kind=loc';
 	}
 
+	$scope.comatose = function(num){
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
 	if(!$location.search().id || isNaN($location.search().id)){
 		$location.search({id: 0, kind: 'loc'});
 	}
