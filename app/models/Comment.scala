@@ -25,7 +25,6 @@ case class Comment(
   userId: Int = 0,
   leafId: Int = 0,
   content: Option[String] = None,
-  rating: Option[Int] = None,
   timestamp: Timestamp = Time.now
 ) extends CommentCCGen with Entity[Comment]
 // GENERATED case class end
@@ -36,7 +35,6 @@ case class Comment(
   lazy val toJson: JsObject = Json.obj(
     "user" -> userName,
     "content" -> content,
-    "rating" -> rating,
     "timestamp" -> timestamp
   )
 
@@ -49,10 +47,9 @@ trait CommentGen extends EntityCompanion[Comment] {
     get[Int]("user_id") ~
     get[Int]("leaf_id") ~
     get[Option[String]]("comment_content") ~
-    get[Option[Int]]("comment_rating") ~
     get[Timestamp]("comment_timestamp") map {
-      case id~userId~leafId~content~rating~timestamp =>
-        Comment(id, userId, leafId, content, rating, timestamp)
+      case id~userId~leafId~content~timestamp =>
+        Comment(id, userId, leafId, content, timestamp)
     }
   }
 
@@ -81,14 +78,12 @@ trait CommentGen extends EntityCompanion[Comment] {
             user_id,
             leaf_id,
             comment_content,
-            comment_rating,
             comment_timestamp
           ) VALUES (
             DEFAULT,
             {userId},
             {leafId},
             {content},
-            {rating},
             {timestamp}
           )
         """).on(
@@ -96,7 +91,6 @@ trait CommentGen extends EntityCompanion[Comment] {
           'userId -> o.userId,
           'leafId -> o.leafId,
           'content -> o.content,
-          'rating -> o.rating,
           'timestamp -> o.timestamp
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
@@ -108,14 +102,12 @@ trait CommentGen extends EntityCompanion[Comment] {
             user_id,
             leaf_id,
             comment_content,
-            comment_rating,
             comment_timestamp
           ) VALUES (
             {id},
             {userId},
             {leafId},
             {content},
-            {rating},
             {timestamp}
           )
         """).on(
@@ -123,7 +115,6 @@ trait CommentGen extends EntityCompanion[Comment] {
           'userId -> o.userId,
           'leafId -> o.leafId,
           'content -> o.content,
-          'rating -> o.rating,
           'timestamp -> o.timestamp
         ).executeInsert().flatMap(x => Some(o))
       }
@@ -136,7 +127,6 @@ trait CommentGen extends EntityCompanion[Comment] {
         user_id={userId},
         leaf_id={leafId},
         comment_content={content},
-        comment_rating={rating},
         comment_timestamp={timestamp}
       where comment_id={id}
     """).on(
@@ -144,7 +134,6 @@ trait CommentGen extends EntityCompanion[Comment] {
       'userId -> o.userId,
       'leafId -> o.leafId,
       'content -> o.content,
-      'rating -> o.rating,
       'timestamp -> o.timestamp
     ).executeUpdate() > 0
   }

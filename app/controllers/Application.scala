@@ -6,6 +6,7 @@ import play.api.db._
 import play.api.Play.current
 
 import budget.models._
+import budget.support._
 
 // json
 import play.api.libs.json._
@@ -26,7 +27,7 @@ import scala.concurrent._
 //   }
 // }
 
-object Application extends Controller {
+object Application extends Controller with Secured {
   
   def landing = Action {
     Ok(views.html.landing("Landing"))
@@ -54,6 +55,14 @@ object Application extends Controller {
 
   def comments(id: Int) = Action {
     Ok(Json.toJson(Comment.getForLeaf(id).map(_.toJson)))
+  }
+
+  def comment(id: Int) = UserAction(){ user =>
+    Ok("comment")
+  }
+
+  def rate(id: Int) = UserAction(){ user =>
+    Ok("rate")
   }
   
 }
