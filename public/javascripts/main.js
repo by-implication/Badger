@@ -101,7 +101,12 @@ function App($scope, $http, $location){
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		$http.get('/meta', {params: $location.search()})
-		.success(function(r){ $scope.focus = r; });
+		.success(function(r){ 
+			$scope.focus = r; 
+			if(r.lat && r.lng){
+				map.setView([r.lat, r.lng], 6)
+			}
+		});
 	});
 
 	$scope.cats = {

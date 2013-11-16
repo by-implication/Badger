@@ -3,11 +3,12 @@
 @import font-awesome/font-awesome
 
 $color: #0FF
+$font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
 
 =reset-button
 	background: transparent
 	border-width: 0px
-	font-family: "Gotham HTF"
+	font-family: $font
 	padding: 0px
 	outline: none
 	outline-color: transparent
@@ -20,7 +21,7 @@ $color: #0FF
 body
 	+reset-and-normalize
 	margin: 0px
-	font-family: "Gotham HTF"
+	font-family: $font
 	color: #333
 
 	a
@@ -37,9 +38,18 @@ body
 	h4
 		margin-bottom: 10px
 
+	input
+		outline: none
+		outline-color: transparent
+		border: 1px solid rgba(black, 0.1)
+		border-radius: 3px
+		padding: 6px
+		font-family: $font
+		margin-bottom: 10px
+
 
 h1 
-	color: $color
+	// color: $color
 
 header
 	height: 64px
@@ -54,6 +64,10 @@ header
 				padding: 20px
 	nav.right
 		float: right
+
+#signup
+	button
+		+button
 
 main
 	+fill-parent
@@ -177,7 +191,7 @@ main
 						max-height: 72px
 						padding: 6px
 						margin: 0px -6px 10px -6px
-						font-family: "Gotham HTF"
+						font-family: $font
 						border-radius: 3px
 						border: 1px solid rgba(0,0,0,0.2)
 						&+button
