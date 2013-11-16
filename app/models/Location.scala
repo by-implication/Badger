@@ -4,10 +4,16 @@ import anorm._
 import anorm.SqlParser._
 import java.sql.Timestamp
 import play.api.db._
+import play.api.libs.json._
 import play.api.Play.current
 import budget.support._
 
 object Location extends LocationGen {
+
+  def query(id: Int): Option[JsObject] = {
+    None
+  }
+
 }
 
 // GENERATED case class start

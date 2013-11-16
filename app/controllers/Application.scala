@@ -40,8 +40,16 @@ object Application extends Controller {
     Ok(views.html.account("Account"))
   }
 
-  def meta(id: Int, comments: Boolean) = Action {
-    Node.query(id, comments).map(Ok(_)).getOrElse(NotFound("no such node"))
+  def meta(kind: String, id: Int, comments: Boolean) = Action {
+    kind match {
+      case "leaf" | "loc" => {
+        (kind match {
+          case "leaf" => Leaf.query(id)
+          case "loc" => Location.query(id)
+        }).map(Ok(_)).getOrElse(NotFound("not found"))
+      }
+      case _ => BadRequest("invalid type")
+    }
   }
   
 }
