@@ -25,49 +25,18 @@ function App($scope, $http, $location){
 			+ (!$location.search().comments ? '' : '&comments=true');
 	}
 
-	$scope.toggleCommentsLink = function(){
-		return '/app?id='
-			+ $scope.focus.id
-			+ '&kind=' + $scope.focus.kind
-			+ ($location.search().comments ? '' : '&comments=true');
-	}
-
-	$scope.commentState = function(){
-		return $location.search().comments ? 'Hide' : 'Show';
-	}
-
 	if(!$location.search().id || !isNaN($location.search().id)){
 		$location.search({id: 0, kind: 'loc'});
 	}
+
+	$scope.commentsVisible = false;
+	$scope.showComments = function(){ $scope.commentsVisible = true; }
+	$scope.hideComments = function(){ $scope.commentsVisible = false; }
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		$http.get('/meta', {params: $location.search()})
 		.success(function(r){ $scope.focus = r; });
 	});
-	
-	// $scope.focus = {
-	// 	"name": "Pepe Bawagan",
-	// 	"rating": 3.5,
-	// 	"numrates": 1000,
-	// 	"amount": "huge sum",
-	// 	"parent": "pepe's dad",
-	// 	"children": [
-	// 		{
-	// 			"name": "Daniel Fordan",
-	// 			"amount": 20000000,
-	// 			"date": "Jan 12, 2013",
-	// 			"rating": 3.5,
-	// 			"numrates": 1000
-	// 		},
-	// 		{
-	// 			"name": "Philip Cheang",
-	// 			"amount": 20000000,
-	// 			"date": "Jan 12, 2013",
-	// 			"rating": 3.5,
-	// 			"numrates": 1000
-	// 		}
-	// 	]
-	// }
 
 	$scope.cats = {
 		"academia": [
@@ -157,8 +126,19 @@ function App($scope, $http, $location){
 
 function Ratings($scope, $http){
 	$scope.stars = [1,2,3,4,5];
+
+	$scope.roundFix = function(n){
+	  var decimal_places = 2;
+	  var pow = Math.pow(10, decimal_places);
+	  return (Math.round(n*pow)/pow).toFixed(decimal_places);
+	}
+	$scope.round = function(num, deg){
+	  var coeff = Math.pow(10, deg);
+	  return Math.round(num * coeff)/coeff;
+	}
+
 	$scope.starClass = function(item, star){
-	  var rating = item.rating && Math.round(item.rating * 2, 0) / 2;
+	  var rating = item.rating && $scope.round(item.rating * 2, 0) / 2;
 	  if(rating >= star){
 	    return "fa-star";
 	  } else if(rating >= star - 0.5){
@@ -166,5 +146,9 @@ function Ratings($scope, $http){
 	  } else {
 	    return "fa-star-o";
 	  }
+	}
+	$scope.rateProject = function(item, star) {
+		console.log("lol");
+		$scope.item.userrating = star
 	}
 }
