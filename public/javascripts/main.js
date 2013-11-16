@@ -101,13 +101,13 @@ function App($scope, $http, $location){
 					$scope.commentCache[fid] = r;
 
 					// I'M SO SORRY IT HAD TO BE DONE DON'T JUDGE ME
-					setTimeout(function(){
-						var commentHeaderHeight = $("#comment-view .header").css('height');
-						var userCommentHeight = $(".user-comment").css('height');
-						var height = parseInt(commentHeaderHeight) + parseInt(userCommentHeight);
-						// console.log(height);
-						$(".comments ul").css('top', height+'px');
-					}, 50)
+					// setTimeout(function(){
+					// 	var commentHeaderHeight = $("#comment-view .header").css('height');
+					// 	var userCommentHeight = $(".user-comment").css('height');
+					// 	var height = parseInt(commentHeaderHeight) + parseInt(userCommentHeight);
+					// 	// console.log(height);
+					// 	$(".comments ul").css('top', height+'px');
+					// }, 50)
 					
 				});
 		}
@@ -179,12 +179,17 @@ function App($scope, $http, $location){
 		$scope.comment.input = null;
 		$http.post('/comment/' + $scope.focus.id, {comment: comment})
 		.success(function(r){
-			console.log(r);
+			// console.log(r);
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,
 				timestamp: r
 			});
+
+			// var commentHeaderHeight = $("#comment-view .header").css('height');
+			// var userCommentHeight = $(".user-comment").css('height');
+			// var height = parseInt(commentHeaderHeight) + parseInt(userCommentHeight);
+			// $(".comments ul").css('top', height+'px');
 		});
 	}
 
