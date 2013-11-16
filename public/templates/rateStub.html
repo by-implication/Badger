@@ -1,9 +1,14 @@
-<div ng-controller="Ratings" class="rating">
-	<span>
-		<i class="fa" 
-			ng-repeat="star in stars"
-			ng-class="starClass(item, star)"></i>
-	</span>
+<div class="rating-group" ng-class="{'ratable': item.kind == 'leaf'}">
+	<span class="rating">
+		<span class="current-rating">
+			<i class="fa" 
+				ng-repeat="star in stars"
+				ng-class="starClass(item, star)"></i>
+		</span>
+		<span class="apply-rating">
+      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+    </span>
+  </span>
 	<span ng-show="item.ratings">
 		{{item.ratings}} ratings
 	</span>

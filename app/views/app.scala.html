@@ -16,40 +16,17 @@
 							Top level
 						</span>
 					</nav>
-					
-					<div class="data">
-
-						<h2 ui-if="focus.kind == 'loc'">
-							{{focus.name}}
-						</h2>
-
-						<h2 ui-if="focus.kind == 'leaf'">
-							LEAF
-						</h2>
-
-						<ng-include src="'/assets/templates/rateStub.html'"
-						onload="item = focus"></ng-include>
-
-						<a ui-if="focus.kind =='leaf'" href="#" ng-click="toggleComments()">
-							{{commentsShowHide()}} comments
-						</a>
-
-						<ul>
-							<li>
-								{{focus.date}}
-							</li>
-							<li>
-								{{focus.amount}}
-							</li>
-						</ul>
+					<div ui-if="focus.kind == 'loc'">
+						<div ng-include="'/assets/templates/locDetail.html'" 
+							class="data">
+						</div>
 					</div>
-					<!--
-					<div class="sort-n-filter">
-						<button>
-							<i class="fa fa-filter"></i>
-						</button>
+					<div ui-if="focus.kind == 'leaf'">
+						<div ng-include="'/assets/templates/leafDetail.html'" 
+							class="data">
+						</div>
 					</div>
-					-->
+
 					<ul class="children">
 						<li ng-repeat="child in focus.children.locs"
 							ng-include="'/assets/templates/locStub.html'">

@@ -1,4 +1,41 @@
-var app = angular.module('budget', ['ui']);
+var app = angular.module('budget', ['ui'])
+	.directive('starRating', function(){
+		return {
+			restrict: 'E',
+			scope: {
+				item: '=item'
+			},
+			templateUrl: '/assets/templates/rateStub.html',
+			transclude: true,
+			controller: function($scope, $http){
+				$scope.stars = [1,2,3,4,5];
+
+				$scope.roundFix = function(n){
+				  var decimal_places = 2;
+				  var pow = Math.pow(10, decimal_places);
+				  return (Math.round(n*pow)/pow).toFixed(decimal_places);
+				}
+				$scope.round = function(num, deg){
+				  var coeff = Math.pow(10, deg);
+				  return Math.round(num * coeff)/coeff;
+				}
+
+				$scope.starClass = function(item, star){
+				  var rating = item.rating && $scope.round(item.rating * 2, 0) / 2;
+				  if(rating >= star){
+				    return "fa-star";
+				  } else if(rating >= star - 0.5){
+				    return "fa-star-half-o";
+				  } else {
+				    return "fa-star-o";
+				  }
+				}
+				$scope.rateProject = function(item, star) {
+					$scope.item.userrating = star
+				}
+			}
+		}
+	})
 
 app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
@@ -137,33 +174,4 @@ function App($scope, $http, $location){
 		]
 	}
 	
-}
-
-function Ratings($scope, $http){
-	$scope.stars = [1,2,3,4,5];
-
-	$scope.roundFix = function(n){
-	  var decimal_places = 2;
-	  var pow = Math.pow(10, decimal_places);
-	  return (Math.round(n*pow)/pow).toFixed(decimal_places);
-	}
-	$scope.round = function(num, deg){
-	  var coeff = Math.pow(10, deg);
-	  return Math.round(num * coeff)/coeff;
-	}
-
-	$scope.starClass = function(item, star){
-	  var rating = item.rating && $scope.round(item.rating * 2, 0) / 2;
-	  if(rating >= star){
-	    return "fa-star";
-	  } else if(rating >= star - 0.5){
-	    return "fa-star-half-o";
-	  } else {
-	    return "fa-star-o";
-	  }
-	}
-	$scope.rateProject = function(item, star) {
-		console.log("lol");
-		$scope.item.userrating = star
-	}
 }

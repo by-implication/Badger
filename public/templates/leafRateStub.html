@@ -1,0 +1,26 @@
+<div ng-controller="Ratings" class="rating-group" ng-class="{rated: focus.userrating}">
+	<span class="rating ratable">
+		<span class="current-rating">
+			<i class="fa" 
+				ng-repeat="star in stars"
+				ng-class="starClass(item, star)"></i>
+		</span>
+		<span class="apply-rating">
+      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+    </span>
+  </span>
+	<span ng-show="item.ratings">
+		{{item.ratings}} ratings
+	</span>
+</div>
+
+<!--<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+  <span class="ratings">
+    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
+    </span>
+    <span class="apply-rating">
+      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+    </span>
+  </span>
+</div>-->
