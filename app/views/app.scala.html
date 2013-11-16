@@ -45,6 +45,8 @@
 				</div>
 
 				<div id="main-view">
+					<div id="map">
+					</div>
 					<div id="comments">
 						<div class="header">
 							<a class="close" ng-href="{{hideCommentsLink()}}">
@@ -82,11 +84,11 @@
 							</div>
 						</div>
 					</div>
-					<div id="map">
-					</div>
 				</div>
 			</main>
 		</section>
 	</div>
+	<script src="//cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/map-sample.js")"></script>
     
 }
