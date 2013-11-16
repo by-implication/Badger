@@ -9,7 +9,7 @@ import budget.support._
 
 object User extends UserGen {
 
-  
+  lazy val ANON = User(Id(-1))
 
   override def insert(o: User): Option[User] = DB.withConnection { implicit c =>
     o.id match {
@@ -70,7 +70,6 @@ object User extends UserGen {
     ).executeUpdate() > 0
   }
 
-
 }
 
 // GENERATED case class start
@@ -81,6 +80,9 @@ case class User(
   password: String = ""
 ) extends UserCCGen with Entity[User]
 // GENERATED case class end
+{
+  def isAnonymous = (this.id.get == -1)
+}
 
 // GENERATED object start
 trait UserGen extends EntityCompanion[User] {
