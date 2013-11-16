@@ -24,6 +24,10 @@ function App($scope, $http, $location){
 		return '/app?id=' + $scope.focus.id + ($location.search().comments ? '' : '&comments=true');
 	}
 
+	$scope.hideCommentsLink = function(){
+		return '/app?id=' + $scope.focus.id;
+	}
+
 	$scope.commentState = function(){
 		return $location.search().comments ? 'Hide' : 'Show';
 	}

@@ -46,11 +46,16 @@
 
 				<div id="main-view">
 					<div id="comments">
-						<h1>
-							<a ng-href="{{toggleCommentsLink()}}">
-								{{commentState()}} comments
+						<div class="header">
+							<a class="close" ng-href="{{hideCommentsLink()}}">
+								<i class="fa fa-remove"></i>
+								close
 							</a>
-						</h1>
+							<h3>
+								Comments on {{focus.name}}
+							</h3>
+						</div>
+						<textarea></textarea>
 						<div ui-if="focus.comments">
 							<div ui-if="focus.comments.length">
 								<p ng-repeat="comment in focus.comments | orderBy:timestamp ">
