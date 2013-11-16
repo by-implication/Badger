@@ -1,5 +1,5 @@
 function Main($scope, $http){
 	
-	$scope.text = 'lol';
+	$scope.status = 'working';
 
 }

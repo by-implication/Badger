@@ -5,7 +5,7 @@ import scala.io.Source
 object DatabaseSupport {
   Class.forName("org.postgresql.Driver")
 
-  val dbname = "storylark_gen"
+  val dbname = "budget"
   val username = "postgres"
   val password = "postgres"
 
@@ -86,14 +86,5 @@ case class Evolutions(sql: String, root: File) {
     fws.write(sql.hashCode.toString)
     fws.close()
     DatabaseSupport.conn.close();
-  }
-}
-
-object Evolve {
-  def apply(baseDirectory: File) = {
-    val evolutions = Evolutions.load(new File("conf/evolutions/default"))
-    if(evolutions.needsUpdate) try {
-      evolutions.apply()
-    } finally { DatabaseSupport.conn.close() }
   }
 }
