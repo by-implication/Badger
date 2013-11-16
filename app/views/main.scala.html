@@ -3,18 +3,48 @@
 <!DOCTYPE html>
 
 <html ng-app="budget">
-    <head>
-        <title>@title</title>
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        @*<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.css")">*@
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("style.css")">
-        <link rel="stylesheet" href="@routes.Assets.at("leaflet/leaflet.css")">
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
-    </head>
-    <body>
-        @content
-    </body>
+	<head>
+		<title>@title</title>
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+		@*<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.css")">*@
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("style.css")">
+		<link rel="stylesheet" href="@routes.Assets.at("leaflet/leaflet.css")">
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
+	</head>
+	<body>
+		<header>
+			<nav class="left">
+				<ul>
+					<li>
+						<a>
+							about
+						</a>
+					</li>
+					<li>
+						<a>
+							map
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="right">
+				<ul>
+					<li>
+						<a>
+							account
+						</a>
+					</li>
+					<li>
+						<a>
+							log in
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		@content
+	</body>
 </html>
