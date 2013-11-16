@@ -1,8 +1,8 @@
-@(signupForm: Form[budget.models.User], loginForm: Form[budget.models.User])
+@(signupForm: Form[budget.models.User], loginForm: Form[budget.models.User], currentUser: budget.models.User)
 
 @import helper._
 
-@main("BudgetBadger") {
+@main("signup", currentUser) {
 
 	<a href="@routes.Application.landing">Landing</a>
 	<a href="@routes.Application.app">App</a>

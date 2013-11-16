@@ -39,6 +39,8 @@ var app = angular.module('budget', ['ui'])
 
 app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
+function Main($scope){}
+
 function App($scope, $http, $location){
 
 	$scope.focus = {

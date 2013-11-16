@@ -1,9 +1,7 @@
-@(message: String)
+@(currentUser: budget.models.User)
 
-@main("BudgetBadger") {
+@main("about", currentUser){
 
-	@message
-	<a href="@routes.Application.app">App</a>
-	<a href="@routes.Application.account">Account</a>
+	<h1>ABOUT</h1>
     
 }

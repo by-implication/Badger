@@ -1,6 +1,6 @@
-@(message: String)
+@(currentUser: budget.models.User)
 
-@main("BudgetBadger") {
+@main("map", currentUser){
 
 	<div ng-controller="App">
 

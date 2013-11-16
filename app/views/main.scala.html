@@ -1,10 +1,10 @@
-@(title: String)(content: Html)
+@(curNav: String, currentUser: budget.models.User)(content: Html)
 
 <!DOCTYPE html>
 
 <html ng-app="budget">
 	<head>
-		<title>@title</title>
+		<title><[ Budget- =|=-Badger ]></title>
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		@*<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/font-awesome.css")">*@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("style.css")">
@@ -14,17 +14,17 @@
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
 	</head>
-	<body>
+	<body ng-controller="Main" ng-init="curNav = '@curNav'">
 		<header>
 			<nav class="left">
 				<ul>
-					<li>
-						<a>
+					<li ng-class="{current: curNav == 'about'}">
+						<a href="@routes.Application.landing" target="_self">
 							about
 						</a>
 					</li>
-					<li>
-						<a>
+					<li ng-class="{current: curNav == 'map'}">
+						<a href="@routes.Application.app" target="_self">
 							map
 						</a>
 					</li>
@@ -32,15 +32,16 @@
 			</nav>
 			<nav class="right">
 				<ul>
-					<li>
-						<a>
-							account
-						</a>
-					</li>
-					<li>
-						<a>
-							log in
-						</a>
+					<li ng-class="{current: curNav == 'signup'}">
+						@if(currentUser.isAnonymous){
+							<a href="@routes.Application.account" target="_self">
+								sign up / log in
+							</a>
+						} else {
+							<a href="@routes.Application.logout" target="_self">
+								logout
+							</a>
+						}
 					</li>
 				</ul>
 			</nav>

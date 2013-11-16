@@ -24,21 +24,14 @@ import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent._
 
-// val q: Future[ws.Response] = WS.url("http://google.com").get()
-// Async {
-//   q.map { response =>
-//     Ok(views.html.index("Async (Future), WS, and DB online."))
-//   }
-// }
-
 object Application extends Controller with Secured {
   
   def landing = UserAction(){ user => request =>
-    Ok(views.html.landing("Landing"))
+    Ok(views.html.landing(user))
   }
 
   def app = UserAction(){ user => request =>
-    Ok(views.html.app("App"))
+    Ok(views.html.app(user))
   }
 
   def meta(kind: String, id: Int) = UserAction(){ user => request =>
@@ -112,7 +105,7 @@ object Application extends Controller with Secured {
   
   def account = UserAction(){ user => request =>
     if(user.isAnonymous){
-      Ok(views.html.account(signupForm, loginForm))
+      Ok(views.html.account(signupForm, loginForm, user))
     } else {
       Redirect(routes.Application.app)
     }
@@ -123,7 +116,7 @@ object Application extends Controller with Secured {
       signupForm.bindFromRequest.fold(
         errors => {
           play.Logger.info(errors.toString)
-          BadRequest(views.html.account(errors, loginForm))
+          BadRequest(views.html.account(errors, loginForm, user))
         },
         newUser => {
           Redirect(routes.Application.app)
@@ -138,7 +131,7 @@ object Application extends Controller with Secured {
   def login() = UserAction(){ user => implicit request =>
     if(user.isAnonymous){
       loginForm.bindFromRequest.fold(
-        errors => BadRequest(views.html.account(signupForm, errors)),
+        errors => BadRequest(views.html.account(signupForm, errors, user)),
         newUser => {
           Redirect(routes.Application.app)
           .withSession(request.session + ("user_id" -> newUser.id.toString))
