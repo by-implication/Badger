@@ -91,6 +91,7 @@ function App($scope, $http, $location){
 
 	$scope.commentCache = [];
 	$scope.toggleComments = function(){
+		$scope.filtersVisible = false;
 		$scope.commentsVisible = !$scope.commentsVisible;
 		var fid = $scope.focus.id;
 		if($scope.commentsVisible &&
@@ -112,6 +113,29 @@ function App($scope, $http, $location){
 					
 				});
 		}
+	}
+
+	$scope.activeFilter = null;
+
+	$scope.toggleFilters = function(){
+		$scope.commentsVisible = false;
+		$scope.filtersVisible = !$scope.filtersVisible;
+	}
+
+	$scope.clearFilter = function(){
+		$scope.activeFilter = null;
+	}
+
+	$scope.toggleFilter = function(filter){
+		if($scope.activeFilter == filter){
+			$scope.activeFilter = null;
+		} else {
+			$scope.activeFilter = filter;
+		}
+	}
+	$scope.appearsInActiveFilter = function(item){
+		if(!$scope.activeFilter) return true;
+		return $scope.cats[$scope.activeFilter].indexOf(item.dptDsc) >= 0
 	}
 	
 	$scope.zoomLevel = 6;

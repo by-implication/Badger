@@ -15,6 +15,10 @@
 						<span ui-if="!focus.parent">
 							Top level
 						</span>
+						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
+							{{activeFilter}}
+							<i class="fa fa-filter"></i>
+						</button>
 					</nav>
 
 					<div ui-if="focus.kind == 'loc'">
@@ -32,7 +36,7 @@
 						<li ng-repeat="child in focus.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
-						<li ng-repeat="child in focus.children.leaves"
+						<li ng-repeat="child in focus.children.leaves | filter:appearsInActiveFilter"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 					</ul>
@@ -41,7 +45,27 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="comment-view" ng-show="commentsVisible">
+					<div id="filter-view" class="modal" ng-show="filtersVisible">
+						<div class="content">
+							<div class="header">
+								<button class="close" ng-click="toggleFilters()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h3>
+									Filters
+								</h3>
+							</div>
+							<ul>
+								<li ng-repeat="(catName, cat) in cats">
+									<button ng-click="toggleFilter(catName)" ng-class="{active:activeFilter == catName}">
+										{{catName}}
+										<i class="fa fa-times" ng-show="activeFilter == catName"></i>
+									</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="comment-view" class="modal" ng-show="commentsVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleComments()">
