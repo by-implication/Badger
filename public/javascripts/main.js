@@ -81,7 +81,19 @@ function App($scope, $http, $location){
 				!$scope.commentCache[fid]){
 			$scope.commentCache[fid] = [{content: 'Loading...'}];
 			$http.get('/comments?id=' + fid)
-			.success(function(r){ $scope.commentCache[fid] = r; });
+				.success(function(r){ 
+					$scope.commentCache[fid] = r;
+
+					// I'M SO SORRY IT HAD TO BE DONE DON'T JUDGE ME
+					setTimeout(function(){
+						var commentHeaderHeight = $("#comment-view .header").css('height');
+						var userCommentHeight = $(".user-comment").css('height');
+						var height = parseInt(commentHeaderHeight) + parseInt(userCommentHeight);
+						console.log(height);
+						$(".comments ul").css('top', height+'px');
+					}, 50)
+					
+				});
 		}
 	}
 
