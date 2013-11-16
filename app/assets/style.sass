@@ -65,7 +65,15 @@ header
 	nav.right
 		float: right
 
-#signup
+#login-signup
+	+outer-container
+	padding-top: 64px
+	h2
+		margin-left: 6px
+	.section
+		+span-columns(3)
+	#signup
+		+shift(3)
 	button
 		+button
 

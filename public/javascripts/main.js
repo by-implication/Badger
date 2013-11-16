@@ -104,16 +104,40 @@ function App($scope, $http, $location){
 				});
 		}
 	}
+	
+	$scope.zoomLevel = 6;
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		$http.get('/meta', {params: $location.search()})
 		.success(function(r){ 
 			$scope.focus = r; 
-			if(r.lat && r.lng){
-				map.setView([r.lat, r.lng], 6)
+			if(r.lat&&r.lng){
+				map.setView([r.lat, r.lng], $scope.zoomLevel);
 			}
 		});
 	});
+	
+	$scope.navUp = function(){
+		if($scope.focus.parent.id == 24 || $scope.focus.parent.id == 26 || $scope.focus.parent.id == 28){
+			$scope.zoomLevel = 7;	
+		}else{
+			if($scope.focus.lat && $scope.focus.lng){
+				$scope.zoomLevel--;	
+			}
+		}
+		// $scope.zoomLevel--;
+	}
+	
+	$scope.navDown = function(){
+		if($scope.focus.id == 24 || $scope.focus.id == 26 || $scope.focus.id == 28){
+			$scope.zoomLevel = 9;
+		}else{
+			if($scope.focus.lat && $scope.focus.lng){
+				$scope.zoomLevel++;	
+			}
+		}
+		// $scope.zoomLevel++;
+	}
 
 	$scope.cats = {
 		"academia": [
