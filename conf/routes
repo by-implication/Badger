@@ -21,3 +21,6 @@ GET			/logout		controllers.Application.logout
 # rating & commenting
 POST		/rate/:id/:stars		controllers.Application.rate(id: Int, stars: Int)
 POST		/comment/:id				controllers.Application.comment(id: Int)
+
+# script for calculating sums
+# GET			/script							controllers.Application.script

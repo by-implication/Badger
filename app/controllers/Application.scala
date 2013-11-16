@@ -160,4 +160,40 @@ object Application extends Controller with Secured {
     }
   }
 
+  private def getTotalPs(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalPs(_)).sum + leaves.map(_.ps.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  private def getTotalMooe(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalMooe(_)).sum + leaves.map(_.mooe.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  private def getTotalCo(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalCo(_)).sum + leaves.map(_.co.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  def script() = UserAction(){ user => request =>
+
+    val l = Location.findById(0).get
+    
+    play.Logger.info("ps totals:")
+    getTotalPs(l)
+    play.Logger.info("mooe totals:")
+    getTotalMooe(l)
+    play.Logger.info("co totals:")
+    getTotalCo(l)
+
+    Ok("done!")
+
+  }
+
 }
