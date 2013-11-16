@@ -60,40 +60,42 @@
 					<div id="map">
 					</div>
 					<div id="comments" ng-show="commentsVisible">
-						<div class="header">
-							<button class="close" ng-click="hideComments()">
-								<i class="fa fa-times"></i>
-							</button>
-							<h3>
-								Comments on {{focus.name}}
-							</h3>
-						</div>
-						<div class="user-rating">
-							<h4>Rate:</h4>
-							<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
-							  <span class="ratings">
-							    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
-							      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
-							    </span>
-							    <span class="apply-rating">
-							      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
-							    </span>
-							  </span>
+						<div class="content">
+							<div class="header">
+								<button class="close" ng-click="hideComments()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h3>
+									Comments on {{focus.name}}
+								</h3>
 							</div>
-							<h4>Comment:</h4>
-							<textarea></textarea>
-							<button>Submit</button>
-						</div>
-						<div ui-if="focus.comments">
-							<div ui-if="focus.comments.length">
-								<div ng-repeat="comment in focus.comments | orderBy:timestamp ">
-									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+							<div class="user-rating">
+								<h4>Rate:</h4>
+								<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+								  <span class="ratings">
+								    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+								      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
+								    </span>
+								    <span class="apply-rating">
+								      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+								    </span>
+								  </span>
 								</div>
+								<h4>Comment:</h4>
+								<textarea></textarea>
+								<button>Submit</button>
 							</div>
-							<div ui-if="!focus.comments.length">
-								<p>
-									No comments
-								</p>
+							<div><!--ui-if="focus.comments"-->
+								<ul ui-if="focus.comments.length">
+									<li ng-repeat="comment in focus.comments | orderBy:timestamp ">
+										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+									</li>
+								</ul>
+								<div ui-if="!focus.comments.length" class="empty">
+									<p>
+										No comments yet. You can be the first!
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>
