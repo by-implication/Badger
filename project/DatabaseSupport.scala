@@ -6,8 +6,8 @@ object DatabaseSupport {
   Class.forName("org.postgresql.Driver")
 
   val dbname = "budget"
-  val username = "fee"
-  val password = ""
+  val username = "postgres"
+  val password = "postgres"
 
   var _conn: java.sql.Connection = null
 
@@ -19,7 +19,7 @@ object DatabaseSupport {
   }
 
   def recreate() = {
-    val conn = DriverManager.getConnection("jdbc:postgresql", "fee", "")
+    val conn = DriverManager.getConnection("jdbc:postgresql", "postgres", "postgres")
     conn.createStatement().execute("DROP DATABASE "+dbname+"; CREATE DATABASE "+dbname)
     conn.close()
   }
