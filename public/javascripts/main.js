@@ -179,6 +179,7 @@ function App($scope, $http, $location){
 		$scope.comment.input = null;
 		$http.post('/comment/' + $scope.focus.id, {comment: comment})
 		.success(function(r){
+			console.log(r);
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,

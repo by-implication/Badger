@@ -16,7 +16,7 @@
 							Top level
 						</span>
 						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
-							{{activeFilter}}
+							{{activeFilter || 'Showing All'}}
 							<i class="fa fa-filter"></i>
 						</button>
 					</nav>
@@ -80,7 +80,7 @@
 								<a ui-if="!loggedIn" target="_self" href="@routes.Application.account">
 									Sign up / Log in to comment!
 								</a>
-								<form ui-if="loggedIn" class="user-comment" ng-submit="submitComment()">
+								<form ui-if="loggedIn" ng-submit="submitComment()">
 									<h4>Comment:</h4>
 									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
 									<button type="submit">Submit</button>

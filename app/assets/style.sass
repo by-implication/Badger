@@ -50,6 +50,7 @@ body
 
 	.monospace
 		font-family: $monospace
+		font-weight: bold
 
 	.italic
 		font-style: oblique
@@ -69,6 +70,14 @@ header
 			li
 				float: left
 				padding: 20px
+				height: 65px
+				a
+					text-decoration: none
+
+				&.current
+					background-color: teal
+					a 
+						color: white
 	nav.right
 		float: right
 
@@ -125,6 +134,7 @@ main
 			button.filter-button
 				+reset-button
 				float: right
+				text-transform: capitalize
 			a, button.filter-button
 				+transition(all 0.3s)
 				color: #ccc
@@ -135,6 +145,20 @@ main
 		.data
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			.share
+				margin-bottom: 20px
+				a
+					text-decoration: none
+					i 
+						font-size: 24px
+					&#fb:hover
+						color: #44619D
+					&#twitter:hover
+						color: #00ACEE
+					&#gplus:hover
+						color: #DC4B39
+					&.show-hide:hover
+						text-decoration: underline
 			.rating
 				margin-bottom: 10px
 			.show-hide
@@ -144,14 +168,17 @@ main
 			.moolah
 				padding: 10px
 				margin-left: -10px
-				background-color: rgba(yellow, 0.05)
-				border: 1px solid darken(yellow, 5%)
+				background-color: rgba(wheat, 0.8)
+				border: 1px solid darken(wheat, 5%)
+				color: darken(wheat, 60%)
 				border-radius: 3px
 				margin-bottom: 10px
+				.total
+					margin-bottom: 20px
 			ul
 				+reset-list
 				+fill-parent
-				margin-bottom: 40px
+				// margin-top: 40px
 				li
 					margin-bottom: 10px
 					h5
@@ -213,12 +240,14 @@ main
 				width: 256px
 			ul
 				padding: 20px
+				margin-left: -6px
 				li
 					button
 						+reset-button
 						padding: 4px 6px 4px 6px
 						border-radius: 3px
 						color: #333
+						text-transform: capitalize
 						&:hover
 							color: teal
 						&.active
