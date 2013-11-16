@@ -18,12 +18,12 @@ object Application extends Controller {
   def index = Action {
 		DB.withConnection { implicit c =>
 
-      val q: Future[ws.Response] = WS.url("http://google.com").get()
-      Async {
-        q.map { response =>
-    	    Ok(views.html.index("Async (Future), WS, and DB online."))
-        }
-      }
+      // val q: Future[ws.Response] = WS.url("http://google.com").get()
+      // Async {
+      //   q.map { response =>
+          Ok(views.html.index("Async (Future), WS, and DB online."))
+      //   }
+      // }
 
 		}
   }
