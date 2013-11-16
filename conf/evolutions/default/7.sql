@@ -1,25 +1,27 @@
 # --- !Ups
 
-CREATE TABLE gaa_na(
-  dpt_cd text,
-  dpt_dsc text,
-  agy_type text,
-  owner_cd text,
-  owner_dsc text,
-  fpap_cd text,
-  fpap_dsc text,
-  area_cd text,
-  area_dsc text,
-  ps integer,
-  mooe integer,
-  co integer,
-  net integer,
-  year integer,
-  type text
+CREATE TABLE leafs(
+  leaf_dpt_cd text,
+  leaf_dpt_dsc text,
+  leaf_agy_type text,
+  leaf_owner_cd text,
+  leaf_owner_dsc text,
+  leaf_fpap_cd text,
+  leaf_fpap_dsc text,
+  leaf_area_cd text,
+  leaf_area_dsc text,
+  leaf_ps integer,
+  leaf_mooe integer,
+  leaf_co integer,
+  leaf_net integer,
+  leaf_year integer,
+  leaf_kind text
 );;
 
-COPY gaa_na FROM '/haha-absolute-path/gaa_na.csv' DELIMITER ',' CSV ENCODING 'ISO_8859_9';
+COPY leafs FROM '/haha-absolute-path/gaa_na.csv' DELIMITER ',' CSV ENCODING 'ISO_8859_9';
+
+ALTER TABLE leafs ADD leaf_id serial PRIMARY KEY;
 
 # --- !Downs
 
-DROP TABLE IF EXISTS gaa_na;;
+DROP TABLE IF EXISTS leafs;;
