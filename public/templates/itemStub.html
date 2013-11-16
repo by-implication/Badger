@@ -1,7 +1,8 @@
-<ng-include src="'/assets/templates/rateStub.html'"></ng-include>
+<ng-include src="'/assets/templates/rateStub.html'"
+onload="item = child"></ng-include>
 
 <div>
-	{{child.description}}
+	{{child.name}}
 </div>
 <div>
 	{{child.amount}}

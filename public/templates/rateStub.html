@@ -1,13 +1,10 @@
-<div class="rating">
+<div ng-controller="Ratings" class="rating">
 	<div>
-		<i class="fa fa-star"></i>
-		<i class="fa fa-star"></i>
-		<i class="fa fa-star"></i>
-		<i class="fa fa-star"></i>
-		<i class="fa fa-star"></i>
+		<i class="fa" 
+			ng-repeat="star in stars"
+			ng-class="starClass(item, star)"></i>
 	</div>
-	<div>
-		{{child.numrates}} ratings
-		{{child.rating}}
+	<div ng-show="item.numrates">
+		{{item.numrates}} ratings
 	</div>
 </div>
