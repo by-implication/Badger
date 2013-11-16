@@ -1,5 +1,6 @@
 <div class="comment">
+	{{comment.user}} : {{comment.content}}
 	<ng-include src="'/assets/templates/rateStub.html'"
 		onload="item = comment"></ng-include>
-	{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
+	<div class="timestamp">[{{comment.timestamp}}]</div>
 </div>

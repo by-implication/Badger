@@ -43,11 +43,13 @@
 							</li>
 						</ul>
 					</div>
+					<!--
 					<div class="sort-n-filter">
 						<button>
 							<i class="fa fa-filter"></i>
 						</button>
 					</div>
+					-->
 					<ul class="children">
 						<li ng-repeat="child in focus.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
@@ -62,40 +64,43 @@
 					<div id="map">
 					</div>
 					<div id="comments" ng-show="commentsVisible">
-						<div class="header">
-							<button class="close" ng-click="toggleComments()">
-								<i class="fa fa-times"></i>
-							</button>
-							<h3>
-								Comments on {{focus.name}}
-							</h3>
-						</div>
-						<div class="user-rating">
-							<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
-							  <span class="ratings">
-							    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
-							      <i class="fa" ng-repeat="star in stars" ng-class="starClass(focus, star)"></i>
-							    </span>
-							    <span class="apply-rating">
-							      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
-							    </span>
-							  </span>
-							  <span class="numrates">
-							    ({{focus.ratings}} rating<span ui-if="focus.ratings > 1">s</span>)
-							  </span>
+						<div class="content">
+							<div class="header">
+								<button class="close" ng-click="toggleComments()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h3>
+									Comments on {{focus.name}}
+								</h3>
 							</div>
-							<textarea></textarea>
-						</div>
-						<div ui-if="currentComments()">
-							<div ui-if="currentComments().length">
-								<div ng-repeat="comment in currentComments() | orderBy:timestamp ">
-									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+							<div class="user-rating">
+								<h4>Rate:</h4>
+								<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+								  <span class="ratings">
+								    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+								      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
+								    </span>
+								    <span class="apply-rating">
+								      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+								    </span>
+								  </span>
 								</div>
+								<h4>Comment:</h4>
+								<textarea></textarea>
+								<button>Submit</button>
 							</div>
-							<div ui-if="!currentComments().length">
-								<p>
-									No comments
-								</p>
+
+							<div>
+								<ul ui-if="currentComments().length">
+									<li ng-repeat="comment in currentComments() | orderBy:timestamp ">
+										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+									</li>
+								</ul>
+								<div ui-if="!currentComments().length" class="empty">
+									<p>
+										No comments yet. You can be the first!
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>
