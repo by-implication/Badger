@@ -1,0 +1,43 @@
+@import bourbon/bourbon
+@import neat/neat
+
+$color: #0FF
+
+=reset-button
+	background: transparent
+	border-width: 0px
+	font-family: $helvetica
+	padding: 0px
+
+body
+	+reset-and-normalize
+	margin: 0px
+	font-family: $helvetica
+
+
+h1 
+	color: $color
+
+main
+	+fill-parent
+	+clearfix
+
+	#sidebar
+		+span-columns(1 of 3)
+		background-color: #eee
+		nav
+			width: 100%
+			padding: 20px
+			button
+				+reset-button
+
+		ul
+			+reset-list
+			+fill-parent
+			li
+				a
+					display: block
+					padding: 20px
+				// button
+					// +unstyled-button
+
