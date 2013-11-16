@@ -14,24 +14,39 @@ function App($scope, $http, $location){
 	$scope.nodeLink = function(node){
 		return '/app?id='
 			+ node.id
-			+ '&kind=' + node.kind
-			+ (!$location.search().comments ? '' : '&comments=true');
+			+ '&kind=' + node.kind;
 	}
 
 	$scope.parentLink = function(node){
 		return '/app?id='
 			+ node.parent.id
-			+ '&kind=loc'
-			+ (!$location.search().comments ? '' : '&comments=true');
+			+ '&kind=loc';
 	}
 
-	if(!$location.search().id || !isNaN($location.search().id)){
+	if(!$location.search().id || isNaN($location.search().id)){
 		$location.search({id: 0, kind: 'loc'});
 	}
 
-	$scope.commentsVisible = false;
-	$scope.showComments = function(){ $scope.commentsVisible = true; }
-	$scope.hideComments = function(){ $scope.commentsVisible = false; }
+	$scope.commentsShowHide = function(){
+		return $scope.commentsVisible ? 'Hide' : 'Show';
+	}
+
+	$scope.currentComments = function(){
+		return $scope.commentCache[$scope.focus.id];
+	}
+
+	$scope.commentCache = [];
+	$scope.toggleComments = function(){
+		$scope.commentsVisible = !$scope.commentsVisible;
+		var fid = $scope.focus.id;
+		if($scope.commentsVisible &&
+				$scope.focus.kind == 'leaf' &&
+				!$scope.commentCache[fid]){
+			$scope.commentCache[fid] = [{content: 'Loading...'}];
+			$http.get('/comments?id=' + fid)
+			.success(function(r){ $scope.commentCache[fid] = r; });
+		}
+	}
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		$http.get('/meta', {params: $location.search()})

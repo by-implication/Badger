@@ -40,7 +40,7 @@ object Application extends Controller {
     Ok(views.html.account("Account"))
   }
 
-  def meta(kind: String, id: Int, comments: Boolean) = Action {
+  def meta(kind: String, id: Int) = Action {
     kind match {
       case "leaf" | "loc" => {
         (kind match {
@@ -50,6 +50,10 @@ object Application extends Controller {
       }
       case _ => BadRequest("invalid type")
     }
+  }
+
+  def comments(id: Int) = Action {
+    Ok(Json.toJson(Comment.getForLeaf(id).map(_.toJson)))
   }
   
 }
