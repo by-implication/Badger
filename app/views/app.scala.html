@@ -48,16 +48,34 @@
 					<div id="map">
 					</div>
 					<div id="comments">
-						<h1>
-							<a ng-href="{{toggleCommentsLink()}}">
-								{{commentState()}} comments
+						<div class="header">
+							<a class="close" ng-href="{{hideCommentsLink()}}">
+								<i class="fa fa-remove"></i>
+								close
 							</a>
-						</h1>
+							<h3>
+								Comments on {{focus.name}}
+							</h3>
+						</div>
+						<div ng-controller="Ratings" class="rating" ng-class="{rated: focus.userrating}">
+						  <span class="ratings">
+						    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
+						      <i class="fa" ng-repeat="star in stars" ng-class="starClass(focus, star)"></i>
+						    </span>
+						    <span class="apply-rating">
+						      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(focus, star)"></i>
+						    </span>
+						  </span>
+						  <span class="numrates">
+						    ({{focus.ratings}} rating<span ui-if="focus.ratings > 1">s</span>)
+						  </span>
+						</div>
+						<textarea></textarea>
 						<div ui-if="focus.comments">
 							<div ui-if="focus.comments.length">
-								<p ng-repeat="comment in focus.comments | orderBy:timestamp ">
+								<div ng-repeat="comment in focus.comments | orderBy:timestamp ">
 									{{comment.user}} : {{comment.content}} [{{comment.timestamp}}]
-								</p>
+								</div>
 							</div>
 							<div ui-if="!focus.comments.length">
 								<p>

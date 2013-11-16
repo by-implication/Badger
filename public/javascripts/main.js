@@ -24,6 +24,10 @@ function App($scope, $http, $location){
 		return '/app?id=' + $scope.focus.id + ($location.search().comments ? '' : '&comments=true');
 	}
 
+	$scope.hideCommentsLink = function(){
+		return '/app?id=' + $scope.focus.id;
+	}
+
 	$scope.commentState = function(){
 		return $location.search().comments ? 'Hide' : 'Show';
 	}
@@ -33,23 +37,38 @@ function App($scope, $http, $location){
 	$scope.focus = {
 		"name": "Pepe Bawagan",
 		"rating": 3.5,
-		"numrates": 1000,
+		"ratings": 1000,
 		"amount": "huge sum",
 		"parent": "pepe's dad",
+		"userrating": null, //this is supposed to be your rating. this prolly doesn't belong here.
 		"children": [
 			{
 				"name": "Daniel Fordan",
 				"amount": 20000000,
 				"date": "Jan 12, 2013",
 				"rating": 3.5,
-				"numrates": 1000
+				"ratings": 1000
 			},
 			{
 				"name": "Philip Cheang",
 				"amount": 20000000,
 				"date": "Jan 12, 2013",
 				"rating": 3.5,
-				"numrates": 1000
+				"ratings": 1000
+			}
+		],
+		"comments": [
+			{
+				"user": "Coffeeman",
+				"rating": 3.5,
+				"content": "lol u suk",
+				"timestamp": "when?"
+			},
+			{
+				"user": "Coffeeman",
+				"rating": 2.5,
+				"content": null,
+				"timestamp": "dunno"
 			}
 		]
 	}
@@ -142,8 +161,19 @@ function App($scope, $http, $location){
 
 function Ratings($scope, $http){
 	$scope.stars = [1,2,3,4,5];
+
+	$scope.roundFix = function(n){
+	  var decimal_places = 2;
+	  var pow = Math.pow(10, decimal_places);
+	  return (Math.round(n*pow)/pow).toFixed(decimal_places);
+	}
+	$scope.round = function(num, deg){
+	  var coeff = Math.pow(10, deg);
+	  return Math.round(num * coeff)/coeff;
+	}
+
 	$scope.starClass = function(item, star){
-	  var rating = item.rating && Math.round(item.rating * 2, 0) / 2;
+	  var rating = item.rating && $scope.round(item.rating * 2, 0) / 2;
 	  if(rating >= star){
 	    return "fa-star";
 	  } else if(rating >= star - 0.5){
@@ -151,5 +181,9 @@ function Ratings($scope, $http){
 	  } else {
 	    return "fa-star-o";
 	  }
+	}
+	$scope.rateProject = function(item, star) {
+		console.log("lol");
+		$scope.item.userrating = star
 	}
 }
