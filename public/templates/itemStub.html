@@ -1,0 +1,11 @@
+<ng-include src="'/assets/templates/rateStub.html'"
+onload="item = child"></ng-include>
+
+<a ng-href="{{nodeLink(child.id)}}">
+	<div>
+		{{child.name}}
+	</div>
+	<div>
+		{{child.amount}}
+	</div>
+</a>
