@@ -100,7 +100,6 @@ main
 			+box-sizing(border-box)
 			background-color: white
 			margin: 20px
-			padding: 20px
 			overflow-x: hidden
 			overflow-y: scroll
 			position: absolute
@@ -116,25 +115,31 @@ main
 				float: right
 			.header
 				margin-bottom: 20px
-			.rating
-				&.rated i
-					color: #EB0
-				.apply-rating
-					display: none
-					i:hover
-						cursor: pointer
-						~ i
-							&:before
-								content: "\f006"
-				.ratings:hover
+				padding: 20px
+			.user-rating
+				padding: 20px
+				.rating
+					&.rated i
+						color: #EB0
 					.apply-rating
-						display: inline
-					.rating
 						display: none
-			textarea
-				width: 100%
-				min-height: 72px
-				max-height: 220px
-				font-family: $helvetica
-				border-radius: 3px
-				border: 1px solid rgba(0,0,0,0.2)
+						i:hover
+							cursor: pointer
+							~ i
+								&:before
+									content: "\f006"
+					.ratings:hover
+						.apply-rating
+							display: inline
+						.rating
+							display: none
+				textarea
+					width: 100%
+					min-height: 72px
+					max-height: 220px
+					font-family: $helvetica
+					border-radius: 3px
+					border: 1px solid rgba(0,0,0,0.2)
+
+			.comment
+				padding: 20px
