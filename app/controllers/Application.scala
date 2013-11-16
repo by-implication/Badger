@@ -34,7 +34,7 @@ object Application extends Controller with Secured {
     Ok(views.html.app(user))
   }
 
-  def meta(kind: String, id: Int) = UserAction(){ user => request =>
+  def meta(kind: String, id: Int) = UserAction(){ implicit user => request =>
     kind match {
       case "leaf" | "loc" => {
         (kind match {
@@ -50,17 +50,27 @@ object Application extends Controller with Secured {
     Ok(Json.toJson(Comment.getForLeaf(id).map(_.toJson)))
   }
 
-  def comment(id: Int) = UserAction(){ user => request =>
+  //////////////// rating & commenting /////////////////
+
+  def rate(id: Int, stars: Int) = UserAction(){ user => request =>
     if(!user.isAnonymous){
-      Ok("comment")
+      Leaf.findById(id).map { l =>
+        if(user.rate(l, stars)){
+          Ok("successfully rated")
+        } else {
+          InternalServerError("failed to rate")
+        }
+      }.getOrElse(BadRequest("no such leaf"))
     } else {
       Unauthorized("unauthorized")
     }
   }
 
-  def rate(id: Int) = UserAction(){ user => request =>
+  def comment(id: Int) = UserAction(){ user => request =>
     if(!user.isAnonymous){
-      Ok("rate")
+      Leaf.findById(id).map { l =>
+        Ok("comment")
+      }.getOrElse(BadRequest("no such leaf"))
     } else {
       Unauthorized("unauthorized")
     }

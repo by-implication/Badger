@@ -50,7 +50,10 @@
 									Comments on {{focus.fpapDsc}}
 								</h3>
 							</div>
-							<div class="user-comment">
+							<a target="_self" ui-if="!loggedIn" href="@routes.Application.account">
+								Sign up / Log in to comment!
+							</a>
+							<div ui-if="loggedIn" class="user-comment">
 								<h4>Comment:</h4>
 								<textarea placeholder="Please be civil!"></textarea>
 								<button>Submit</button>

@@ -14,7 +14,10 @@
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
 	</head>
-	<body ng-controller="Main" ng-init="curNav = '@curNav'">
+	<body ng-controller="Main" ng-init="
+		curNav = '@curNav';
+		loggedIn = @(!currentUser.isAnonymous);
+	">
 		<header>
 			<nav class="left">
 				<ul>
@@ -33,19 +36,18 @@
 			<nav class="right">
 				<ul>
 					<li ng-class="{current: curNav == 'signup'}">
-						@if(currentUser.isAnonymous){
-							<a href="@routes.Application.account" target="_self">
-								sign up / log in
-							</a>
-						} else {
-							<a href="@routes.Application.logout" target="_self">
-								logout
-							</a>
-						}
+						<a ui-if="!loggedIn" href="@routes.Application.account" target="_self">
+							sign up / log in
+						</a>
+						<a ui-if="loggedIn" href="@routes.Application.logout" target="_self">
+							logout
+						</a>
 					</li>
 				</ul>
 			</nav>
 		</header>
 		@content
+		<script type="text/javascript" src="//use.typekit.net/avf0cxr.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</body>
 </html>
