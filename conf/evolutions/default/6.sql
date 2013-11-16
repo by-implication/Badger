@@ -4,7 +4,7 @@ CREATE TABLE comments (
 	comment_id serial PRIMARY KEY,
   user_id int NOT NULL REFERENCES users,
   leaf_id int NOT NULL REFERENCES leafs,
-  comment_content text,
+  comment_content text NOT NULL,
   comment_timestamp timestamp NOT NULL DEFAULT NOW()
 );;
 

@@ -66,10 +66,17 @@ object Application extends Controller with Secured {
     }
   }
 
-  def comment(id: Int) = UserAction(){ user => request =>
+  val commentForm = Form("comment" -> nonEmptyText)
+
+  def comment(id: Int) = UserAction(){ user => implicit request =>
     if(!user.isAnonymous){
-      Leaf.findById(id).map { l =>
-        Ok("comment")
+      Leaf.findById(id).map { leaf =>
+        commentForm.bindFromRequest.fold(
+          errors => BadRequest("grabe lalagyan mo na nga lang ng kahit ano hindi mo pa nagawa"),
+          comment => Comment(NA, user.id, leaf.id, comment).create().map(
+            c => Ok(Json.toJson(c.timestamp))
+          ).getOrElse(InternalServerError("failed to save comment"))
+        )
       }.getOrElse(BadRequest("no such leaf"))
     } else {
       Unauthorized("unauthorized")
@@ -158,6 +165,50 @@ object Application extends Controller with Secured {
     } else {
       Redirect(routes.Application.landing).withNewSession
     }
+  }
+
+  private def getTotalPs(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalPs(_)).sum + leaves.map(_.ps.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  private def getTotalMooe(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalMooe(_)).sum + leaves.map(_.mooe.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  private def getTotalCo(location: Location): Int = {
+    val (locs, leaves) = location.children
+    val r = locs.map(getTotalCo(_)).sum + leaves.map(_.co.getOrElse(0)).sum
+    play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
+    r
+  }
+
+  def calculateTotals = UserAction(){ user => request =>
+
+    val l = Location.findById(0).get
+    
+    play.Logger.info("ps totals:")
+    getTotalPs(l)
+    play.Logger.info("mooe totals:")
+    getTotalMooe(l)
+    play.Logger.info("co totals:")
+    getTotalCo(l)
+
+    Ok("done!")
+
+  }
+
+  def sampleData = UserAction(){ user => request =>
+
+    // todo: generate sample ratings, maybe comments
+
+    Redirect(routes.Application.app)
+
   }
 
 }

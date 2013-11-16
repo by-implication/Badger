@@ -19,7 +19,7 @@ object Location extends LocationGen {
 // GENERATED case class start
 case class Location(
   id: Pk[Int] = NA,
-  name: Option[String] = None,
+  name: String = "",
   locationParentId: Option[Int] = None,
   lat: BigDecimal = 0,
   lng: BigDecimal = 0,
@@ -54,12 +54,16 @@ case class Location(
     val leaves = SQL("""
       SELECT * from leafs
       WHERE leaf_area_dsc = {areaDsc}
-      AND leaf_ps > 0
-      AND leaf_mooe > 0
-      AND leaf_co > 0
+      AND (
+        leaf_ps > 0
+        OR leaf_mooe > 0
+        OR leaf_co > 0
+      )
     """).on('areaDsc -> name).list(Leaf.simple)
 
     (locs, leaves)
+
+    
 
   }
 
@@ -68,6 +72,9 @@ case class Location(
       "id" -> id.get,
       "kind" -> "loc",
       "name" -> name,
+      "ps" -> ps,
+      "mooe" -> mooe,
+      "co" -> co,
       "lat" -> lat,
       "lng" -> lng,
       "parent" -> parent.map(p => Json.obj(
@@ -90,7 +97,7 @@ case class Location(
 trait LocationGen extends EntityCompanion[Location] {
   val simple = {
     get[Pk[Int]]("location_id") ~
-    get[Option[String]]("location_name") ~
+    get[String]("location_name") ~
     get[Option[Int]]("location_parent_id") ~
     get[java.math.BigDecimal]("location_lat") ~
     get[java.math.BigDecimal]("location_lng") ~

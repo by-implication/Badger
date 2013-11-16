@@ -45,7 +45,12 @@ var app = angular.module('budget', ['ui'])
 
 app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
-function Main($scope){}
+function Main($scope){
+
+	$scope.timeago = $.timeago;
+	$scope.getDate = function(time){ return new Date(time).toString(); }
+
+}
 
 function App($scope, $http, $location){
 
@@ -102,7 +107,7 @@ function App($scope, $http, $location){
 						var commentHeaderHeight = $("#comment-view .header").css('height');
 						var userCommentHeight = $(".user-comment").css('height');
 						var height = parseInt(commentHeaderHeight) + parseInt(userCommentHeight);
-						console.log(height);
+						// console.log(height);
 						$(".comments ul").css('top', height+'px');
 					}, 50)
 					
@@ -167,8 +172,20 @@ function App($scope, $http, $location){
 		// $scope.zoomLevel++;
 	}
 
-
-
+	$scope.comment = {input: null};
+	$scope.submitComment = function(){
+		var curFocus = $scope.focus.id;
+		var comment = $scope.comment.input;
+		$scope.comment.input = null;
+		$http.post('/comment/' + $scope.focus.id, {comment: comment})
+		.success(function(r){
+			$scope.commentCache[curFocus].push({
+				user: $scope.loggedIn,
+				content: comment,
+				timestamp: r
+			});
+		});
+	}
 	$scope.cats = {
 		"academia": [
 			"Department of Science and Technology",

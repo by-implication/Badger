@@ -16,5 +16,5 @@ dist
 .sass-cache
 sass
 sass.bat
-
 /conf/evolutions/default/4.sql
+/conf/evolutions/default/.hash
