@@ -121,18 +121,16 @@ function App($scope, $http, $location){
 		$scope.activeFilter = null;
 	}
 
-	$scope.setFilter = function(filter){
-		$scope.activeFilter = filter;
+	$scope.toggleFilter = function(filter){
+		if($scope.activeFilter == filter){
+			$scope.activeFilter = null;
+		} else {
+			$scope.activeFilter = filter;
+		}
 	}
 	$scope.appearsInActiveFilter = function(item){
-		// group.indexOf(thing) >= 0
 		if(!$scope.activeFilter) return true;
-
 		return $scope.cats[$scope.activeFilter].indexOf(item.dptDsc) >= 0
-		// } else {
-		// 	return false;
-		// }
-		// return true;
 	}
 	
 	$scope.zoomLevel = 6;

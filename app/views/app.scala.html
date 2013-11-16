@@ -56,7 +56,10 @@
 							</div>
 							<ul>
 								<li ng-repeat="(catName, cat) in cats">
-									<button ng-click="setFilter(catName)" ng-class="{active:activeFilter == catName}">{{catName}}</button>
+									<button ng-click="toggleFilter(catName)" ng-class="{active:activeFilter == catName}">
+										{{catName}}
+										<i class="fa fa-times" ng-show="activeFilter == catName"></i>
+									</button>
 								</li>
 							</ul>
 						</div>
