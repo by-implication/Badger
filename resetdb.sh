@@ -5,5 +5,5 @@ else
 	DATABASE=$1
 fi
 echo $DATABASE
-psql -Upostgres -c"drop database $DATABASE"
-psql -Upostgres -c"create database $DATABASE"
+/Applications/Postgres.app/Contents/MacOS/bin/psql -Ufee -c"drop database $DATABASE"
+/Applications/Postgres.app/Contents/MacOS/bin/psql -Ufee -c"create database $DATABASE"
