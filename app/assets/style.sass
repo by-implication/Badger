@@ -150,13 +150,16 @@ main
 					textarea
 						+reset-textarea
 						width: 100%
+						max-width: 100%
 						min-height: 72px
 						max-height: 220px
-						padding: 10px
+						padding: 6px
+						margin: 0px -6px 10px -6px
 						font-family: $helvetica
 						border-radius: 3px
 						border: 1px solid rgba(0,0,0,0.2)
-						margin-bottom: 10px
+						&+button
+							margin-left: -6px
 				.empty
 					padding: 20px
 
