@@ -2,6 +2,27 @@
 
 @main("tanod") {
 
+	<a href="@routes.Application.landing" target="_self">Landing</a>
 	@message
+	<a href="@routes.Application.account" target="_self">Account</a>
+
+	<div ng-controller="App">
+
+		<a ng-href="{{nodeLink(state.parent)}}">Parent</a>
+
+		<a ng-repeat="child in children" ng-href="{{nodeLink(child)}}">
+			{{child}}
+		</a>
+
+		<a ng-href="{{toggleCommentsLink()}}">Comments are currently {{commentState()}}</a>
+		<div ui-if="state.comments.length">
+			<p ng-repeat="comment in state.comments">
+
+			</p>
+		</div>
+
+		{{state}}
+
+	</div>
     
 }

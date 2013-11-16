@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 
-<html ng-app>
+<html ng-app="budget">
     <head>
         <title>@title</title>
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -10,9 +10,10 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("style.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
     </head>
-    <body ng-controller="Main">
+    <body>
         @content
     </body>
 </html>

@@ -76,9 +76,9 @@ object User extends UserGen {
 // GENERATED case class start
 case class User(
   id: Pk[Int] = NA,
-  handle: Option[String] = None,
-  email: Option[String] = None,
-  password: Option[String] = None
+  handle: String = "",
+  email: String = "",
+  password: String = ""
 ) extends UserCCGen with Entity[User]
 // GENERATED case class end
 
@@ -86,9 +86,9 @@ case class User(
 trait UserGen extends EntityCompanion[User] {
   val simple = {
     get[Pk[Int]]("user_id") ~
-    get[Option[String]]("user_handle") ~
-    get[Option[String]]("user_email") ~
-    get[Option[String]]("user_password") map {
+    get[String]("user_handle") ~
+    get[String]("user_email") ~
+    get[String]("user_password") map {
       case id~handle~email~password =>
         User(id, handle, email, password)
     }
