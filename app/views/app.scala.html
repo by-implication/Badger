@@ -8,7 +8,7 @@
 			<main>
 				<div id="sidebar">
 					<nav>
-						<a ui-if="focus.parent" ng-href="{{parentLink(focus)}}">
+						<a ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
 							<i class="fa fa-chevron-left"></i>
 							{{focus.parent.name}}
 						</a>
