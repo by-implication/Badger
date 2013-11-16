@@ -20,7 +20,9 @@ object Location extends LocationGen {
 case class Location(
   id: Pk[Int] = NA,
   name: Option[String] = None,
-  parent: Option[Int] = None
+  parent: Option[Int] = None,
+  lat: BigDecimal = 0,
+  lng: BigDecimal = 0
 ) extends LocationCCGen with Entity[Location]
 // GENERATED case class end
 {
@@ -70,9 +72,11 @@ trait LocationGen extends EntityCompanion[Location] {
   val simple = {
     get[Pk[Int]]("location_id") ~
     get[Option[String]]("location_name") ~
-    get[Option[Int]]("location_parent") map {
-      case id~name~parent =>
-        Location(id, name, parent)
+    get[Option[Int]]("location_parent") ~
+    get[java.math.BigDecimal]("location_lat") ~
+    get[java.math.BigDecimal]("location_lng") map {
+      case id~name~parent~lat~lng =>
+        Location(id, name, parent, lat, lng)
     }
   }
 
@@ -99,16 +103,22 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent
+            location_parent,
+            location_lat,
+            location_lng
           ) VALUES (
             DEFAULT,
             {name},
-            {parent}
+            {parent},
+            {lat},
+            {lng}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent
+          'parent -> o.parent,
+          'lat -> o.lat.bigDecimal,
+          'lng -> o.lng.bigDecimal
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
       }
@@ -117,16 +127,22 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent
+            location_parent,
+            location_lat,
+            location_lng
           ) VALUES (
             {id},
             {name},
-            {parent}
+            {parent},
+            {lat},
+            {lng}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'parent -> o.parent
+          'parent -> o.parent,
+          'lat -> o.lat.bigDecimal,
+          'lng -> o.lng.bigDecimal
         ).executeInsert().flatMap(x => Some(o))
       }
     }
@@ -136,12 +152,16 @@ trait LocationGen extends EntityCompanion[Location] {
     SQL("""
       update locations set
         location_name={name},
-        location_parent={parent}
+        location_parent={parent},
+        location_lat={lat},
+        location_lng={lng}
       where location_id={id}
     """).on(
       'id -> o.id,
       'name -> o.name,
-      'parent -> o.parent
+      'parent -> o.parent,
+      'lat -> o.lat.bigDecimal,
+      'lng -> o.lng.bigDecimal
     ).executeUpdate() > 0
   }
 
