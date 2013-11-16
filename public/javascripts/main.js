@@ -33,6 +33,7 @@ function App($scope, $http, $location){
 	$scope.focus = {
 		"name": "Pepe Bawagan",
 		"rating": 3.5,
+		"numrates": 1000,
 		"amount": "huge sum",
 		"parent": "pepe's dad",
 		"children": [
