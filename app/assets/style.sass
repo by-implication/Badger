@@ -23,9 +23,13 @@ body
 	font-family: $helvetica
 	color: #333
 
+	a
+		color: #333
+
 	h2
 		font-size: 36px
 		margin-bottom: 10px
+		font-weight: 100
 
 	h3
 		font-size: 24px
@@ -46,7 +50,7 @@ main
 
 	.rating-group
 		margin-bottom: 10px
-		&.rated i
+		&.ratable i
 			color: #EB0
 		.apply-rating
 			display: none
@@ -55,7 +59,7 @@ main
 				~ i
 					&:before
 						content: "\f006"
-		.rating.ratable:hover
+		&.ratable .rating:hover
 			.apply-rating
 				display: inline
 			.current-rating
@@ -64,7 +68,7 @@ main
 	#sidebar
 		// +span-columns(1 of 3, "block-collapse")
 		width: 33%
-		background-color: #eee
+		background-color: white
 		position: absolute
 		bottom: 0px
 		top: 0px
@@ -103,6 +107,7 @@ main
 			li
 				+transition(all 0.4s)
 				padding: 20px
+				border-bottom: 1px solid rgba(black, 0.1)
 				&:hover, &.active
 					background-color: white
 				a
