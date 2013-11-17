@@ -36,7 +36,7 @@
 						<li ng-repeat="child in focus.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
-						<li ng-repeat="child in focus.children.leaves | filter:appearsInActiveFilter"
+						<li ng-repeat="child in focus.children.leaves | filter:appearsInActiveFilter | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 						<li ui-if="lastRetrieval >= 30">
@@ -60,9 +60,36 @@
 							</div>
 							<ul>
 								<li ng-repeat="(catName, cat) in cats">
-									<button ng-click="toggleFilter(catName)" ng-class="{active:activeFilter == catName}">
+									<button ng-click="toggleFilter(catName)" 
+										ng-class="{active:activeFilter == catName}">
 										{{catName}}
 										<i class="fa fa-times" ng-show="activeFilter == catName"></i>
+									</button>
+								</li>
+							</ul>
+							<div class="header">
+								<h4>Sorts</h4>
+							</div>
+							<ul>
+								<li>
+									<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
+										ng-class="{active: activeOrder == 'Amount'}">
+										Amount
+										<i class="fa fa-times" ng-show="activeOrder == 'Amount'"></i>
+									</button>
+								</li>
+								<li>
+									<button ng-click="ordering = 'year'; activeOrder = 'Year'"
+										ng-class="{active: activeOrder == 'Year'}">
+										Year
+										<i class="fa fa-times" ng-show="activeOrder == 'Year'"></i>
+									</button>
+								</li>
+								<li>
+									<button ng-click="ordering = 'rating'; activeOrder = 'Rating'"
+										ng-class="{active: activeOrder == 'Rating'}">
+										Rating
+										<i class="fa fa-times" ng-show="activeOrder == 'Rating'"></i>
 									</button>
 								</li>
 							</ul>
