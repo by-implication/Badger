@@ -147,17 +147,55 @@ function App($scope, $http, $location){
 		var searchParams = $location.search();
 		$http.get('/meta', {params: searchParams})
 		.success(function(r){
+
+			$scope.activeFeatures.forEach(function(f){ map.removeLayer(f); });
 			
 			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
 				$scope.focus.children.leaves = $scope.focus.children.leaves.concat(r.children.leaves);
 			} else {
+
 				$scope.focus = r;
+
 				if(r.userClick){
 					map.setView([r.userClick.lat, r.userClick.lng], 10);
 				} else if(r.lat && r.lng){
 					map.setView([r.lat, r.lng], $scope.zoomLevel);
 				}
+
+				// region highlighting
+				
+				function recursiveHighlight(region){
+					console.log(region);
+					var i = $scope.regions.indexOf(region);
+					if(i != -1){
+						$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+					} else {
+						var a = $scope.regionSets[region];
+						if(a){
+							for(var i in a){
+								recursiveHighlight(a[i]);
+							}
+						}
+					}
+				}
+
+				if($scope.focus.parent){
+					var i = $scope.regions.indexOf($scope.focus.parent.name);
+					if(i != -1){
+						$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+					}
+				}
+
+				var i = $scope.regions.indexOf($scope.focus.name);
+				if(i != -1){
+					$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+				}
+
+				if($scope.regionSets[$scope.focus.name]){
+					recursiveHighlight($scope.focus.name);
+				}
+
 			}
 
 			$scope.click.deactivate();
@@ -368,4 +406,37 @@ function App($scope, $http, $location){
 		return item.total;
 	}
 	
+	$scope.regions = [
+		'Autonomous Region in Muslim Mindanao',
+		'Region V',
+		'Region IV-A',
+		'Region II',
+		'Region XIII',
+		'Region III',
+		'Region VII',
+		'Cordillera Administrative Region',
+		'Region XI',
+		'Region VIII',
+		'Region I',
+		'Region IV-B',
+		'Metro Manila',
+		'Region X',
+		'Region XII',
+		'Region VI',
+		'Region IX'
+	];
+
+	$scope.regionSets = {
+		'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
+		'Visayas': ['Region VI', 'Region VII', 'Region VIII'],
+		'Mindanao': ['Region X', 'Region IX', 'Region XII', 'Region XI', 'Region XIII', 'Autonomous Region in Muslim Mindanao'],
+		'Local': ['Nationwide', 'CO'],
+		'Nationwide': ['Mindanao', 'Luzon', 'Visayas'],
+		'Region IV': ['Region IV-A', 'Region IV-B']
+	}
+
+	$scope.activeFeatures = [];
+	$http.get('/assets/javascripts/ph-regions.json')
+	.success(function(r){ $scope.features = r.features; });
+
 }
