@@ -56,7 +56,10 @@ function App($scope, $http, $location){
 		id: 0,
 		kind: 'loc',
 		parent: null,
-		children: []
+		children: {
+			locs: [],
+			leaves: []
+		}
 	}
 
 	$scope.nodeLink = function(node){
@@ -139,13 +142,19 @@ function App($scope, $http, $location){
 	$scope.zoomLevel = 6;
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
-		$http.get('/meta', {params: $location.search()})
-		.success(function(r){ 
-			$scope.focus = r;
-			if(r.userClick){
-				map.setView([r.userClick.lat, r.userClick.lng], 10);
-			} else if(r.lat && r.lng){
-				map.setView([r.lat, r.lng], $scope.zoomLevel);
+		var searchParams = $location.search();
+		$http.get('/meta', {params: searchParams})
+		.success(function(r){
+			$scope.lastRetrieval = r.children.leaves.length;
+			if(searchParams.offset){
+				$scope.focus.children.leaves = $scope.focus.children.leaves.concat(r.children.leaves);
+			} else {
+				$scope.focus = r;
+				if(r.userClick){
+					map.setView([r.userClick.lat, r.userClick.lng], 10);
+				} else if(r.lat && r.lng){
+					map.setView([r.lat, r.lng], $scope.zoomLevel);
+				}
 			}
 		});
 	});
@@ -313,6 +322,24 @@ function App($scope, $http, $location){
 			"Department of Tourism",
 			"International Commitments Fund"
 		]
+	}
+
+	$scope.lastRetrieval = 0;
+	$scope.showMoreLink = function(){
+		var params = $location.search();
+		var offset = parseInt(params.offset);
+		var q = [];
+		var hasOffset = false;
+		for(var i in params){
+			if(i == 'offset'){
+				q.push('offset=' + (offset + 30));
+				hasOffset = true;
+			} else {
+				q.push(i + "=" + params[i]);
+			}
+		}
+		if(!hasOffset) q.push('offset=30');
+		return '/app?' + q.join('&');
 	}
 	
 }

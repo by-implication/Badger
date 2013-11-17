@@ -9,7 +9,7 @@ GET     /					controllers.Application.landing()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /app			controllers.Application.app()
-GET			/meta			controllers.Application.meta(kind: String, id: Int)
+GET			/meta			controllers.Application.meta(kind: String, id: Int, offset: Int ?= 0)
 GET			/comments	controllers.Application.comments(id: Int)
 
 # login & signup
