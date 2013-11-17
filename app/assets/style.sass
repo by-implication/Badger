@@ -161,6 +161,14 @@ main
 			border-bottom: 1px solid rgba(black, 0.05)
 			.share
 				margin-bottom: 20px
+				button
+					+reset-button
+					&#point
+						float: right
+						margin-top: -4px
+						margin-left: 6px
+					&:hover, &.active
+						color: orange
 				a
 					text-decoration: none
 					i 
@@ -171,14 +179,17 @@ main
 						color: #00ACEE
 					&#gplus:hover
 						color: #DC4B39
-					&.show-hide:hover
-						text-decoration: underline
+					&.show-hide
+						display: block
+						margin-bottom: 20px
+						float: right
+						&:hover, &.active
+							color: teal
+							text-decoration: underline
+						
 			.rating
 				margin-bottom: 10px
-			.show-hide
-				display: block
-				margin-bottom: 20px
-				float: right
+			
 			.moolah
 				padding: 10px
 				margin-left: -10px
@@ -250,7 +261,7 @@ main
 				padding-bottom: 0px
 			.content
 				width: 256px
-				
+
 				ul
 					+reset-list
 					padding: 20px
