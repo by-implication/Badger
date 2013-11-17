@@ -3,6 +3,7 @@
 @import font-awesome/font-awesome
 
 $color: #0FF
+$accent: teal
 $font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
 
 =reset-button
@@ -55,6 +56,11 @@ body
 	.italic
 		font-style: oblique
 
+	.numeric
+		text-align: right
+	.de-em
+		font-size: 14px
+		color: #aaa
 
 h1 
 	// color: $color
@@ -223,21 +229,25 @@ main
 			width: 100%
 			height: 100%
 
-		#filter-view
+		.panel
 			.content
 				+box-sizing(border-box)
 				+position(absolute, 0px 0px 0px 0px)
 				border-left: 1px solid rgba(black, 0.1)
 				z-index: 1001
-				background-color: white
-				width: 256px
+				background-color: $accent
 				overflow-x: hidden
 				overflow-y: scroll
-				.header
-					padding: 20px
 				.close
 					+reset-button
 					float: right
+				.header
+					padding: 20px
+
+
+		#filter-view
+			.content
+				width: 256px
 				ul
 					+reset-list
 					padding: 20px
@@ -250,26 +260,14 @@ main
 							color: #333
 							text-transform: capitalize
 							&:hover
-								color: teal
+								color: white
 							&.active
 								background-color: #333
 								color: white
 
 		#comment-view
 			.content
-				+box-sizing(border-box)
-				+position(absolute, 0px 0px 0px 0px)
-				border-left: 1px solid rgba(black, 0.1)
-				z-index: 1001
-				background-color: white
 				width: 384px
-				overflow-x: hidden
-				overflow-y: scroll
-				.header
-					padding: 20px
-				.close
-					+reset-button
-					float: right
 				ul
 					+reset-list
 			.comments
@@ -294,7 +292,8 @@ main
 					margin: 0px -6px 10px -6px
 					font-family: $font
 					border-radius: 3px
-					border: 1px solid rgba(0,0,0,0.2)
+					border-width: 0px
+					box-shadow: 0px 0px 0px 1px rgba(black,0.1)
 					&+button
 						margin-left: -6px
 			.empty
@@ -303,6 +302,7 @@ main
 			.comment
 				padding: 20px
 				border-bottom: 1px solid rgba(0,0,0,0.05)
+				background-color: rgba(white, 0.2)
 				.user
 					color: rgba(black, 0.5)
 				.timestamp

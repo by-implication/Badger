@@ -39,13 +39,16 @@
 						<li ng-repeat="child in focus.children.leaves | filter:appearsInActiveFilter"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
+						<li ui-if="lastRetrieval >= 30">
+							<a ng-href="{{showMoreLink()}}">Show more</a>
+						</li>
 					</ul>
 				</div>
 
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="filter-view" class="modal" ng-show="filtersVisible">
+					<div id="filter-view" class="panel" ng-show="filtersVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleFilters()">
@@ -65,7 +68,7 @@
 							</ul>
 						</div>
 					</div>
-					<div id="comment-view" class="modal" ng-show="commentsVisible">
+					<div id="comment-view" class="panel" ng-show="commentsVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleComments()">
