@@ -8,17 +8,17 @@
 			<main>
 				<div id="sidebar">
 					<nav>
-						<a ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
+						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
+							{{activeFilter || 'Showing All'}}
+							<i class="fa fa-filter"></i>
+						</button>
+						<a class="back" ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
 							<i class="fa fa-chevron-left"></i>
 							{{focus.parent.name}}
 						</a>
 						<span ui-if="!focus.parent">
 							Top level
 						</span>
-						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
-							{{activeFilter || 'Showing All'}}
-							<i class="fa fa-filter"></i>
-						</button>
 					</nav>
 
 					<div ui-if="focus.kind == 'loc'">
@@ -48,15 +48,15 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<div id="filter-view" class="modal" ng-show="filtersVisible">
+					<div id="filter-view" class="panel" ng-show="filtersVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleFilters()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h3>
+								<h4>
 									Filters
-								</h3>
+								</h4>
 							</div>
 							<ul>
 								<li ng-repeat="(catName, cat) in cats">
@@ -68,15 +68,15 @@
 							</ul>
 						</div>
 					</div>
-					<div id="comment-view" class="modal" ng-show="commentsVisible">
+					<div id="comment-view" class="panel" ng-show="commentsVisible">
 						<div class="content">
 							<div class="header">
 								<button class="close" ng-click="toggleComments()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h3>
+								<h4>
 									Comments on {{focus.fpapDsc}}
-								</h3>
+								</h4>
 							</div>
 
 							<div class="user-comment">
@@ -84,7 +84,6 @@
 									Sign up / Log in to comment!
 								</a>
 								<form ui-if="loggedIn" ng-submit="submitComment()">
-									<h4>Comment:</h4>
 									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
 									<button type="submit">Submit</button>
 								</form>

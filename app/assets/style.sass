@@ -3,6 +3,7 @@
 @import font-awesome/font-awesome
 
 $color: #0FF
+$accent: teal
 $font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
 
 =reset-button
@@ -131,9 +132,17 @@ main
 			width: 100%
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			position: relative
+			.back
+				width: 200px
+				overflow: hidden
+				white-space: nowrap
+				text-overflow: ellipsis
+				display: block
 			button.filter-button
 				+reset-button
 				float: right
+				line-height: 22px
 				text-transform: capitalize
 			a, button.filter-button
 				+transition(all 0.3s)
@@ -215,53 +224,51 @@ main
 			width: 100%
 			height: 100%
 
-		.modal
-			+position(absolute, 0px 0px 0px 0px)
-			background-color: rgba(black, 0.7)
-			z-index: 1001
+		.panel
 			.content
 				+box-sizing(border-box)
 				+position(absolute, 0px 0px 0px 0px)
-				margin: 20px
-				border-radius: 3px
-				background-color: white
-				box-shadow: 0px 2px 2px rgba(0,0,0,0.2)
-				.header
-					padding: 20px
-					border-bottom: 1px solid rgba(0,0,0,0.1)
+				border-left: 1px solid rgba(black, 0.1)
+				z-index: 1001
+				background-color: $accent
+				overflow-x: hidden
+				overflow-y: scroll
 				.close
 					+reset-button
 					float: right
-				ul
-					+reset-list
+				.header
+					padding: 20px
+
 
 		#filter-view
 			.content
 				width: 256px
-			ul
-				padding: 20px
-				margin-left: -6px
-				li
-					button
-						+reset-button
-						padding: 4px 6px 4px 6px
-						border-radius: 3px
-						color: #333
-						text-transform: capitalize
-						&:hover
-							color: teal
-						&.active
-							background-color: #333
-							color: white
+				ul
+					+reset-list
+					padding: 20px
+					margin-left: -6px
+					li
+						button
+							+reset-button
+							padding: 4px 6px 4px 6px
+							border-radius: 3px
+							color: #333
+							text-transform: capitalize
+							&:hover
+								color: white
+							&.active
+								background-color: #333
+								color: white
 
 		#comment-view
+			.content
+				width: 384px
+				ul
+					+reset-list
 			.comments
 				// position: relative
 				ul
 					+reset-list
-					+position(absolute, 250px 0px 0px 0px)
-					overflow-x: hidden
-					overflow-y: scroll
 			.user-comment
 				padding: 20px
 				border-bottom: 1px solid rgba(0,0,0,0.1)
@@ -280,7 +287,8 @@ main
 					margin: 0px -6px 10px -6px
 					font-family: $font
 					border-radius: 3px
-					border: 1px solid rgba(0,0,0,0.2)
+					border-width: 0px
+					box-shadow: 0px 0px 0px 1px rgba(black,0.1)
 					&+button
 						margin-left: -6px
 			.empty
@@ -288,3 +296,11 @@ main
 
 			.comment
 				padding: 20px
+				border-bottom: 1px solid rgba(0,0,0,0.05)
+				background-color: rgba(white, 0.2)
+				.user
+					color: rgba(black, 0.5)
+				.timestamp
+					float: right
+					color: rgba(black, 0.5)
+					font-size: 14px
