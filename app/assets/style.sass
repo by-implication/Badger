@@ -148,7 +148,7 @@ main
 			border-bottom: 1px solid rgba(black, 0.05)
 			position: relative
 			.back
-				width: 200px
+				width: 128px
 				overflow: hidden
 				white-space: nowrap
 				text-overflow: ellipsis
@@ -202,6 +202,7 @@ main
 			.moolah
 				padding: 10px
 				margin-left: -10px
+				margin-right: -10px
 				background-color: rgba(wheat, 0.8)
 				border: 1px solid darken(wheat, 5%)
 				color: darken(wheat, 60%)
@@ -255,7 +256,7 @@ main
 				+position(absolute, 0px 0px 0px 0px)
 				border-left: 1px solid rgba(black, 0.1)
 				z-index: 1001
-				background-color: $accent
+				background-color: #efefef
 				overflow-x: hidden
 				overflow-y: scroll
 				.close
@@ -263,11 +264,10 @@ main
 					float: right
 				.header
 					padding: 20px
+					padding-bottom: 0px
 
 
 		#filter-view
-			.header
-				padding-bottom: 0px
 			.content
 				width: 256px
 
