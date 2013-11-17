@@ -192,7 +192,7 @@ function App($scope, $http, $location){
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,
-				timestamp: r
+				timestamp: parseInt(r)
 			});
 
 			// var commentHeaderHeight = $("#comment-view .header").css('height');
