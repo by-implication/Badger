@@ -6,8 +6,6 @@
 
 		<section>
 			<main>
-				
-
 				<div id="main-view">
 					<div id="map">
 					</div>
@@ -49,10 +47,18 @@
 										Year
 									</button>
 								</li>
+								<!--
+								this is exhibiting strange behavior, captain!
 								<li>
-									<button ng-click="ordering = 'rating'; activeOrder = 'Rating'"
-										ng-class="{active: activeOrder == 'Rating'}">
-										Rating
+									<button ng-click="ordering = 'stars'; activeOrder = 'Stars'"
+										ng-class="{active: activeOrder == 'Stars'}">
+										Stars
+									</button>
+								</li>-->
+								<li>
+									<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
+										ng-class="{active: activeOrder == 'Ratings'}">
+										Ratings
 									</button>
 								</li>
 							</ul>
