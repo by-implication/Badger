@@ -1,0 +1,52 @@
+{"name": "Particulars",
+"children": [{
+	"name": "Economic Services",
+ 	"children":[
+		{"name": "Agriculture and Agrarian Reform", "size": 109278},
+		{"name": "Natural Resources and Environment", "size": 25492},
+		{"name": "Trade and Industry", "size": 6311},
+		{"name": "Tourism", "size": 3631},
+		{"name": "Power and Energy", "size": 11134},
+		{"name": "Water Resources Development and Flood Control", "size": 21859},
+		{"name": "Communications, Roads and Other Transport", "size": 197573},
+		{"name": "Other Economic Services", "size": 29755},
+		{"name": "Subsidy to Local Government Units", "size": 105806}
+	]
+}, 
+{
+	"name": "Social Services",
+	"children":[
+		{"name": "Education, Culture and Manpower Development", "size": 329397},
+		{"name": "Health", "size": 45822},
+		{"name": "Social Security, Welfare and Employment", "size": 169280},
+		{"name": "Housing and Community Development", "size": 23335},
+		{"name": "Land Distribution", "size": 5000},
+		{"name": "Other Social Services", "size": 13085},
+		{"name": "Subsidy to Local Government Units", "size": 111852}
+	]
+},
+{
+	"name": "Defense",
+	"children":[
+		{"name": "Domestic Security", "size": 89686}
+	]
+},
+{
+	"name": "General Public Services",
+	"children":[
+		{"name": "General Administration", "size": 123091},
+		{"name": "Public Order and Safety", "size": 124391},
+		{"name": "Other General Public Services", "size": 13936},
+		{"name": "Subsidy to Local Government Units", "size": 84645}
+	]
+},
+{
+	"name": "Net Lending",
+	"size": 26500
+},
+{
+	"name": "Debt Burden",
+	"size": 333902
+}
+]
+}
