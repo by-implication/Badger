@@ -10,8 +10,8 @@ import budget.support._
 
 object Location extends LocationGen {
 
-  def query(id: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
-    Location.findById(id).map(_.toJson(expand = true))
+  def query(id: Int, offset: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
+    Location.findById(id).map(_.toJson(expand = true, offset = offset))
   }
 
 }
@@ -44,7 +44,7 @@ case class Location(
     parent.map(_.cascadeAddRating(newStars)).isDefined
   }
 
-  lazy val children: (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
+  def children(offset: Int = 0, limit: Int = 30): (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
 
     val locs = SQL("""
       SELECT * from locations
@@ -57,7 +57,13 @@ case class Location(
       AND leaf_ps > 0
       AND leaf_mooe > 0
       AND leaf_co > 0
-    """).on('areaDsc -> name).list(Leaf.simple)
+      LIMIT {limit}
+      OFFSET {offset}
+    """).on(
+      'areaDsc -> name,
+      'limit -> limit,
+      'offset -> offset
+    ).list(Leaf.simple)
 
     (locs, leaves)
 
@@ -65,7 +71,7 @@ case class Location(
 
   }
 
-  def toJson(expand: Boolean = false)(implicit user: User): JsObject = {
+  def toJson(expand: Boolean = false, offset: Int = 0)(implicit user: User): JsObject = {
     var r = Json.obj(
       "id" -> id.get,
       "kind" -> "loc",
@@ -81,7 +87,7 @@ case class Location(
       ))
     )
     if(expand){
-      val (locs, leaves) = children
+      val (locs, leaves) = children(offset)
       r ++= Json.obj("children" -> Map(
         "locs" -> locs.map(_.toJson()),
         "leaves" -> leaves.map(_.toJson(user))

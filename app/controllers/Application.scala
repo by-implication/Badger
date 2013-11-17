@@ -34,12 +34,12 @@ object Application extends Controller with Secured {
     Ok(views.html.app(user))
   }
 
-  def meta(kind: String, id: Int) = UserAction(){ implicit user => request =>
+  def meta(kind: String, id: Int, offset: Int) = UserAction(){ implicit user => request =>
     kind match {
       case "leaf" | "loc" => {
         (kind match {
           case "leaf" => Leaf.query(id)
-          case "loc" => Location.query(id)
+          case "loc" => Location.query(id, offset)
         }).map(Ok(_)).getOrElse(NotFound("not found"))
       }
       case _ => BadRequest("invalid type")
@@ -182,21 +182,21 @@ object Application extends Controller with Secured {
   }
 
   private def getTotalPs(location: Location): Int = {
-    val (locs, leaves) = location.children
+    val (locs, leaves) = location.children(limit = 1000000)
     val r = locs.map(getTotalPs(_)).sum + leaves.map(_.ps.getOrElse(0)).sum
     play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
     r
   }
 
   private def getTotalMooe(location: Location): Int = {
-    val (locs, leaves) = location.children
+    val (locs, leaves) = location.children(limit = 1000000)
     val r = locs.map(getTotalMooe(_)).sum + leaves.map(_.mooe.getOrElse(0)).sum
     play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
     r
   }
 
   private def getTotalCo(location: Location): Int = {
-    val (locs, leaves) = location.children
+    val (locs, leaves) = location.children(limit = 1000000)
     val r = locs.map(getTotalCo(_)).sum + leaves.map(_.co.getOrElse(0)).sum
     play.Logger.info(location.id.get + "\t" + location.name + "\t" + r)
     r
