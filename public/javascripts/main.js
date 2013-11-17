@@ -145,7 +145,8 @@ function App($scope, $http, $location){
 		var searchParams = $location.search();
 		$http.get('/meta', {params: searchParams})
 		.success(function(r){
-			$scope.lastRetrieval = r.children.leaves.length;
+			
+			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
 				$scope.focus.children.leaves = $scope.focus.children.leaves.concat(r.children.leaves);
 			} else {
@@ -156,6 +157,9 @@ function App($scope, $http, $location){
 					map.setView([r.lat, r.lng], $scope.zoomLevel);
 				}
 			}
+
+			$scope.click.deactivate();
+
 		});
 	});
 	
@@ -192,7 +196,7 @@ function App($scope, $http, $location){
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,
-				timestamp: r
+				timestamp: parseInt(r)
 			});
 
 			// var commentHeaderHeight = $("#comment-view .header").css('height');
@@ -241,6 +245,10 @@ function App($scope, $http, $location){
 			this.active = !this.active;
 			var action = this.active ? 'on' : 'off';
 			map[action]('click', this.listener);
+		},
+		deactivate: function(){
+			this.active = false;
+			map.off('click', this.listener);
 		},
 		text: function(){ return this.active ? 'Cancel' : 'Point this out!'; }
 	}
@@ -345,6 +353,11 @@ function App($scope, $http, $location){
 		}
 		if(!hasOffset) q.push('offset=30');
 		return '/app?' + q.join('&');
+	}
+
+	$scope.totalAmount = function(item){
+		if(!item.total) item.total = item.ps + item.mooe + item.co;
+		return item.total;
 	}
 	
 }
