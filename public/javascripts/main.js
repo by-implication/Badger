@@ -338,6 +338,7 @@ function App($scope, $http, $location){
 		$http.post('/comment/' + $scope.focus.id, {comment: comment})
 		.success(function(r){
 			// console.log(r);
+			if(!$scope.commentCache[curFocus]) $scope.commentCache[curFocus] = [] 
 			$scope.commentCache[curFocus].push({
 				user: $scope.loggedIn,
 				content: comment,
