@@ -62,6 +62,34 @@ function App($scope, $http, $location){
 		}
 	}
 
+	$scope.regionIds = {
+		'Autonomous Region in Muslim Mindanao': 21,
+		'Region V': 9,
+		'Region IV-A': 7,
+		'Region II': 13,
+		'Region XIII': 18,
+		'Region III': 6,
+		'Region VII': 8,
+		'Cordillera Administrative Region': 20,
+		'Region XI': 17,
+		'Region VIII': 10,
+		'Region I': 12,
+		'Region IV-B': 19,
+		'Metro Manila': 23,
+		'Region X': 14,
+		'Region XII': 16,
+		'Region VI': 4,
+		'Region IX': 15
+	}
+
+	$scope.rating = function(item){ return (item.stars/5) / item.ratings; }	
+	$scope.ratingCache = [];
+	for(var i in $scope.regionIds){
+		var id = $scope.regionIds[i];
+		$http.get('/meta?id=' + id + '&kind=loc')
+		.success(function(r){ $scope.ratingCache[r.id] = $scope.rating(r); });
+	}
+
 	$scope.nodeLink = function(node){
 		return '/app?id='
 			+ node.id
@@ -142,10 +170,10 @@ function App($scope, $http, $location){
 	}
 
 	function showFeature(i){
-		var l = L.geoJson($scope.features[i], $scope.regionStyle($scope.focus))
+		var id = $scope.regionIds[$scope.regions[i]];
+		var l = L.geoJson($scope.features[i], $scope.regionStyle(id))
 			.addTo(map)
 			.on('click', function(){
-				var id = $scope.regionIds[$scope.regions[i]];
 				$scope.$apply(function(){
 					$location.search({
 						id: id,
@@ -217,9 +245,8 @@ function App($scope, $http, $location){
 		});
 	});
 	
-	$scope.regionStyle = function(focus){
-		var rating = (focus.stars/5) / focus.ratings;
-		return {style: {color: $scope.getBackgroundStyle(rating) } };
+	$scope.regionStyle = function(i){
+		return {style: {color: $scope.getBackgroundStyle($scope.ratingCache[i]) } };
 	}
 
 	/*********** colorize ***********/
@@ -485,26 +512,6 @@ function App($scope, $http, $location){
 	}
 	
 	$scope.regions = ['Autonomous Region in Muslim Mindanao', 'Region V', 'Region IV-A', 'Region II', 'Region XIII', 'Region III', 'Region VII', 'Cordillera Administrative Region', 'Region XI', 'Region VIII', 'Region I', 'Region IV-B', 'Metro Manila', 'Region X', 'Region XII', 'Region VI', 'Region IX'];
-	$scope.regionIds = {
-		'Autonomous Region in Muslim Mindanao': 21,
-		'Region V': 9,
-		'Region IV-A': 7,
-		'Region II': 13,
-		'Region XIII': 18,
-		'Region III': 6,
-		'Region VII': 8,
-		'Cordillera Administrative Region': 20,
-		'Region XI': 17,
-		'Region VIII': 10,
-		'Region I': 12,
-		'Region IV-B': 19,
-		'Metro Manila': 23,
-		'Region X': 14,
-		'Region XII': 16,
-		'Region VI': 4,
-		'Region IX': 15
-	}
-
 	$scope.regionSets = {
 		'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
 		'Visayas': ['Region VI', 'Region VII', 'Region VIII'],
