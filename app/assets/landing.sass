@@ -1,11 +1,15 @@
+@import bourbon/bourbon
+
 body
 	font-family: "Museo Sans"
 
 header
 	position: fixed
+	top: 0
 	width: 100%
 
 .splash
+	margin-top: 64px
 	padding: 1px
 	height: 318px
 	background: rgb(205,237,250) url("/assets/images/splash-bg.svg") top center repeat-x
@@ -31,11 +35,47 @@ header
 
 	figure
 		position: absolute
-		top: 0
+		top: 64px
 		left: 0
 		width: 100%
 		height: 320px
 		overflow: hidden
+		
+		.container
+			position: relative
+			height: 320px
+			width: 960px
+			margin: 0 auto
+
+			.bldg
+				position: absolute
+				+animation(bldg-bounce 1.1s 1)
+				+animation-fill-mode(both)
+				+transform-origin(center bottom)
+
+			.bldg1
+				left: 52px
+				top: 240px
+				width: 86px
+				height: 91px
+				background: #C7B299
+				+animation-delay(0.2s)
+
+			.bldg2
+				left: 96px
+				top: 202px
+				width: 87px
+				height: 132px
+				background: #9C8B79
+				+animation-delay(0.35s)
+
+			.bldg5
+				left: 677px
+				top: 213px
+				width: 88px
+				height: 135px
+				background: #9C8B79
+				+animation-delay(0.4s)
 
 
 		.ground
@@ -44,6 +84,22 @@ header
 			background: #C7B299
 			width: 100%
 			height: 2px
+
+
++keyframes(bldg-bounce)
+	0%
+		+transform( scaleY(0) )
+	40%
+		+transform( scaleY(1.2) )
+	60%
+		+transform( scaleY(0.8) )
+	80%
+		+transform( scaleY(1.1) )
+	90%
+		+transform( scaleY(0.9) )
+	100%
+		+transform( scaleY(1) )
+
 
 .intro
 	background: #C7B299
@@ -63,6 +119,13 @@ header
 		border-radius: 20px
 		h2
 			font-size: 22px
+
+	text-align: center
+
+	img
+		display: inline-block
+		margin-bottom: 60px
+
 
 
 .tax-calc
