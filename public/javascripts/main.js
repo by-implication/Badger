@@ -346,5 +346,10 @@ function App($scope, $http, $location){
 		if(!hasOffset) q.push('offset=30');
 		return '/app?' + q.join('&');
 	}
+
+	$scope.totalAmount = function(item){
+		if(!item.total) item._total = item.ps + item.mooe + item.co;
+		return item.total;
+	}
 	
 }
