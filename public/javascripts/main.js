@@ -62,6 +62,34 @@ function App($scope, $http, $location){
 		}
 	}
 
+	$scope.regionIds = {
+		'Autonomous Region in Muslim Mindanao': 21,
+		'Region V': 9,
+		'Region IV-A': 7,
+		'Region II': 13,
+		'Region XIII': 18,
+		'Region III': 6,
+		'Region VII': 8,
+		'Cordillera Administrative Region': 20,
+		'Region XI': 17,
+		'Region VIII': 10,
+		'Region I': 12,
+		'Region IV-B': 19,
+		'Metro Manila': 23,
+		'Region X': 14,
+		'Region XII': 16,
+		'Region VI': 4,
+		'Region IX': 15
+	}
+
+	$scope.rating = function(item){ return (item.stars/5) / item.ratings; }	
+	$scope.ratingCache = [];
+	for(var i in $scope.regionIds){
+		var id = $scope.regionIds[i];
+		$http.get('/meta?id=' + id + '&kind=loc')
+		.success(function(r){ $scope.ratingCache[r.id] = $scope.rating(r); });
+	}
+
 	$scope.nodeLink = function(node){
 		return '/app?id='
 			+ node.id
@@ -140,6 +168,21 @@ function App($scope, $http, $location){
 		if(!$scope.activeFilter) return true;
 		return $scope.cats[$scope.activeFilter].indexOf(item.dptDsc) >= 0
 	}
+
+	function showFeature(i){
+		var id = $scope.regionIds[$scope.regions[i]];
+		var l = L.geoJson($scope.features[i], $scope.regionStyle(id))
+			.addTo(map)
+			.on('click', function(){
+				$scope.$apply(function(){
+					$location.search({
+						id: id,
+						kind: 'loc'
+					});
+				});
+			});
+		$scope.activeFeatures.push(l);
+	}
 	
 	$scope.zoomLevel = 6;
 
@@ -166,10 +209,9 @@ function App($scope, $http, $location){
 				// region highlighting
 				
 				function recursiveHighlight(region){
-					console.log(region);
 					var i = $scope.regions.indexOf(region);
 					if(i != -1){
-						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+						showFeature(i);
 					} else {
 						var a = $scope.regionSets[region];
 						if(a){
@@ -183,13 +225,13 @@ function App($scope, $http, $location){
 				if($scope.focus.parent){
 					var i = $scope.regions.indexOf($scope.focus.parent.name);
 					if(i != -1){
-						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+						showFeature(i);
 					}
 				}
 
 				var i = $scope.regions.indexOf($scope.focus.name);
 				if(i != -1){
-					$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+					showFeature(i);
 				}
 
 				if($scope.regionSets[$scope.focus.name]){
@@ -203,9 +245,8 @@ function App($scope, $http, $location){
 		});
 	});
 	
-	$scope.regionStyle = function(focus){
-		var rating = (focus.stars/5) / focus.ratings;
-		return {style: {color: $scope.getBackgroundStyle(rating) } };
+	$scope.regionStyle = function(i){
+		return {style: {color: $scope.getBackgroundStyle($scope.ratingCache[i]) } };
 	}
 
 	/*********** colorize ***********/
@@ -470,26 +511,7 @@ function App($scope, $http, $location){
 		return item.total;
 	}
 	
-	$scope.regions = [
-		'Autonomous Region in Muslim Mindanao',
-		'Region V',
-		'Region IV-A',
-		'Region II',
-		'Region XIII',
-		'Region III',
-		'Region VII',
-		'Cordillera Administrative Region',
-		'Region XI',
-		'Region VIII',
-		'Region I',
-		'Region IV-B',
-		'Metro Manila',
-		'Region X',
-		'Region XII',
-		'Region VI',
-		'Region IX'
-	];
-
+	$scope.regions = ['Autonomous Region in Muslim Mindanao', 'Region V', 'Region IV-A', 'Region II', 'Region XIII', 'Region III', 'Region VII', 'Cordillera Administrative Region', 'Region XI', 'Region VIII', 'Region I', 'Region IV-B', 'Metro Manila', 'Region X', 'Region XII', 'Region VI', 'Region IX'];
 	$scope.regionSets = {
 		'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
 		'Visayas': ['Region VI', 'Region VII', 'Region VIII'],
