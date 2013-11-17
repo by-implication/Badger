@@ -248,6 +248,8 @@ function App($scope, $http, $location){
 			this.active = !this.active;
 			var action = this.active ? 'on' : 'off';
 			map[action]('click', this.listener);
+			$scope.commentsVisible = false
+			$scope.filtersVisible = false
 		},
 		deactivate: function(){
 			this.active = false;
