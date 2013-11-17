@@ -348,7 +348,7 @@ function App($scope, $http, $location){
 	}
 
 	$scope.totalAmount = function(item){
-		if(!item.total) item._total = item.ps + item.mooe + item.co;
+		if(!item.total) item.total = item.ps + item.mooe + item.co;
 		return item.total;
 	}
 	
