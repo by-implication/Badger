@@ -311,10 +311,8 @@ function App($scope, $http, $location){
 	$scope.navUp = function(){
 		if($scope.focus.parent.id == 24 || $scope.focus.parent.id == 26 || $scope.focus.parent.id == 28){
 			$scope.zoomLevel = 7;	
-		}else{
-			if($scope.focus.lat && $scope.focus.lng){
-				$scope.zoomLevel--;	
-			}
+		}{
+			$scope.zoomLevel = 6;
 		}
 		// $scope.zoomLevel--;
 	}
@@ -322,10 +320,8 @@ function App($scope, $http, $location){
 	$scope.navDown = function(){
 		if($scope.focus.id == 24 || $scope.focus.id == 26 || $scope.focus.id == 28){
 			$scope.zoomLevel = 9;
-		}else{
-			if($scope.focus.lat && $scope.focus.lng){
-				$scope.zoomLevel++;	
-			}
+		}{
+			$scope.zoomLevel = 6;
 		}
 		// $scope.zoomLevel++;
 	}
