@@ -2,7 +2,60 @@
 
 @main("about", currentUser){
 
-	<h1>ABOUT</h1>
-    
-    hello
+<div class="splash">
+	
+	<h1>
+		<span>Budget</span>
+		<span>Badger</span>
+	</h1>
+
+	<figure>
+
+		<div class="container">
+			
+			<div class="bldg1"></div>
+
+
+		</div>
+		<div class="ground"></div>
+	</figure>
+
+</div>
+<div class="intro">
+	
+	<div class="bubble">
+		<h2>
+			Dig deep into the government’s budget, releases, and works!
+			<br>
+			Learn where your taxes go, explore projects near you, and leave feedback.
+		</h2>
+	</div>
+
+</div>
+<div class="tax-calc">
+	<h3>Where do your taxes go?</h3>
+
+
+	<form>
+		<input type="text" placeholder="Your monthly salary" id="salary"> <br>
+		<input type="text" placeholder="tax rate" disabled id="rate">
+		<input type="text" placeholder="your taxes" disabled id="tax-out">
+	</form>
+	
+
+	<figure>
+	</figure>
+
+</div>
+
+<div class="projects-overview">
+	
+	<h3>Projects, Activities, and Releases</h3>
+
+</div>
+
+<script src="@routes.Assets.at("javascripts/taxcalc.js")"></script>
+<script src="@routes.Assets.at("javascripts/d3.v3.min.js")"></script>
+<script src="@routes.Assets.at("javascripts/budget-landing.js")"></script>
+
 }
