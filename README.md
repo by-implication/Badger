@@ -26,7 +26,6 @@ The intial version was built in _~20 hours_ (pardon the mess!) for the first [#K
 * [SASS](http://sass-lang.org)
 * [Bourbon](http://bourbon.io/) + [Neat](http://neat.bourbon.io/)
 * [Leaflet](http://leafletjs.com)
-* [D3](http://d3js.org)
 * [AngularJS](http://angularjs.org/)
 
 --
