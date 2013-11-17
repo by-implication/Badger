@@ -3,7 +3,7 @@
 @import font-awesome/font-awesome
 
 $color: #0FF
-$accent: lighten(desaturate(teal, 60%), 20%)
+$accent: adjust-hue(teal, 10)
 $font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
 $mobile: new-breakpoint(max-width 768px)
 
@@ -63,26 +63,25 @@ body
 		font-size: 14px
 		color: #aaa
 
-h1 
-	// color: $color
-
 header
 	height: 64px
 	box-shadow: 0px 1px 0px rgba(black, 0.05)
+	background-color: $accent
 	position: relative
-	z-index: 1003
+	z-index: 1010
 	nav
 		ul
 			+reset-list
 			li
 				float: left
 				padding: 20px
-				height: 65px
+				height: 64px
 				a
 					text-decoration: none
+					color: desaturate(lighten($accent, 40%), 60%)
 
 				&.current
-					background-color: teal
+					background-color: darken($accent, 5%)
 					a 
 						color: white
 	nav.right
