@@ -145,7 +145,7 @@ function App($scope, $http, $location){
 		var searchParams = $location.search();
 		$http.get('/meta', {params: searchParams})
 		.success(function(r){
-			if(r.children) $scope.lastRetrieval = r.children.leaves.length;
+			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
 				$scope.focus.children.leaves = $scope.focus.children.leaves.concat(r.children.leaves);
 			} else {
