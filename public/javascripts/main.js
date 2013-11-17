@@ -169,7 +169,7 @@ function App($scope, $http, $location){
 					console.log(region);
 					var i = $scope.regions.indexOf(region);
 					if(i != -1){
-						$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
 					} else {
 						var a = $scope.regionSets[region];
 						if(a){
@@ -183,13 +183,13 @@ function App($scope, $http, $location){
 				if($scope.focus.parent){
 					var i = $scope.regions.indexOf($scope.focus.parent.name);
 					if(i != -1){
-						$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
 					}
 				}
 
 				var i = $scope.regions.indexOf($scope.focus.name);
 				if(i != -1){
-					$scope.activeFeatures.push(L.geoJson($scope.features[i]).addTo(map));
+					$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
 				}
 
 				if($scope.regionSets[$scope.focus.name]){
@@ -203,6 +203,11 @@ function App($scope, $http, $location){
 		});
 	});
 	
+	$scope.regionStyle = function(focus){
+		var rating = (focus.stars/5) / focus.ratings;
+		return {style: {color: $scope.colorize(rating) } };
+	}
+
 	$scope.navUp = function(){
 		if($scope.focus.parent.id == 24 || $scope.focus.parent.id == 26 || $scope.focus.parent.id == 28){
 			$scope.zoomLevel = 7;	
