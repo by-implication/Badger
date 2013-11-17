@@ -217,9 +217,4 @@ object Application extends Controller with Secured {
 
   }
 
-  def sampleData = UserAction(){ user => request =>
-    // todo: generate sample ratings, maybe comments
-    Redirect(routes.Application.app)
-  }  
-
 }

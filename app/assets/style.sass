@@ -5,6 +5,7 @@
 $color: #0FF
 $accent: lighten(desaturate(teal, 60%), 20%)
 $font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
+$mobile: new-breakpoint(max-width 768px)
 
 =reset-button
 	background: transparent
@@ -106,6 +107,15 @@ main
 	top: 64px
 	bottom: 0px
 
+	#click-instructions
+		position: absolute
+		top: 64px
+		left: 20px
+		right: 20px
+		z-index: 1003
+		padding: 10px
+		background-color: rgba(white, 0.6)
+
 	.rating-group
 		margin-bottom: 10px
 		&.ratable i
@@ -132,6 +142,12 @@ main
 		top: 0px
 		overflow-y: scroll
 		overflow-x: hidden
+		z-index: 1005
+		+media($mobile)
+			width: 100%
+			// margin-top: 50%
+			overflow-y: auto
+			position: relative
 
 		nav
 			width: 100%
@@ -139,7 +155,7 @@ main
 			border-bottom: 1px solid rgba(black, 0.05)
 			position: relative
 			.back
-				width: 200px
+				width: 128px
 				overflow: hidden
 				white-space: nowrap
 				text-overflow: ellipsis
@@ -193,6 +209,7 @@ main
 			.moolah
 				padding: 10px
 				margin-left: -10px
+				margin-right: -10px
 				background-color: rgba(wheat, 0.8)
 				border: 1px solid darken(wheat, 5%)
 				color: darken(wheat, 60%)
@@ -236,17 +253,29 @@ main
 		position: absolute
 		top: 0px
 		bottom: 0px
+		+media($mobile)
+			width: 100%
+			height: 50%
+			margin-left: 0
+			position: relative
 		#map
 			width: 100%
 			height: 100%
 
 		.panel
 			.content
+				+media($mobile)
+					// .content
+						// +position(absolute, 0px 0px 0px 0px)
+					position: relative
+					z-index: 1006
+					width: 100% !important
+					overflow-y: visible
 				+box-sizing(border-box)
 				+position(absolute, 0px 0px 0px 0px)
 				border-left: 1px solid rgba(black, 0.1)
 				z-index: 1001
-				background-color: $accent
+				background-color: #efefef
 				overflow-x: hidden
 				overflow-y: scroll
 				.close
@@ -254,11 +283,10 @@ main
 					float: right
 				.header
 					padding: 20px
+					padding-bottom: 0px
 
 
 		#filter-view
-			.header
-				padding-bottom: 0px
 			.content
 				width: 256px
 

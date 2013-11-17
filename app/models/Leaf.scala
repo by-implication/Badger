@@ -7,6 +7,7 @@ import play.api.db._
 import play.api.libs.json._
 import play.api.Play.current
 import budget.support._
+import scala.util.Random
 
 object Leaf extends LeafGen {
 
@@ -73,8 +74,10 @@ case class Leaf(
       "name" -> parent.name
     ),
     "id" -> id.get,
-    "stars" -> stars,
-    "ratings" -> ratings,
+    // "stars" -> stars,
+    // "ratings" -> ratings,
+    "stars" -> Random.nextInt(500),
+    "ratings" -> Random.nextInt(100),
     "userRating" -> user.ratingFor(this),
     "userClick" -> user.clickFor(this)
   )

@@ -25,4 +25,3 @@ POST		/click/:leafId/:lat/:lng		controllers.Application.click(leafId: Int, lat: 
 
 # utility scripts
 # GET			/calcTotals				controllers.Application.calculateTotals
-# GET			/sampleData				controllers.Application.sampleData

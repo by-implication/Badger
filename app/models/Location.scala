@@ -7,6 +7,7 @@ import play.api.db._
 import play.api.libs.json._
 import play.api.Play.current
 import budget.support._
+import scala.util.Random
 
 object Location extends LocationGen {
 
@@ -81,6 +82,10 @@ case class Location(
       "co" -> co,
       "lat" -> lat,
       "lng" -> lng,
+      // "stars" -> stars,
+      // "ratings" -> ratings,
+      "stars" -> Random.nextInt(500),
+      "ratings" -> Random.nextInt(100),
       "parent" -> parent.map(p => Json.obj(
         "id" -> p.id.get,
         "name" -> p.name

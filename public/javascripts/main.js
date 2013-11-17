@@ -147,17 +147,55 @@ function App($scope, $http, $location){
 		var searchParams = $location.search();
 		$http.get('/meta', {params: searchParams})
 		.success(function(r){
+
+			$scope.activeFeatures.forEach(function(f){ map.removeLayer(f); });
 			
 			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
 				$scope.focus.children.leaves = $scope.focus.children.leaves.concat(r.children.leaves);
 			} else {
+
 				$scope.focus = r;
+
 				if(r.userClick){
 					map.setView([r.userClick.lat, r.userClick.lng], 10);
 				} else if(r.lat && r.lng){
 					map.setView([r.lat, r.lng], $scope.zoomLevel);
 				}
+
+				// region highlighting
+				
+				function recursiveHighlight(region){
+					console.log(region);
+					var i = $scope.regions.indexOf(region);
+					if(i != -1){
+						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+					} else {
+						var a = $scope.regionSets[region];
+						if(a){
+							for(var i in a){
+								recursiveHighlight(a[i]);
+							}
+						}
+					}
+				}
+
+				if($scope.focus.parent){
+					var i = $scope.regions.indexOf($scope.focus.parent.name);
+					if(i != -1){
+						$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+					}
+				}
+
+				var i = $scope.regions.indexOf($scope.focus.name);
+				if(i != -1){
+					$scope.activeFeatures.push(L.geoJson($scope.features[i], $scope.regionStyle($scope.focus)).addTo(map));
+				}
+
+				if($scope.regionSets[$scope.focus.name]){
+					recursiveHighlight($scope.focus.name);
+				}
+
 			}
 
 			$scope.click.deactivate();
@@ -165,6 +203,70 @@ function App($scope, $http, $location){
 		});
 	});
 	
+	$scope.regionStyle = function(focus){
+		var rating = (focus.stars/5) / focus.ratings;
+		return {style: {color: $scope.getBackgroundStyle(rating) } };
+	}
+
+	/*********** colorize ***********/
+
+	$scope.RATING_COLORS = [
+	  {h:  0, s: 59, l: 50, rating:   0},
+	  {h: 24, s: 60, l: 50, rating:  25},
+	  {h: 48, s: 82, l: 50, rating:  50},
+	  {h: 72, s: 54, l: 50, rating:  75},
+	  {h: 96, s: 50, l: 50, rating: 100}
+	];
+
+	// takes a rating, returns six values that correspond to the appropriate HSL values for interpolation
+	// refers to the RATING_COLORS array constant, which must have at least three values
+
+	$scope.multiColor = function(rating){
+	  
+	  var colors = $scope.RATING_COLORS;
+	  var start = colors[0];
+	  var next  = colors[1];
+
+	  for (var i = 0; i < colors.length; i++){
+	    var color = colors[i];
+	    if(color.rating < rating) {
+	      start = color;
+	      next = colors[i + 1];
+	    }
+	  }
+
+	  return {
+	    hsl: [[start.h, next.h], [start.s, next.s], [start.l, next.l]],
+	    min: start.rating, max: next.rating
+	  }
+	}
+
+	$scope.transition = function(value, maximum, startPoint, endPoint){
+	  return startPoint + (endPoint - startPoint)*value/maximum;
+	}
+
+	$scope.transitionN = function(value, maximum, pairs){
+	  var results = [];
+	  for(var i in pairs){
+	    results.push($scope.transition(value, maximum, pairs[i][0], pairs[i][1]));
+	  }
+	  return results;
+	}
+
+	$scope.getBackgroundStyle = function(rating){
+	  rating = (rating * 100)%100;
+
+	  var valueRange = $scope.multiColor(rating);
+	  var newValues = $scope.transitionN(
+	    rating - valueRange.min,
+	    valueRange.max - valueRange.min,
+	    valueRange.hsl
+	  );
+
+	  return 'hsl(' + newValues[0] + ', ' + newValues[1] + '%, ' + newValues[2] + '%)';
+
+	}
+
 	$scope.navUp = function(){
 		if($scope.focus.parent.id == 24 || $scope.focus.parent.id == 26 || $scope.focus.parent.id == 28){
 			$scope.zoomLevel = 7;	
@@ -228,6 +330,7 @@ function App($scope, $http, $location){
 		}
 	}
 
+	$scope.marker = [];
 	$scope.click = {
 		listener: function(e){
 			map.off('click', this.listener);
@@ -236,9 +339,11 @@ function App($scope, $http, $location){
 			var f = $scope.focus;
 			$http.post('/click/' + $scope.focus.id + '/' + lat + '/' + lng)
 			.success(function(r){
-				L.marker([lat, lng]).addTo(map)
-  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
-  			.openPopup();
+				var m = $scope.marker[$scope.focus.id];
+				if(m) map.removeLayer(m);
+				$scope.marker[$scope.focus.id] = new L.marker([lat, lng]).addTo(map)
+	  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
+	  			.openPopup();
   			f.userClick = {lat: lat, lng: lng};
   			$scope.click.active = false;
 			});
@@ -248,6 +353,8 @@ function App($scope, $http, $location){
 			this.active = !this.active;
 			var action = this.active ? 'on' : 'off';
 			map[action]('click', this.listener);
+			$scope.commentsVisible = false
+			$scope.filtersVisible = false
 		},
 		deactivate: function(){
 			this.active = false;
@@ -363,4 +470,37 @@ function App($scope, $http, $location){
 		return item.total;
 	}
 	
+	$scope.regions = [
+		'Autonomous Region in Muslim Mindanao',
+		'Region V',
+		'Region IV-A',
+		'Region II',
+		'Region XIII',
+		'Region III',
+		'Region VII',
+		'Cordillera Administrative Region',
+		'Region XI',
+		'Region VIII',
+		'Region I',
+		'Region IV-B',
+		'Metro Manila',
+		'Region X',
+		'Region XII',
+		'Region VI',
+		'Region IX'
+	];
+
+	$scope.regionSets = {
+		'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
+		'Visayas': ['Region VI', 'Region VII', 'Region VIII'],
+		'Mindanao': ['Region X', 'Region IX', 'Region XII', 'Region XI', 'Region XIII', 'Autonomous Region in Muslim Mindanao'],
+		'Local': ['Nationwide', 'CO'],
+		'Nationwide': ['Mindanao', 'Luzon', 'Visayas'],
+		'Region IV': ['Region IV-A', 'Region IV-B']
+	}
+
+	$scope.activeFeatures = [];
+	$http.get('/assets/javascripts/ph-regions.json')
+	.success(function(r){ $scope.features = r.features; });
+
 }
