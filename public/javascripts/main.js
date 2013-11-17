@@ -205,7 +205,66 @@ function App($scope, $http, $location){
 	
 	$scope.regionStyle = function(focus){
 		var rating = (focus.stars/5) / focus.ratings;
-		return {style: {color: $scope.colorize(rating) } };
+		return {style: {color: $scope.getBackgroundStyle(rating) } };
+	}
+
+	/*********** colorize ***********/
+
+	$scope.RATING_COLORS = [
+	  {h:  0, s: 59, l: 50, rating:   0},
+	  {h: 24, s: 60, l: 50, rating:  25},
+	  {h: 48, s: 82, l: 50, rating:  50},
+	  {h: 72, s: 54, l: 50, rating:  75},
+	  {h: 96, s: 50, l: 50, rating: 100}
+	];
+
+	// takes a rating, returns six values that correspond to the appropriate HSL values for interpolation
+	// refers to the RATING_COLORS array constant, which must have at least three values
+
+	$scope.multiColor = function(rating){
+	  
+	  var colors = $scope.RATING_COLORS;
+	  var start = colors[0];
+	  var next  = colors[1];
+
+	  for (var i = 0; i < colors.length; i++){
+	    var color = colors[i];
+	    if(color.rating < rating) {
+	      start = color;
+	      next = colors[i + 1];
+	    }
+	  }
+
+	  return {
+	    hsl: [[start.h, next.h], [start.s, next.s], [start.l, next.l]],
+	    min: start.rating, max: next.rating
+	  }
+	}
+
+	$scope.transition = function(value, maximum, startPoint, endPoint){
+	  return startPoint + (endPoint - startPoint)*value/maximum;
+	}
+
+	$scope.transitionN = function(value, maximum, pairs){
+	  var results = [];
+	  for(var i in pairs){
+	    results.push($scope.transition(value, maximum, pairs[i][0], pairs[i][1]));
+	  }
+	  return results;
+	}
+
+	$scope.getBackgroundStyle = function(rating){
+	  rating = (rating * 100)%100;
+
+	  var valueRange = $scope.multiColor(rating);
+	  var newValues = $scope.transitionN(
+	    rating - valueRange.min,
+	    valueRange.max - valueRange.min,
+	    valueRange.hsl
+	  );
+
+	  return 'hsl(' + newValues[0] + ', ' + newValues[1] + '%, ' + newValues[2] + '%)';
+
 	}
 
 	$scope.navUp = function(){
