@@ -226,6 +226,7 @@ function App($scope, $http, $location){
 		}
 	}
 
+	$scope.marker = [];
 	$scope.click = {
 		listener: function(e){
 			map.off('click', this.listener);
@@ -234,9 +235,11 @@ function App($scope, $http, $location){
 			var f = $scope.focus;
 			$http.post('/click/' + $scope.focus.id + '/' + lat + '/' + lng)
 			.success(function(r){
-				L.marker([lat, lng]).addTo(map)
-  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
-  			.openPopup();
+				var m = $scope.marker[$scope.focus.id];
+				if(m) m.remove();
+				$scope.marker[$scope.focus.id] = L.marker([lat, lng]).addTo(map)
+	  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
+	  			.openPopup();
   			f.userClick = {lat: lat, lng: lng};
 			});
 		},
