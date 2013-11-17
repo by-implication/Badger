@@ -93,6 +93,7 @@ function App($scope, $http, $location){
 	$scope.commentCache = [];
 	$scope.toggleComments = function(){
 		$scope.filtersVisible = false;
+		$scope.click.active = false;
 		$scope.commentsVisible = !$scope.commentsVisible;
 		var fid = $scope.focus.id;
 		if($scope.commentsVisible &&
@@ -120,6 +121,7 @@ function App($scope, $http, $location){
 
 	$scope.toggleFilters = function(){
 		$scope.commentsVisible = false;
+		$scope.click.active = false;
 		$scope.filtersVisible = !$scope.filtersVisible;
 	}
 
@@ -238,6 +240,7 @@ function App($scope, $http, $location){
   			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
   			.openPopup();
   			f.userClick = {lat: lat, lng: lng};
+  			$scope.click.active = false;
 			});
 		},
 		active: false,

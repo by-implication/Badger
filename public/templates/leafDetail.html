@@ -14,14 +14,14 @@
 	<a id="gplus" target="_blank" ng-href="{{share.googlePlus()}}">
 		<i class="fa fa-google-plus-square"></i>
 	</a>
-	<a class="show-hide" href="#" ng-click="toggleComments()">
-		{{currentComments().length}} comments
+	<button id="point" ui-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active}">
+		<i class="fa fa-map-marker fa-2x"></i>
+	</button>
+	<a class="show-hide" href="#" ng-click="toggleComments()" ng-class="{active: commentsVisible}">
 		<i class="fa fa-comment"></i>
 	</a>
-	<button ui-if="loggedIn && !focus.userClick" ng-click="click.toggle()">
-		{{click.text()}}
-	</button>
 </div>
+
 <div class="moolah">
 
 	<h4>Total:</h4>
