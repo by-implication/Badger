@@ -1,8 +1,8 @@
 #Budget Badger
 
-_Budget Badger_ is a webapp that aims to help the public understand how their taxes are being spent, explore government works and allocated activities near them, and give feedback about specific projects.
+[_Budget Badger_](http://budgetbadger.ph) is a webapp that aims to help the public understand how their taxes are being spent, explore government works and allocated activities near them, and give feedback about specific projects.
 
-The intial version was built in _~20 hours_ (pardon the mess!) for the first [#KabantayNgBayan](http://data.gov.ph/hackathon/) Open Data hackathon, using data provided by [data.gov.ph](http://kabantayngbayan.ph).
+The intial version was built in _~26 hours_ (pardon the mess!) for the first [#KabantayNgBayan](http://data.gov.ph/hackathon/) Open Data hackathon, using data provided by [data.gov.ph](http://kabantayngbayan.ph).
 
 ### Current features (in progress):
 
@@ -29,6 +29,8 @@ The intial version was built in _~20 hours_ (pardon the mess!) for the first [#K
 * [AngularJS](http://angularjs.org/)
 
 --
+
+_Budget Badger_ is made available under the Apache License 2.0. Happy hacking!
 
 Built with love by:
 
