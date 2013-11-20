@@ -1,0 +1,143 @@
+@import bourbon/bourbon
+@import normalize
+
+@import bourbon/bourbon
+
+body
+	font-family: "museo-sans", sans-serif
+	font-weight: 100
+	background: #C7B299
+
+.splash
+	padding: 1px
+	height: 318px
+	background: rgb(205,237,250) url("../img/splash-bg.svg") top center repeat-x
+
+	h1
+		margin-top: 140px
+		color: #6B4C2A
+		text-align: center
+
+	figure
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		height: 320px
+		overflow: hidden
+		
+		.container
+			position: relative
+			height: 320px
+			width: 960px
+			margin: 0 auto
+
+			.bldg
+				position: absolute
+				+animation(bldg-bounce 1.1s 1)
+				+animation-fill-mode(both)
+				+transform-origin(center bottom)
+
+			.bldg1
+				left: 52px
+				top: 240px
+				width: 86px
+				height: 91px
+				background: #C7B299
+				+animation-delay(0.35s)
+
+			.bldg2
+				left: 96px
+				top: 202px
+				width: 87px
+				height: 132px
+				background: #9C8B79
+				+animation-delay(0.5s)
+
+			.bldg3
+				left: 186px
+				top: 224px
+				+animation-delay(0.6s)
+
+			.bldg4
+				left: 250px
+				top: 247px
+				+animation-delay(0.65s)
+
+			.bldg5
+				left: 677px
+				top: 213px
+				width: 88px
+				height: 135px
+				background: #9C8B79
+				+animation-delay(0.7s)
+
+			.bldg6
+				left: 717px
+				top: 260px
+				+animation-delay(0.8s)
+
+			.bldg7
+				left: 858px
+				top: 219px
+				+animation-delay(0.9s)
+
+
+		.ground
+			position: absolute
+			bottom: 0
+			background: #C7B299
+			width: 100%
+			height: 2px
+
+
++keyframes(bldg-bounce)
+	0%
+		+transform( scaleY(0) )
+	40%
+		+transform( scaleY(1.2) )
+	60%
+		+transform( scaleY(0.8) )
+	80%
+		+transform( scaleY(1.1) )
+	90%
+		+transform( scaleY(0.9) )
+	100%
+		+transform( scaleY(1) )
+
+
+.intro
+	background: #C7B299
+	padding: 1px
+
+	.bubble
+		color: #6B4C2A
+		text-align: center
+		line-height: 27px
+		font-size: 22px
+		font-weight: 300
+		box-sizing: border-box
+		background: #F7E9D9
+		padding: 20px 10px
+		margin: 50px auto
+		width: 420px
+		border-radius: 20px
+		h2
+			font-size: 22px
+			font-weight: 100
+
+	text-align: center
+
+	p
+		line-height: 24px
+		a
+			color: #6B4C0A
+			text-decoration: none
+			border-bottom: 2px solid rgba(107,76,15,0.7)
+			+transition(all 0.2s)
+
+			&:hover
+				color: white
+				background: rgba(107,76,15,0.7)
+
+
