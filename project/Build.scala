@@ -11,11 +11,12 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "postgresql" % "postgresql" % "9.1-901.jdbc4"
+    "postgresql" % "postgresql" % "9.1-901.jdbc4",
+    "com.typesafe.play" %% "play-slick" % "0.5.0.8"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+    // Add your own project settings here
     sourceGenerators in Compile <+= (baseDirectory) map GenerateSource.apply,
     scalacOptions ++= Seq("-feature")
   )

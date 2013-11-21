@@ -5,7 +5,9 @@ logLevel := Level.Warn
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("play" % "sbt-plugin" % "2.1.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.1")
 
-// sasseh
-addSbtPlugin("net.litola" % "play-sass" % "0.1.3" from "https://raw.github.com/tthraine/play-sass/master/play-sass-0.1.3.jar")
+// sass
+resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/content/repositories/releases"
+
+addSbtPlugin("net.litola" % "play-sass" % "0.3.0")
