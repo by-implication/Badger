@@ -55,9 +55,6 @@ case class Location(
     val leaves = SQL("""
       SELECT * from leafs
       WHERE leaf_area_dsc = {areaDsc}
-      AND leaf_ps > 0
-      AND leaf_mooe > 0
-      AND leaf_co > 0
       LIMIT {limit}
       OFFSET {offset}
     """).on(
