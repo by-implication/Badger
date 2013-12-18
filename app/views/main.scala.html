@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
-        <meta name="viewport" content="width=480, user-scalable=false;">
+    <meta name="viewport" content="width=480, user-scalable=no"/>
 	</head>
 	<body ng-controller="Main" ng-init="
 		curNav = '@curNav';
@@ -44,7 +44,7 @@
 						<a ui-if="!loggedIn" href="@routes.Application.account" target="_self">
 							sign up / log in
 						</a>
-						<a ui-if="loggedIn">
+						<a ui-if="loggedIn" ng-cloak>
 							hello, {{loggedIn}}!
 						</a>
 						<a ui-if="loggedIn" href="@routes.Application.logout" target="_self">
