@@ -75,16 +75,23 @@ header
 			+reset-list
 			li
 				float: left
-				padding: 20px
-				height: 64px
 				a
+					+transition(all 0.2s)
+					float: left
+					display: block
 					text-decoration: none
 					color: desaturate(lighten($accent, 40%), 60%)
+					padding: 20px
+					height: 64px
+					&:hover
+						color: white
 
 				&.current
 					background-color: darken($accent, 5%)
 					a 
 						color: white
+				
+
 	nav.right
 		float: right
 
