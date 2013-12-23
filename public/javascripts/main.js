@@ -100,7 +100,7 @@ app.factory('Click', function(loggedIn){
 			this.active = !this.active;
 			var action = this.active ? 'on' : 'off';
 			map[action]('click', this.listener);
-			if(this.active) $scope.activeFeatures.forEach(function(f){ map.removeLayer(f); });
+			if(this.active) Region.features.clear();
 		},
 		deactivate: function(){
 			this.active = false;
@@ -160,101 +160,54 @@ app.factory('Focus', function(){
 	};
 });
 
-app.factory('Features', function(Region, Rating){
-	return {
-		list: [],
-		active: [],
-		show: function(i){
-			var id = Region.ids[Region.list[i]];
-			var l = L.geoJson(this.list[i], Region.style(Rating.cache[i]))
-				.addTo(map)
-				.on('click', function(){
-					$scope.$apply(function(){
-						$location.search({
-							id: id,
-							kind: 'loc'
-						});
-					});
-				});
-			this.active.push(l);
-		}
-	}
-});
+app.factory('Region', function($rootScope, $http, $location){
 
-app.factory('Region', function(){
-
-	var RATING_COLORS = [
-	  {h:  0, s: 59, l: 50, rating:   0},
-	  {h: 24, s: 60, l: 50, rating:  25},
-	  {h: 48, s: 82, l: 50, rating:  50},
-	  {h: 72, s: 54, l: 50, rating:  75},
-	  {h: 96, s: 50, l: 50, rating: 100}
+	var COLORS = [
+	  {rating:   0, hsl: [ 0, 59, 50]},
+	  {rating:  25, hsl: [24, 60, 50]},
+	  {rating:  50, hsl: [48, 82, 50]},
+	  {rating:  75, hsl: [72, 54, 50]},
+	  {rating: 100, hsl: [96, 50, 50]}
 	];
 
-	var multiColor = function(rating){
-	  
-	  var colors = RATING_COLORS;
-	  var start = colors[0];
-	  var next  = colors[1];
+	var getColor = function(rating){
 
-	  for (var i = 0; i < colors.length; i++){
-	    var color = colors[i];
-	    if(color.rating < rating) {
-	      start = color;
-	      next = colors[i + 1];
-	    }
-	  }
-
-	  return {
-	    hsl: [[start.h, next.h], [start.s, next.s], [start.l, next.l]],
-	    min: start.rating, max: next.rating
-	  };
-
-	}
-
-	var transition = function(value, maximum, startPoint, endPoint){
-	  return startPoint + (endPoint - startPoint)*value/maximum;
-	}
-
-	var transitionN = function(value, maximum, pairs){
-	  var results = [];
-	  for(var i in pairs){
-	    results.push(transition(value, maximum, pairs[i][0], pairs[i][1]));
-	  }
-	  return results;
-	}
-
-	var getBackgroundStyle = function(rating){
 	  var rating = (rating * 100)%100;
-	  var valueRange = multiColor(rating);
-	  var newValues = transitionN(
-	    rating - valueRange.min,
-	    valueRange.max - valueRange.min,
-	    valueRange.hsl
-	  );
-	  return 'hsl(' + newValues[0] + ', ' + newValues[1] + '%, ' + newValues[2] + '%)';
+
+	  var end;
+	  COLORS.some(function(c, i){ return c.rating >= rating && (end = i); });
+	  var start = COLORS[end-1];
+	  end = COLORS[end];
+
+	  var percent = (rating - start.rating)/(end.rating - start.rating);
+	  var hsl = start.hsl.map(function(e, i){
+	  	return e + (end.hsl[i] - e)*percent;
+	  });
+
+	  return 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+
 	};
 
-	return {
-		ids: {
-			'Autonomous Region in Muslim Mindanao': 21,
-			'Region V': 9,
-			'Region IV-A': 7,
-			'Region II': 13,
-			'Region XIII': 18,
-			'Region III': 6,
-			'Region VII': 8,
-			'Cordillera Administrative Region': 20,
-			'Region XI': 17,
-			'Region VIII': 10,
-			'Region I': 12,
-			'Region IV-B': 19,
-			'Metro Manila': 23,
-			'Region X': 14,
-			'Region XII': 16,
-			'Region VI': 4,
-			'Region IX': 15
-		},
+	var list = [];
+	list[4] = 'Region VI';
+	list[6] = 'Region III';
+	list[7] = 'Region IV-A';
+	list[8] = 'Region VII';
+	list[9] = 'Region V';
+	list[10] = 'Region VIII';
+	list[12] = 'Region I';
+	list[13] = 'Region II';
+	list[14] = 'Region X';
+	list[15] = 'Region IX';
+	list[16] = 'Region XII';
+	list[17] = 'Region XI';
+	list[18] = 'Region XIII';
+	list[19] = 'Region IV-B';
+	list[20] = 'Cordillera Administrative Region';
+	list[21] = 'Autonomous Region in Muslim Mindanao';
+	list[23] = 'Metro Manila';
+
+	var r = {
 		sets: {
 			'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
 			'Visayas': ['Region VI', 'Region VII', 'Region VIII'],
@@ -263,44 +216,62 @@ app.factory('Region', function(){
 			'Nationwide': ['Mindanao', 'Luzon', 'Visayas'],
 			'Region IV': ['Region IV-A', 'Region IV-B']
 		},
-		list: [
-			'Autonomous Region in Muslim Mindanao',
-			'Region V',
-			'Region IV-A',
-			'Region II',
-			'Region XIII',
-			'Region III',
-			'Region VII',
-			'Cordillera Administrative Region',
-			'Region XI',
-			'Region VIII',
-			'Region I',
-			'Region IV-B',
-			'Metro Manila',
-			'Region X',
-			'Region XII',
-			'Region VI',
-			'Region IX'
-		],
-		style: function(v){
-			return {style: {color: getBackgroundStyle(v) } };
+		list: list,
+		highlight: function(region){
+			var id = this.list.indexOf(region);
+			if(id != -1){
+				this.features.show(id);
+			} else if(this.sets[region]){
+				this.sets[region].forEach(function(subregion){ r.highlight(subregion); });
+			}
+		},
+		features: {
+			list: [],
+			active: [],
+			map: [21, 9, 7, 13, 18, 6, 8, 20, 17, 10, 12, 19, 23, 14, 16, 4, 15],
+			clear: function(){
+				this.active.forEach(function(f){ map.removeLayer(f); });
+			},
+			style: function(rating){
+				return {style: {color: getColor(rating) } };
+			},
+			_show: function(id){
+				this.active.push(L.geoJson(this.list[this.map.indexOf(id)], this.style(r.rating.cache[id])).addTo(map)
+					.on('click', function(){
+						$rootScope.$apply(function(){
+							$location.search({id: id, kind: 'loc'});
+						});
+					})
+				);
+			},
+			show: function(id){
+				if(r.rating.cache[id]){
+					this._show(id);
+				} else {
+					var w = $rootScope.$watch(
+						function(){ return r.rating.cache[id]; },
+						function(v){
+							if(v){
+								r.features._show(id);
+								w();
+							}
+						}
+					);
+					$http.get('/meta?' + $.param({id: id, kind: 'loc'})).success(function(response){
+						r.rating.cache[response.id] = r.rating.forItem(response);
+					});
+				}
+			}
+		},
+		rating: {
+			forItem: function(item){ return (item.stars/5) / item.ratings; },
+			cache: []
 		}
 	};
-});
 
-app.factory('Rating', function($http, Region){
-	
-	var r = {
-		forItem: function(item){ return (item.stars/5) / item.ratings; },
-		cache: [],
-	};
-
-	for(var name in Region.ids){
-		var id = Region.ids[name];
-		$http.get('/meta?' + $.param({id: id, kind: 'loc'})).success(function(response){
-			r.cache[response.id] = r.forItem(response);
-		});
-	}
+	$http.get('/assets/javascripts/ph-regions.json').success(function(response){
+		r.features.list = response.features;
+	});
 
 	return r;
 
@@ -314,7 +285,7 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('App', function($scope, $http, $location, Click, Comments, Features, Filters, Focus, Region){
+app.controller('App', function($scope, $http, $location, Click, Comments, Filters, Focus, Region){
 
 	$scope.click = Click;
 	$scope.comments = Comments;
@@ -337,10 +308,9 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Featur
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
-		$http.get('/meta', {params: searchParams})
-		.success(function(r){
+		$http.get('/meta', {params: searchParams}).success(function(r){
 
-			$scope.activeFeatures.forEach(function(f){ map.removeLayer(f); });
+			Region.features.clear();
 			
 			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
@@ -355,34 +325,9 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Featur
 					map.setView([r.lat, r.lng], zoomLevel);
 				}
 
-				// region highlighting
-				
-				function recursiveHighlight(region){
-					var i = Region.list.indexOf(region);
-					if(i != -1){
-						Features.show(i);
-					} else {
-						var a = Region.sets[region];
-						if(a){
-							for(var i in a){
-								recursiveHighlight(a[i]);
-							}
-						}
-					}
-				}
-
-				if(Focus.value.parent){
-					var i = Region.list.indexOf(Focus.value.parent.name);
-					if(i != -1) Features.show(i);
-				}
-
-				var i = Region.list.indexOf(Focus.value.name);
-				if(i != -1){
-					Features.show(i);
-				}
-
-				if(Region.sets[Focus.value.name]){
-					recursiveHighlight(Focus.value.name);
+				switch(Focus.value.kind){
+					case 'loc': Region.highlight(Focus.value.name); break;
+					case 'leaf': Region.highlight(Focus.value.parent.name); break;
 				}
 
 			}
@@ -452,9 +397,5 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Featur
 		if(!item.total) item.total = item.ps + item.mooe + item.co;
 		return item.total;
 	}
-
-	$scope.activeFeatures = [];
-	$http.get('/assets/javascripts/ph-regions.json')
-	.success(function(r){ Features.list = r.features; });
 
 });
