@@ -145,15 +145,7 @@ app.factory('Comments', function($http, Focus, loggedIn){
 
 app.factory('Focus', function(){
 	return {
-		value: {
-			id: 0,
-			kind: 'loc',
-			parent: null,
-			children: {
-				locs: [],
-				leaves: []
-			}
-		},
+		value: null,
 		parentLink: function(){
 			return '/app?' + $.param({id: this.value.parent.id, kind: 'loc'});
 		}
@@ -293,7 +285,7 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Filter
 	$scope.focus = Focus;
 
 	if(!$location.search().id || isNaN($location.search().id)){
-		$location.search({id: 0, kind: 'loc'});
+		$location.search({id: 3, kind: 'loc'});
 	}
 
 	$scope.nodeLink = function(node){
