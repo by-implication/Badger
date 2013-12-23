@@ -33,6 +33,11 @@ case class Location(
 // GENERATED case class end
 {
 
+  lazy val alias: String = name match {
+    case "CO" => "Central Office"
+    case _ => name
+  }
+
   lazy val parent: Option[Location] = locationParentId.map(Location.findById(_).get)
 
   def cascadeChangeRating(oldStars: Int, newStars: Int): Boolean = {
@@ -65,15 +70,13 @@ case class Location(
 
     (locs, leaves)
 
-    
-
   }
 
   def toJson(expand: Boolean = false, offset: Int = 0)(implicit user: User): JsObject = {
     var r = Json.obj(
       "id" -> id.get,
       "kind" -> "loc",
-      "name" -> name,
+      "name" -> alias,
       "ps" -> ps,
       "mooe" -> mooe,
       "co" -> co,
@@ -85,7 +88,7 @@ case class Location(
       "ratings" -> Random.nextInt(100),
       "parent" -> parent.map(p => Json.obj(
         "id" -> p.id.get,
-        "name" -> p.name
+        "name" -> p.alias
       ))
     )
     if(expand){

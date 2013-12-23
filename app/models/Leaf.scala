@@ -71,7 +71,7 @@ case class Leaf(
     "kind" -> "leaf",
     "parent" -> Json.obj(
       "id" -> parent.id.get,
-      "name" -> parent.name
+      "name" -> parent.alias
     ),
     "id" -> id.get,
     // "stars" -> stars,
