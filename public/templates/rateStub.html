@@ -6,8 +6,8 @@
 				ng-class="starClass(item, star)"></i>
 		</span>
 		<span class="apply-rating">
-      <i ng-show="loggedIn" ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
-      <a ng-hide="loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a>
+      <i ng-if="loggedIn" ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
+      <a ng-if="!loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a>
     </span>
   </span>
   <span class="rating" ui-if="item.userRated">
@@ -17,7 +17,7 @@
 				ng-class="starClass(item, star)"></i>
 		</span>
   </span>
-	<span ng-show="item.ratings">
+	<span ng-if="item.ratings">
 		{{item.ratings}} rating(s)
 	</span>
 </div>

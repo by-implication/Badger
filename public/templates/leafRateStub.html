@@ -9,18 +9,7 @@
       <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
     </span>
   </span>
-	<span ng-show="item.ratings">
+	<span ng-if="item.ratings">
 		{{item.ratings}} ratings
 	</span>
 </div>
-
-<!--<div ng-controller="Ratings" class="rating" ng-class="{rated: item.userRating}">
-  <span class="ratings">
-    <span class="rating" title="{{roundFix(focus.rating)}} star(s)">
-      <i class="fa fa-star-o" ng-repeat="star in stars"></i>
-    </span>
-    <span class="apply-rating">
-      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
-    </span>
-  </span>
-</div>-->

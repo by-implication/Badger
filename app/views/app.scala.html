@@ -9,13 +9,13 @@
 				<div id="main-view">
 					<div id="map">
 					</div>
-					<h3 id="click-instructions" ng-show="click.active">
+					<h3 id="click-instructions" ng-if="click.active">
 						Click on a point on the map to drop a pin indicating the location of this project
 					</h3>
-					<div id="filter-view" class="panel" ng-show="filtersVisible">
+					<div id="filter-view" class="panel" ng-if="filters.visible">
 						<div class="content">
 							<div class="header">
-								<button class="close" ng-click="toggleFilters()">
+								<button class="close" ng-click="filters.toggleVisibility()">
 									<i class="fa fa-times"></i>
 								</button>
 								<h4>
@@ -23,11 +23,11 @@
 								</h4>
 							</div>
 							<ul>
-								<li ng-repeat="(catName, cat) in cats">
-									<button ng-click="toggleFilter(catName)" 
-										ng-class="{active:activeFilter == catName}">
+								<li ng-repeat="(catName, cat) in filter.categories">
+									<button ng-click="filters.toggle(catName)" 
+										ng-class="{active:filters.current == catName}">
 										{{catName}}
-										<i class="fa fa-times" ng-show="activeFilter == catName"></i>
+										<i class="fa fa-times" ng-if="filters.current == catName"></i>
 									</button>
 								</li>
 							</ul>
@@ -64,14 +64,14 @@
 							</ul>
 						</div>
 					</div>
-					<div id="comment-view" class="panel" ng-show="commentsVisible">
+					<div id="comment-view" class="panel" ng-if="comments.visible">
 						<div class="content">
 							<div class="header">
-								<button class="close" ng-click="toggleComments()">
+								<button class="close" ng-click="comments.toggle()">
 									<i class="fa fa-times"></i>
 								</button>
 								<h4>
-									Comments on {{focus.fpapDsc}}
+									Comments on {{focus.value.fpapDsc}}
 								</h4>
 							</div>
 
@@ -102,35 +102,36 @@
 				</div>
 				<div id="sidebar">
 					<nav>
-						<button class="filter-button" ng-click="toggleFilters()" ng-class="{active:filtersVisible}">
-							{{activeFilter || 'Showing All'}}
+
+						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible}">
+							{{filters.current || 'Showing All'}}
 							<i class="fa fa-filter"></i>
 						</button>
-						<a class="back" ui-if="focus.parent" ng-href="{{parentLink(focus)}}" ng-click="navUp()">
+						<a class="back" ui-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
 							<i class="fa fa-chevron-left"></i>
-							{{focus.parent.name}}
+							{{focus.value.parent.name}}
 						</a>
-						<span ui-if="!focus.parent">
+						<span ui-if="!focus.value.parent">
 							Top level
 						</span>
 					</nav>
 
-					<div ui-if="focus.kind == 'loc'">
+					<div ui-if="focus.value.kind == 'loc'">
 						<div ng-include="'/assets/templates/locDetail.html'" 
 							class="data">
 						</div>
 					</div>
-					<div ui-if="focus.kind == 'leaf'">
+					<div ui-if="focus.value.kind == 'leaf'">
 						<div ng-include="'/assets/templates/leafDetail.html'" 
 							class="data">
 						</div>
 					</div>
 
 					<ul class="children">
-						<li ng-repeat="child in focus.children.locs"
+						<li ng-repeat="child in focus.value.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
-						<li ng-repeat="child in focus.children.leaves | filter:appearsInActiveFilter | orderBy: ordering:true"
+						<li ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 						<li ui-if="lastRetrieval >= 30">

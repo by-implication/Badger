@@ -53,125 +53,48 @@ app.directive('starRating', function(){
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.categories('Categories', function(){
+app.factory('Filters', function(){
 	return {
-		"academia": [
-			"Department of Science and Technology",
-			"State Universities and Colleges",
-			"DepEd - School Building Program",
-			"Department of Education",
-			"Department of Education - School Building Program"
-		],
-		"defence": [
-			"AFP  Modernization Program",
-			"Civil Service Commission",
-			"Department of National Defense"
-		],
-		"agriculture": [
-			"Department of Agrarian Reform",
-			"Agriculture and Fisheries Modernization Program",
-			"Agrarian Reform Fund",
-			"Department of Agriculture"
-		],
-		"economy": [
-			"Commission on Audit",
-			"General Fund Adjustments",
-			"Economic Stimulus Fund",
-			"Department of Finance",
-			"Debt Service Fund-Interest Payment",
-			"Department of Budget and Management",
-			"Compensation Adjustment Fund",
-			"National Economic and Development Authority",
-			"Tax Expenditures Fund",
-			"Budgetary Support to Government Corporations",
-			"Priority Social and Economic Projects Fund"
-		],
-		"public services": [
-			"Pension and Gratuity Fund",
-			"Department of Social Welfare and Development",
-			"Retirement Benefits Fund (Pension and Gratuity Fund)",
-			"Department of Public Works and Highways",
-			"E-Government Fund",
-			"Miscellaneous Personnel Benefits Fund",
-			"Payapa at Masaganang Pamayanan Fund",
-			"Department of Health",
-			"Priority Development Assistance Fund"
-		],
-		"industry": [
-			"Department of Labor and Employment",
-			"Department of Trade and Industry",
-			"Department of Energy",
-			"Department of Environment and Natural Resources"
-		],
-		"communications": [
-			"Department of Transportation and Communications",
-			"Presidential Communications Operations Office",
-			"Office of the Press Secretary"
-		],
-		"local government": [
-			"Department of the Interior and Local Government",
-			"Allocations to Local Government Units",
-			"Autonomous Region in Muslim Mindanao"
-		],
-		"central government": [
-			"Congress of the Philippines",
-			"Commission on Elections",
-			"National Unification Fund",
-			"Office of the Vice-President",
-			"Joint Legislative-Executive Councils",
-			"Office of the President",
-			"Contingent Fund",
-			"Other Executive Offices",
-			"Unprogrammed Fund",
-			"Calamity Fund"
-		],
-		"justice": [
-			"Office of the Ombudsman",
-			"Department of Justice",
-			"The Judiciary",
-			"Commission on Human Rights"
-		],
-		"foreign affairs": [
-			"Department of Foreign Affairs",
-			"Department of Tourism",
-			"International Commitments Fund"
-		]
-	};
-});
-
-app.factory('Filters', function(Comments, Click, Categories){
-	return {
+		categories: {
+			"academia": ["Department of Science and Technology", "State Universities and Colleges", "DepEd - School Building Program", "Department of Education", "Department of Education - School Building Program"],
+			"defence": ["AFP  Modernization Program", "Civil Service Commission", "Department of National Defense"],
+			"agriculture": ["Department of Agrarian Reform", "Agriculture and Fisheries Modernization Program", "Agrarian Reform Fund", "Department of Agriculture"],
+			"economy": ["Commission on Audit", "General Fund Adjustments", "Economic Stimulus Fund", "Department of Finance", "Debt Service Fund-Interest Payment", "Department of Budget and Management", "Compensation Adjustment Fund", "National Economic and Development Authority", "Tax Expenditures Fund", "Budgetary Support to Government Corporations", "Priority Social and Economic Projects Fund"],
+			"public services": ["Pension and Gratuity Fund", "Department of Social Welfare and Development", "Retirement Benefits Fund (Pension and Gratuity Fund)", "Department of Public Works and Highways", "E-Government Fund", "Miscellaneous Personnel Benefits Fund", "Payapa at Masaganang Pamayanan Fund", "Department of Health", "Priority Development Assistance Fund"],
+			"industry": ["Department of Labor and Employment", "Department of Trade and Industry", "Department of Energy", "Department of Environment and Natural Resources"],
+			"communications": ["Department of Transportation and Communications", "Presidential Communications Operations Office", "Office of the Press Secretary"],
+			"local government": ["Department of the Interior and Local Government", "Allocations to Local Government Units", "Autonomous Region in Muslim Mindanao"],
+			"central government": ["Congress of the Philippines", "Commission on Elections", "National Unification Fund", "Office of the Vice-President", "Joint Legislative-Executive Councils", "Office of the President", "Contingent Fund", "Other Executive Offices", "Unprogrammed Fund", "Calamity Fund"],
+			"justice": ["Office of the Ombudsman", "Department of Justice", "The Judiciary", "Commission on Human Rights"],
+			"foreign affairs": ["Department of Foreign Affairs", "Department of Tourism", "International Commitments Fund"]
+		},
 		visible: false,
 		current: null,
-		toggleVisibility = function(){
-			Comments.visible = false;
-			Click.active = false;
-			this.visible = !this.visible;
-		},
-		clear = function(){ this.current = null; },
-		toggle = function(filter){
+		toggleVisibility: function(){ this.visible = !this.visible; },
+		clear: function(){ this.current = null; },
+		toggle: function(filter){
 			this.current = (this.current == filter) ? null : filter;
 		},
-		appearsInCurrent = function(item){
-			return !this.current || Categories[this.current].indexOf(item.dptDsc) >= 0;
+		appearsInCurrent: function(item){
+			return !this.current || this.categories[this.current].indexOf(item.dptDsc) >= 0;
 		}
 	};
 });
 
-app.factory('Click', function(Comments, Filters){
+app.factory('Click', function(){
 	return {
 		active: false,
 		listener: function(e){
 			map.off('click', this.listener);
 			var lat = e.latlng.lat;
 			var lng = e.latlng.lng;
-			$http.post('/click/' + Focus.id + '/' + lat + '/' + lng).success(function(r){
-				var m = $scope.marker[Focus.id];
+			$http.post('/click/' + Focus.value.id + '/' + lat + '/' + lng).success(function(r){
+				var m = $scope.marker[Focus.value.id];
 				if(m) map.removeLayer(m);
-				$scope.marker[Focus.id] = new L.marker([lat, lng]).addTo(map)
+				$scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo(map)
 	  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
 	  			.openPopup();
-  			Focus.userClick = {lat: lat, lng: lng};
+  			Focus.value.userClick = {lat: lat, lng: lng};
   			Click.active = false;
 			});
 		},
@@ -180,8 +103,6 @@ app.factory('Click', function(Comments, Filters){
 			var action = this.active ? 'on' : 'off';
 			map[action]('click', this.listener);
 			if(this.active) $scope.activeFeatures.forEach(function(f){ map.removeLayer(f); });
-			Comments.visible = false;
-			Filters.visible = false;
 		},
 		deactivate: function(){
 			this.active = false;
@@ -191,17 +112,16 @@ app.factory('Click', function(Comments, Filters){
 	}
 });
 
-app.factory('Comments', function(Focus, Filters){
+app.factory('Comments', function(Focus){
 	return c = {
-		c.cache: [],
+		cache: [],
 		visible: false,
-		current: function(){ return this.cache[Focus.id]; },
+		current: function(){ return this.cache[Focus.value.id]; },
 		toggle: function(){
-			Filters.visible = false;
-			Click.active = false;
+			console.log('wee');
 			this.visible = !this.visible;
-			var fid = Focus.id;
-			if(this.visible && Focus.kind == 'leaf' && !this.cache[fid]){
+			var fid = Focus.value.id;
+			if(this.visible && Focus.value.kind == 'leaf' && !this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
 				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
@@ -210,13 +130,13 @@ app.factory('Comments', function(Focus, Filters){
 		},
 		input: null,
 		submit: function(){
-			var curFocus = Focus.id;
+			var focusId = Focus.value.id;
 			var comment = this.input;
 			this.input = null;
-			$http.post('/comment/' + Focus.id, {comment: comment})
+			$http.post('/comment/' + Focus.value.id, {comment: comment})
 			.success(function(r){
-				if(!c.cache[curFocus]) c.cache[curFocus] = [];
-				c.cache[curFocus].push({
+				if(!c.cache[focusId]) c.cache[focusId] = [];
+				c.cache[focusId].push({
 					user: $scope.loggedIn,
 					content: comment,
 					timestamp: parseInt(r)
@@ -228,23 +148,28 @@ app.factory('Comments', function(Focus, Filters){
 
 app.factory('Focus', function(){
 	return {
-		id: 0,
-		kind: 'loc',
-		parent: null,
-		children: {
-			locs: [],
-			leaves: []
+		value: {
+			id: 0,
+			kind: 'loc',
+			parent: null,
+			children: {
+				locs: [],
+				leaves: []
+			}
+		},
+		parentLink: function(){
+			return '/app?' + $.param({id: this.value.parent.id, kind: 'loc'});
 		}
 	};
 });
 
-app.factory('Features', function(Region){
+app.factory('Features', function(Region, Rating){
 	return {
 		list: [],
 		active: [],
 		show: function(i){
 			var id = Region.ids[Region.list[i]];
-			var l = L.geoJson(this.list[i], Region.style(id))
+			var l = L.geoJson(this.list[i], Region.style(Rating.cache[i]))
 				.addTo(map)
 				.on('click', function(){
 					$scope.$apply(function(){
@@ -360,24 +285,25 @@ app.factory('Region', function(){
 			'Region VI',
 			'Region IX'
 		],
-		style: function(i){
-			return {style: {color: getBackgroundStyle(Rating.cache[i]) } };
+		style: function(v){
+			return {style: {color: getBackgroundStyle(v) } };
 		}
 	};
 });
 
-app.factory('Rating', function(Region){
+app.factory('Rating', function($http, Region){
 	
 	var r = {
-		forItem: function(item){ return (item.stars/5) / item.ratings; }	,
+		forItem: function(item){ return (item.stars/5) / item.ratings; },
 		cache: [],
 	};
 
-	Region.ids.forEach(function(regionId){
-		$http.get('/meta?' + $.param({id: regionId, kind: 'loc'})).success(function(r){
-			r.cache[r.id] = r.forItem(r);
+	for(var name in Region.ids){
+		var id = Region.ids[name];
+		$http.get('/meta?' + $.param({id: id, kind: 'loc'})).success(function(response){
+			r.cache[response.id] = r.forItem(response);
 		});
-	});
+	}
 
 	return r;
 
@@ -390,12 +316,11 @@ app.controller('Main', function($scope){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('App', function($scope, $http, $location, Categories, Click, Comments, Filters, Focus){
+app.controller('App', function($scope, $http, $location, Click, Comments, Features, Filters, Focus, Region){
 
-	$scope.cats = Categories;
 	$scope.click = Click;
 	$scope.comments = Comments;
-	$scope.filter = Filters;
+	$scope.filters = Filters;
 	$scope.focus = Focus;
 
 	if(!$location.search().id || isNaN($location.search().id)){
@@ -404,10 +329,6 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 
 	$scope.nodeLink = function(node){
 		return '/app?' + $.param({id: node.id, kind: node.kind});
-	}
-
-	$scope.parentLink = function(node){
-		return '/app?' + $.param({id: node.parent.id, kind: 'loc'});
 	}
 
 	$scope.comatose = function(num){
@@ -425,10 +346,10 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 			
 			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
 			if(searchParams.offset){
-				Focus.children.leaves = Focus.children.leaves.concat(r.children.leaves);
+				Focus.value.children.leaves = Focus.value.children.leaves.concat(r.children.leaves);
 			} else {
 
-				Focus = r;
+				Focus.value = r;
 
 				if(r.userClick){
 					map.setView([r.userClick.lat, r.userClick.lng], 10);
@@ -441,7 +362,7 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 				function recursiveHighlight(region){
 					var i = Region.list.indexOf(region);
 					if(i != -1){
-						showFeature(i);
+						Features.show(i);
 					} else {
 						var a = Region.sets[region];
 						if(a){
@@ -452,18 +373,18 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 					}
 				}
 
-				if(Focus.parent){
-					var i = Region.list.indexOf(Focus.parent.name);
-					if(i != -1) showFeature(i);
+				if(Focus.value.parent){
+					var i = Region.list.indexOf(Focus.value.parent.name);
+					if(i != -1) Features.show(i);
 				}
 
-				var i = Region.list.indexOf(Focus.name);
+				var i = Region.list.indexOf(Focus.value.name);
 				if(i != -1){
-					showFeature(i);
+					Features.show(i);
 				}
 
-				if(Region.sets[Focus.name]){
-					recursiveHighlight(Focus.name);
+				if(Region.sets[Focus.value.name]){
+					recursiveHighlight(Focus.value.name);
 				}
 
 			}
@@ -474,7 +395,7 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 	});
 
 	$scope.navUp = function(){
-		if(Focus.parent.id == 24 || Focus.parent.id == 26 || Focus.parent.id == 28){
+		if(Focus.value.parent.id == 24 || Focus.value.parent.id == 26 || Focus.value.parent.id == 28){
 			zoomLevel = 7;	
 		}{
 			zoomLevel = 6;
@@ -482,7 +403,7 @@ app.controller('App', function($scope, $http, $location, Categories, Click, Comm
 	}
 	
 	$scope.navDown = function(){
-		if(Focus.id == 24 || Focus.id == 26 || Focus.id == 28){
+		if(Focus.value.id == 24 || Focus.value.id == 26 || Focus.value.id == 28){
 			zoomLevel = 9;
 		}{
 			zoomLevel = 6;
