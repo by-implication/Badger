@@ -20,7 +20,7 @@
 		<script type="text/javascript">
 			app.value('loggedIn', '@currentUser.handle');
 		</script>
-    <meta name="viewport" content="width=480, user-scalable=no"/>
+    <meta name="viewport" content="width=480, user-scalable=no">
 	</head>
 	<body ng-controller="Main" ng-init="curNav = '@curNav'">
 		<header>
@@ -33,7 +33,7 @@
 					</li>
 					<li ng-class="{current: curNav == 'map'}">
 						<a href="@routes.Application.app" target="_self">
-							map
+							explore
 						</a>
 					</li>
 				</ul>
