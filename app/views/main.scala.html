@@ -17,12 +17,12 @@
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/angular-ui.min.js")"></script>
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
+		<script type="text/javascript">
+			app.value('loggedIn', '@currentUser.handle');
+		</script>
     <meta name="viewport" content="width=480, user-scalable=no"/>
 	</head>
-	<body ng-controller="Main" ng-init="
-		curNav = '@curNav';
-		loggedIn = '@currentUser.handle';
-	">
+	<body ng-controller="Main" ng-init="curNav = '@curNav'">
 		<header>
 			<nav class="left">
 				<ul>

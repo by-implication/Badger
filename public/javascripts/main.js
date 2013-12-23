@@ -7,14 +7,12 @@ app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 app.directive('starRating', function(){
 	return {
 		restrict: 'E',
-		scope: {
-			item: '=',
-			loggedIn: '='
-		},
+		scope: { item: '=' },
 		templateUrl: '/assets/templates/rateStub.html',
 		transclude: true,
-		controller: function($scope, $http){
-			
+		controller: function($scope, $http, loggedIn){
+
+			$scope.loggedIn = loggedIn;
 			$scope.stars = [1,2,3,4,5];
 
 			$scope.roundFix = function(n){
@@ -81,7 +79,7 @@ app.factory('Filters', function(){
 	};
 });
 
-app.factory('Click', function(){
+app.factory('Click', function(loggedIn){
 	return {
 		active: false,
 		listener: function(e){
@@ -92,7 +90,7 @@ app.factory('Click', function(){
 				var m = $scope.marker[Focus.value.id];
 				if(m) map.removeLayer(m);
 				$scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo(map)
-	  			.bindPopup('Thanks for your contribution, ' + $scope.loggedIn + '! :)')
+	  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
 	  			.openPopup();
   			Focus.value.userClick = {lat: lat, lng: lng};
   			Click.active = false;
@@ -112,7 +110,7 @@ app.factory('Click', function(){
 	}
 });
 
-app.factory('Comments', function($http, Focus){
+app.factory('Comments', function($http, Focus, loggedIn){
 	return c = {
 		cache: [],
 		visible: false,
@@ -136,7 +134,7 @@ app.factory('Comments', function($http, Focus){
 			.success(function(r){
 				if(!c.cache[focusId]) c.cache[focusId] = [];
 				c.cache[focusId].push({
-					user: $scope.loggedIn,
+					user: loggedIn,
 					content: comment,
 					timestamp: parseInt(r)
 				});
@@ -310,7 +308,8 @@ app.factory('Rating', function($http, Region){
 
 //////////////////////////////////////////// controllers /////////////////////////////////
 
-app.controller('Main', function($scope){
+app.controller('Main', function($scope, loggedIn){
+	$scope.loggedIn = loggedIn;
 	$scope.timeago = $.timeago;
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });

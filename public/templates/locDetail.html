@@ -1,8 +1,8 @@
 <h2>
-	{{focus.name}}
+	{{focus.value.name}}
 </h2>
 
-<star-rating logged-in="loggedIn" item="focus"></star-rating>
+<star-rating item="focus.value"></star-rating>
 
 <div class="share">
 	<a id="fb" target="_blank" ng-href="{{share.facebook()}}">
@@ -18,9 +18,9 @@
 
 <!--<ul>
 	<li>
-		{{focus.date}}
+		{{focus.value.date}}
 	</li>
 	<li>
-		{{focus.amount}}
+		{{focus.value.amount}}
 	</li>
 </ul>-->
