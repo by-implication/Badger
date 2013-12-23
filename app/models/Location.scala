@@ -55,6 +55,7 @@ case class Location(
     val locs = SQL("""
       SELECT * from locations
       WHERE location_parent_id = {id}
+      ORDER BY location_lat DESC
     """).on('id -> id).list(Location.simple)
 
     val leaves = SQL("""
