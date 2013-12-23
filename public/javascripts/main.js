@@ -112,13 +112,12 @@ app.factory('Click', function(){
 	}
 });
 
-app.factory('Comments', function(Focus){
+app.factory('Comments', function($http, Focus){
 	return c = {
 		cache: [],
 		visible: false,
 		current: function(){ return this.cache[Focus.value.id]; },
 		toggle: function(){
-			console.log('wee');
 			this.visible = !this.visible;
 			var fid = Focus.value.id;
 			if(this.visible && Focus.value.kind == 'leaf' && !this.cache[fid]){

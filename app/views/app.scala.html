@@ -79,19 +79,19 @@
 								<a ui-if="!loggedIn" target="_self" href="@routes.Application.account">
 									Sign up / Log in to comment!
 								</a>
-								<form ui-if="loggedIn" ng-submit="submitComment()">
-									<textarea placeholder="Please be civil!" ng-model="comment.input"></textarea>
+								<form ui-if="loggedIn" ng-submit="comments.submit()">
+									<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
 									<button type="submit">Submit</button>
 								</form>
 							</div>
 
 							<div class="comments">
-								<ul ui-if="currentComments().length">
-									<li ng-repeat="comment in currentComments() | orderBy:'timestamp':true ">
+								<ul ui-if="comments.current().length">
+									<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
 										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
 									</li>
 								</ul>
-								<div ui-if="!currentComments().length" class="empty">
+								<div ui-if="!comments.current().length" class="empty">
 									<p>
 										No comments yet. You can be the first!
 									</p>
