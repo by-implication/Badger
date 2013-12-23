@@ -41,13 +41,13 @@
 			<nav class="right">
 				<ul>
 					<li ng-class="{current: curNav == 'signup'}">
-						<a ui-if="!loggedIn" href="@routes.Application.account" target="_self">
+						<a ng-if="!loggedIn" href="@routes.Application.account" target="_self">
 							sign up / log in
 						</a>
-						<a ui-if="loggedIn" ng-cloak>
+						<a ng-if="loggedIn" ng-cloak>
 							hello, {{loggedIn}}!
 						</a>
-						<a ui-if="loggedIn" href="@routes.Application.logout" target="_self">
+						<a ng-if="loggedIn" href="@routes.Application.logout" target="_self">
 							logout
 						</a>
 					</li>

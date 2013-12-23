@@ -76,22 +76,22 @@
 							</div>
 
 							<div class="user-comment">
-								<a ui-if="!loggedIn" target="_self" href="@routes.Application.account">
+								<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
 									Sign up / Log in to comment!
 								</a>
-								<form ui-if="loggedIn" ng-submit="comments.submit()">
+								<form ng-if="loggedIn" ng-submit="comments.submit()">
 									<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
 									<button type="submit">Submit</button>
 								</form>
 							</div>
 
 							<div class="comments">
-								<ul ui-if="comments.current().length">
+								<ul ng-if="comments.current().length">
 									<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
 										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
 									</li>
 								</ul>
-								<div ui-if="!comments.current().length" class="empty">
+								<div ng-if="!comments.current().length" class="empty">
 									<p>
 										No comments yet. You can be the first!
 									</p>
@@ -107,24 +107,21 @@
 							{{filters.current || 'Showing All'}}
 							<i class="fa fa-filter"></i>
 						</button>
-						<a class="back" ui-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
+						<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
 							<i class="fa fa-chevron-left"></i>
 							{{focus.value.parent.name}}
 						</a>
-						<span ui-if="!focus.value.parent">
+						<span ng-if="!focus.value.parent">
 							Top level
 						</span>
 					</nav>
 
-					<div ui-if="focus.value.kind == 'loc'">
-						<div ng-include="'/assets/templates/locDetail.html'" 
-							class="data">
-						</div>
+					<div class="data" ng-if="focus.value.kind == 'loc'"
+						ng-include="'/assets/templates/locDetail.html'">
 					</div>
-					<div ui-if="focus.value.kind == 'leaf'">
-						<div ng-include="'/assets/templates/leafDetail.html'" 
-							class="data">
-						</div>
+
+					<div class="data" ng-if="focus.value.kind == 'leaf'"
+						ng-include="'/assets/templates/leafDetail.html'">
 					</div>
 
 					<ul class="children">
@@ -134,7 +131,7 @@
 						<li ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
-						<li ui-if="lastRetrieval >= 30">
+						<li ng-if="lastRetrieval >= 30">
 							<a ng-href="{{showMoreLink()}}">Show more</a>
 						</li>
 					</ul>

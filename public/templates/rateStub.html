@@ -1,5 +1,5 @@
 <div class="rating-group" ng-class="{ratable: item.kind == 'leaf'}">
-	<span class="rating" ui-if="!item.userRated">
+	<span class="rating" ng-if="!item.userRated">
 		<span class="current-rating">
 			<i class="fa"
 				ng-repeat="star in stars"
@@ -10,7 +10,7 @@
       <a ng-if="!loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a>
     </span>
   </span>
-  <span class="rating" ui-if="item.userRated">
+  <span class="rating" ng-if="item.userRated">
 		<span class="current-rating">
 			<i class="fa"
 				ng-repeat="star in stars"
