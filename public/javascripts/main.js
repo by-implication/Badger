@@ -51,7 +51,7 @@ app.directive('starRating', function(){
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.factory('Filters', function(){
+app.factory('Filters', function($rootScope){
 	return {
 		categories: {
 			"academia": ["Department of Science and Technology", "State Universities and Colleges", "DepEd - School Building Program", "Department of Education", "Department of Education - School Building Program"],
@@ -66,9 +66,9 @@ app.factory('Filters', function(){
 			"justice": ["Office of the Ombudsman", "Department of Justice", "The Judiciary", "Commission on Human Rights"],
 			"foreign affairs": ["Department of Foreign Affairs", "Department of Tourism", "International Commitments Fund"]
 		},
-		visible: false,
+		visible: function(){ return $rootScope.specialView.current == 'filters'; },
 		current: null,
-		toggleVisibility: function(){ this.visible = !this.visible; },
+		toggleVisibility: function(){ $rootScope.specialView.toggle('filters'); },
 		clear: function(){ this.current = null; },
 		toggle: function(filter){
 			this.current = (this.current == filter) ? null : filter;
@@ -79,9 +79,9 @@ app.factory('Filters', function(){
 	};
 });
 
-app.factory('Click', function(loggedIn){
+app.factory('Click', function($rootScope, loggedIn, Region){
 	return {
-		active: false,
+		active: function(){ return $rootScope.specialView.current == 'click'; },
 		listener: function(e){
 			map.off('click', this.listener);
 			var lat = e.latlng.lat;
@@ -93,32 +93,32 @@ app.factory('Click', function(loggedIn){
 	  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
 	  			.openPopup();
   			Focus.value.userClick = {lat: lat, lng: lng};
-  			Click.active = false;
+  			$rootScope.specialView.deactivate();
 			});
 		},
 		toggle: function(){
-			this.active = !this.active;
-			var action = this.active ? 'on' : 'off';
-			map[action]('click', this.listener);
-			if(this.active) Region.features.clear();
+			$rootScope.specialView.toggle('click');
+			var active = this.active();
+			map[active ? 'on' : 'off']('click', this.listener);
+			if(active) Region.features.clear();
 		},
 		deactivate: function(){
-			this.active = false;
+			$rootScope.specialView.deactivate();
 			map.off('click', this.listener);
 		},
-		text: function(){ return this.active ? 'Cancel' : 'Point this out!'; }
+		text: function(){ return this.active() ? 'Cancel' : 'Point this out!'; }
 	}
 });
 
-app.factory('Comments', function($http, Focus, loggedIn){
+app.factory('Comments', function($rootScope, $http, Focus, loggedIn){
 	return c = {
 		cache: [],
-		visible: false,
+		visible: function(){ return $rootScope.specialView.current == 'comments'; },
 		current: function(){ return this.cache[Focus.value.id]; },
 		toggle: function(){
-			this.visible = !this.visible;
+			$rootScope.specialView.toggle('comments');
 			var fid = Focus.value.id;
-			if(this.visible && Focus.value.kind == 'leaf' && !this.cache[fid]){
+			if(this.visible() && Focus.value.kind == 'leaf' && !this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
 				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
@@ -269,6 +269,18 @@ app.factory('Region', function($rootScope, $http, $location){
 
 });
 
+//////////////////////////////////////////// init ////////////////////////////////////////
+
+app.run(function($rootScope, Click, Comments, Filters){
+
+  $rootScope.specialView = {
+  	current: null,
+  	deactivate: function(){ this.current = null; },
+  	toggle: function(view){ this.current = (this.current == view ? null : view); }
+  }
+
+});
+
 //////////////////////////////////////////// controllers /////////////////////////////////
 
 app.controller('Main', function($scope, loggedIn){
@@ -280,8 +292,8 @@ app.controller('Main', function($scope, loggedIn){
 app.controller('App', function($scope, $http, $location, Click, Comments, Filters, Focus, Region){
 
 	$scope.click = Click;
-	$scope.comments = Comments;
-	$scope.filters = Filters;
+  $scope.comments = Comments;
+  $scope.filters = Filters;
 	$scope.focus = Focus;
 
 	if(!$location.search().id || isNaN($location.search().id)){
