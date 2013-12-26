@@ -249,7 +249,7 @@ app.factory('Region', function($rootScope, $http, $location){
 							}
 						}
 					);
-					$http.get('/meta?' + $.param({id: id, kind: 'loc'})).success(function(response){
+					$http.get('/meta/explore', {params: {id: id, kind: 'loc'}}).success(function(response){
 						r.rating.cache[response.id] = r.rating.forItem(response);
 					});
 				}
@@ -312,7 +312,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
-		$http.get('/meta', {params: searchParams}).success(function(r){
+		$http.get('/meta/explore', {params: searchParams}).success(function(r){
 
 			Region.features.clear();
 			
@@ -404,6 +404,15 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 
 });
 
-app.controller('Breakdown', function($scope){
+app.controller('Breakdown', function($scope, $http, $location){
+
+	if(!$location.search().id || isNaN($location.search().id)){ $location.search({id: 1}); }
+
+	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
+		var searchParams = $location.search();
+		$http.get('/meta/breakdown', {params: searchParams}).success(function(r){
+			console.log(r);
+		});
+	});
 
 });

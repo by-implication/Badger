@@ -38,7 +38,7 @@ object Application extends Controller with Secured {
     Ok(views.html.breakdown(user))
   }
 
-  def meta(kind: String, id: Int, offset: Int) = UserAction(){ implicit user => request =>
+  def exploreMeta(kind: String, id: Int, offset: Int) = UserAction(){ implicit user => request =>
     kind match {
       case "leaf" | "loc" => {
         (kind match {
@@ -48,6 +48,12 @@ object Application extends Controller with Secured {
       }
       case _ => BadRequest("invalid type")
     }
+  }
+
+  def breakdownMeta(id: Int) = UserAction(){ implicit user => request =>
+    Leaf.findById(id).map { leaf =>
+      Ok("yey")
+    }.getOrElse(NotFound("no such leaf"))
   }
 
   def comments(id: Int) = UserAction(){ user => request =>
