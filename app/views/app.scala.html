@@ -23,7 +23,7 @@
 								</h4>
 							</div>
 							<ul>
-								<li ng-repeat="(catName, cat) in filter.categories">
+								<li ng-repeat="(catName, cat) in filters.categories">
 									<button ng-click="filters.toggle(catName)" 
 										ng-class="{active:filters.current == catName}">
 										{{catName}}
