@@ -128,7 +128,7 @@
 						<li ng-repeat="child in focus.value.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
-						<li ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
+						<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 						<li ng-if="lastRetrieval >= 30">

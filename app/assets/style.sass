@@ -29,6 +29,9 @@ body
 
 	a
 		color: #333
+		text-decoration: none
+		&:hover
+			text-decoration: underline
 
 	h2
 		font-size: 36px
@@ -143,7 +146,7 @@ main
 	#sidebar
 		// +span-columns(1 of 3, "block-collapse")
 		width: 33%
-		background-color: white
+		background-color: #eee
 		position: absolute
 		bottom: 0px
 		top: 0px
@@ -182,6 +185,7 @@ main
 		.data
 			padding: 20px
 			border-bottom: 1px solid rgba(black, 0.05)
+			background-color: white
 			.share
 				margin-bottom: 20px
 				button
@@ -245,14 +249,23 @@ main
 		ul.children
 			+reset-list
 			+fill-parent
+			background-color: #eee
 			li
 				+transition(all 0.4s)
 				padding: 20px
 				border-bottom: 1px solid rgba(black, 0.05)
-				&:hover, &.active
-					background-color: #eee
+				// &:hover, &.active
+				background-color: white
 				a
 					display: block
+
+				&.project
+					margin: 10px
+					padding: 10px
+					background-color: white
+					border-bottom: none
+					box-shadow: 0px 2px 2px rgba(black, 0.1)
+
 
 	#main-view
 		width: 67%
