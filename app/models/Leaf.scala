@@ -22,7 +22,7 @@ case class Leaf(
   agyType: Option[String] = None,
   ownerCd: Option[String] = None,
   ownerDsc: Option[String] = None,
-  fpapCd: Option[String] = None,
+  fpapCd: Option[PGLTree] = None,
   fpapDsc: Option[String] = None,
   areaCd: Option[String] = None,
   areaDsc: Option[String] = None,
@@ -38,6 +38,24 @@ case class Leaf(
 ) extends LeafCCGen with Entity[Leaf]
 // GENERATED case class end
 {
+
+  def breadcrumbs = DB.withConnection { implicit c =>
+    SQL("""
+      SELECT * FROM leafs
+      WHERE leaf_id < {id}
+      AND leaf_fpap_cd @> {fpapCd}
+      AND leaf_dpt_dsc = {dptDsc}
+      AND leaf_year = {year}
+      AND leaf_kind = {kind}
+      ORDER BY leaf_fpap_cd
+    """).on(
+      'id -> id,
+      'fpapCd -> fpapCd,
+      'dptDsc -> dptDsc,
+      'year -> year,
+      'kind -> kind
+    ).list(Leaf.simple)
+  }
 
   def changeRating(oldStars: Int, newStars: Int) = {
     copy(stars = stars - oldStars + newStars).save()
@@ -79,7 +97,11 @@ case class Leaf(
     "stars" -> Random.nextInt(500),
     "ratings" -> Random.nextInt(100),
     "userRating" -> user.ratingFor(this),
-    "userClick" -> user.clickFor(this)
+    "userClick" -> user.clickFor(this),
+    "breadcrumbs" -> breadcrumbs.map(c => Json.obj(
+      "id" -> c.id.get,
+      "name" -> c.fpapDsc
+    ))
   )
 }
 
@@ -91,7 +113,7 @@ trait LeafGen extends EntityCompanion[Leaf] {
     get[Option[String]]("leaf_agy_type") ~
     get[Option[String]]("leaf_owner_cd") ~
     get[Option[String]]("leaf_owner_dsc") ~
-    get[Option[String]]("leaf_fpap_cd") ~
+    get[Option[PGLTree]]("leaf_fpap_cd") ~
     get[Option[String]]("leaf_fpap_dsc") ~
     get[Option[String]]("leaf_area_cd") ~
     get[Option[String]]("leaf_area_dsc") ~

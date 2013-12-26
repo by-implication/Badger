@@ -2,6 +2,14 @@
 	{{focus.value.fpapDsc}} ({{focus.value.year}})
 </h2>
 
+<ul>
+	<li ng-repeat="crumb in focus.value.breadcrumbs">
+		<a ng-href="/app?id={{crumb.id}}&kind=leaf">
+			{{crumb.name}}
+		</a>
+	</li>
+</ul>
+
 <star-rating item="focus.value"></star-rating>
 
 <div class="share">

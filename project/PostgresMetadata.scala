@@ -66,7 +66,8 @@ object PostgresMetadata {
     "text" -> new StringType,
     "numeric" -> new NumericType,
     "_text" -> new NoParseType("PGStringList", "Nil"),
-    "_int4" -> new NoParseType("PGIntList", "Nil")
+    "_int4" -> new NoParseType("PGIntList", "Nil"),
+    "ltree" -> new NoParseType("PGLTree", "Nil")
   ) ++ listEnums().map(e => (e.name, new EnumType(e)))
 
   def mapType(c: Column) = {
