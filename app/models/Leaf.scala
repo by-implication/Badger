@@ -97,11 +97,11 @@ case class Leaf(
     "stars" -> Random.nextInt(500),
     "ratings" -> Random.nextInt(100),
     "userRating" -> user.ratingFor(this),
-    "userClick" -> user.clickFor(this),
-    "breadcrumbs" -> breadcrumbs.map(c => Json.obj(
-      "id" -> c.id.get,
-      "name" -> c.fpapDsc
-    ))
+    "userClick" -> user.clickFor(this)
+    // "breadcrumbs" -> breadcrumbs.map(c => Json.obj(
+    //   "id" -> c.id.get,
+    //   "name" -> c.fpapDsc
+    // ))
   )
 }
 

@@ -1,0 +1,144 @@
+@(currentUser: budget.models.User)
+
+@main("breakdown", currentUser){
+
+	<div ng-controller="Breakdown">
+
+		<section>
+			<main>
+				<div id="main-view">
+					<div id="map">
+					</div>
+					<h3 id="click-instructions" ng-if="click.active()">
+						Click on a point on the map to drop a pin indicating the location of this project
+					</h3>
+					<div id="filter-view" class="panel" ng-if="filters.visible()">
+						<div class="content">
+							<div class="header">
+								<button class="close" ng-click="filters.toggleVisibility()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h4>
+									Filters
+								</h4>
+							</div>
+							<ul>
+								<li ng-repeat="(catName, cat) in filter.categories">
+									<button ng-click="filters.toggle(catName)" 
+										ng-class="{active:filters.current == catName}">
+										{{catName}}
+										<i class="fa fa-times" ng-if="filters.current == catName"></i>
+									</button>
+								</li>
+							</ul>
+							<div class="header">
+								<h4>Sorts</h4>
+							</div>
+							<ul>
+								<li>
+									<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
+										ng-class="{active: activeOrder == 'Amount'}">
+										Amount
+									</button>
+								</li>
+								<li>
+									<button ng-click="ordering = 'year'; activeOrder = 'Year'"
+										ng-class="{active: activeOrder == 'Year'}">
+										Year
+									</button>
+								</li>
+								<!--
+								this is exhibiting strange behavior, captain!
+								<li>
+									<button ng-click="ordering = 'stars'; activeOrder = 'Stars'"
+										ng-class="{active: activeOrder == 'Stars'}">
+										Stars
+									</button>
+								</li>-->
+								<li>
+									<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
+										ng-class="{active: activeOrder == 'Ratings'}">
+										Ratings
+									</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="comment-view" class="panel" ng-if="comments.visible()">
+						<div class="content">
+							<div class="header">
+								<button class="close" ng-click="comments.toggle()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h4>
+									Comments on {{focus.value.fpapDsc}}
+								</h4>
+							</div>
+
+							<div class="user-comment">
+								<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
+									Sign up / Log in to comment!
+								</a>
+								<form ng-if="loggedIn" ng-submit="comments.submit()">
+									<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
+									<button type="submit">Submit</button>
+								</form>
+							</div>
+
+							<div class="comments">
+								<ul ng-if="comments.current().length">
+									<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
+										<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+									</li>
+								</ul>
+								<div ng-if="!comments.current().length" class="empty">
+									<p>
+										No comments yet. You can be the first!
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="sidebar">
+					<nav>
+
+						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
+							{{filters.current || 'Showing All'}}
+							<i class="fa fa-filter"></i>
+						</button>
+						<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
+							<i class="fa fa-chevron-left"></i>
+							{{focus.value.parent.name}}
+						</a>
+						<span ng-if="!focus.value.parent">
+							Top level
+						</span>
+					</nav>
+
+					<div class="data" ng-if="focus.value.kind == 'loc'"
+						ng-include="'/assets/templates/locDetail.html'">
+					</div>
+
+					<div class="data" ng-if="focus.value.kind == 'leaf'"
+						ng-include="'/assets/templates/leafDetail.html'">
+					</div>
+
+					<ul class="children">
+						<li ng-repeat="child in focus.value.children.locs"
+							ng-include="'/assets/templates/locStub.html'">
+						</li>
+						<li ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
+							ng-include="'/assets/templates/leafStub.html'">
+						</li>
+						<li ng-if="lastRetrieval >= 30">
+							<a ng-href="{{showMoreLink()}}">Show more</a>
+						</li>
+					</ul>
+				</div>
+			</main>
+		</section>
+	</div>
+	<script src="@routes.Assets.at("leaflet/leaflet.js")"></script>
+  <script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
+}

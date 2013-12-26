@@ -30,8 +30,12 @@ object Application extends Controller with Secured {
     Ok(views.html.landing(user))
   }
 
-  def app = UserAction(){ user => request =>
-    Ok(views.html.app(user))
+  def explore = UserAction(){ user => request =>
+    Ok(views.html.explore(user))
+  }
+
+  def breakdown = UserAction(){ user => request =>
+    Ok(views.html.breakdown(user))
   }
 
   def meta(kind: String, id: Int, offset: Int) = UserAction(){ implicit user => request =>
@@ -138,7 +142,7 @@ object Application extends Controller with Secured {
     if(user.isAnonymous){
       Ok(views.html.account(signupForm, loginForm, user))
     } else {
-      Redirect(routes.Application.app)
+      Redirect(routes.Application.explore)
     }
   }
 
@@ -150,12 +154,12 @@ object Application extends Controller with Secured {
           BadRequest(views.html.account(errors, loginForm, user))
         },
         newUser => {
-          Redirect(routes.Application.app)
+          Redirect(routes.Application.explore)
           .withSession(request.session + ("user_id" -> newUser.id.toString))
         }
       )
     } else {
-      Redirect(routes.Application.app)
+      Redirect(routes.Application.explore)
     }
   }
 
@@ -164,12 +168,12 @@ object Application extends Controller with Secured {
       loginForm.bindFromRequest.fold(
         errors => BadRequest(views.html.account(signupForm, errors, user)),
         newUser => {
-          Redirect(routes.Application.app)
+          Redirect(routes.Application.explore)
           .withSession(request.session + ("user_id" -> newUser.id.toString))
         }
       )
     } else {
-      Redirect(routes.Application.app)
+      Redirect(routes.Application.explore)
     }
   }
 

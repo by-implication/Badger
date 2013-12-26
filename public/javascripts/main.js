@@ -289,7 +289,7 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('App', function($scope, $http, $location, Click, Comments, Filters, Focus, Region){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Focus, Region){
 
 	$scope.click = Click;
   $scope.comments = Comments;
@@ -401,5 +401,9 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Filter
 		if(!item.total) item.total = item.ps + item.mooe + item.co;
 		return item.total;
 	}
+
+});
+
+app.controller('Breakdown', function($scope){
 
 });
