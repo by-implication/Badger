@@ -62,18 +62,24 @@
 					<div class="data" ng-if="focus.value.kind == 'loc'"
 						ng-include="'/assets/templates/locDetail.html'">
 					</div>
+					<button class="tab-button" ng-click="currentTab = 'locations'">
+						Locations({{focus.value.children.locs.length}})
+					</button>
+					<button class="tab-button" ng-click="currentTab = 'projects'">
+						Projects({{focus.value.children.leaves.length}})
+					</button>
 
 					<div class="data" ng-if="focus.value.kind == 'leaf'"
 						ng-include="'/assets/templates/leafDetail.html'">
 					</div>
-					<div class="locations">
+					<div class="locations" ng-show="currentTab == 'locations'">
 						<ul>
 							<li class="int-item" ng-repeat="child in focus.value.children.locs"
 								ng-include="'/assets/templates/locStub.html'">
 							</li>
 						</ul>
 					</div>
-					<div class="projects" ng-show="focus.value.children.leaves.length">
+					<div class="projects" ng-show="currentTab == 'projects'">
 						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
 							{{filters.current || 'Showing All'}}
 							<i class="fa fa-filter"></i>
@@ -113,14 +119,6 @@
 											Year
 										</button>
 									</li>
-									<!--
-									this is exhibiting strange behavior, captain!
-									<li>
-										<button ng-click="ordering = 'stars'; activeOrder = 'Stars'"
-											ng-class="{active: activeOrder == 'Stars'}">
-											Stars
-										</button>
-									</li>-->
 									<li>
 										<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
 											ng-class="{active: activeOrder == 'Ratings'}">
