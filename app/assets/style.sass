@@ -248,6 +248,27 @@ main
 				border-bottom: none
 				box-shadow: 0px 2px 2px rgba(black, 0.1)
 
+			#filter-view
+				.content
+					width: 256px
+
+					ul
+						+reset-list
+						padding: 20px
+						margin-left: -6px
+						li
+							button
+								+reset-button
+								padding: 4px 6px 4px 6px
+								border-radius: 3px
+								color: #333
+								text-transform: capitalize
+								&:hover
+									color: $accent
+								&.active
+									background-color: #333
+									color: white
+
 		.int-item 
 			a
 				+transition(all 0.4s)
@@ -300,25 +321,6 @@ main
 					padding-bottom: 0px
 
 
-		#filter-view
-			.content
-				width: 256px
-
-				ul
-					+reset-list
-					padding: 20px
-					margin-left: -6px
-					li
-						button
-							+reset-button
-							padding: 4px 6px 4px 6px
-							border-radius: 3px
-							color: #333
-							text-transform: capitalize
-							&:hover
-								color: $accent
-							&.active
-								background-color: #333
-								color: white
+		
 
 		

@@ -12,58 +12,6 @@
 					<h3 id="click-instructions" ng-if="click.active()">
 						Click on a point on the map to drop a pin indicating the location of this project
 					</h3>
-					<div id="filter-view" class="panel" ng-if="filters.visible()">
-						<div class="content">
-							<div class="header">
-								<button class="close" ng-click="filters.toggleVisibility()">
-									<i class="fa fa-times"></i>
-								</button>
-								<h4>
-									Filters
-								</h4>
-							</div>
-							<ul>
-								<li ng-repeat="(catName, cat) in filters.categories">
-									<button ng-click="filters.toggle(catName)" 
-										ng-class="{active:filters.current == catName}">
-										{{catName}}
-										<i class="fa fa-times" ng-if="filters.current == catName"></i>
-									</button>
-								</li>
-							</ul>
-							<div class="header">
-								<h4>Sorts</h4>
-							</div>
-							<ul>
-								<li>
-									<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
-										ng-class="{active: activeOrder == 'Amount'}">
-										Amount
-									</button>
-								</li>
-								<li>
-									<button ng-click="ordering = 'year'; activeOrder = 'Year'"
-										ng-class="{active: activeOrder == 'Year'}">
-										Year
-									</button>
-								</li>
-								<!--
-								this is exhibiting strange behavior, captain!
-								<li>
-									<button ng-click="ordering = 'stars'; activeOrder = 'Stars'"
-										ng-class="{active: activeOrder == 'Stars'}">
-										Stars
-									</button>
-								</li>-->
-								<li>
-									<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
-										ng-class="{active: activeOrder == 'Ratings'}">
-										Ratings
-									</button>
-								</li>
-							</ul>
-						</div>
-					</div>
 					<div id="comment-view" class="panel" ng-if="comments.visible()">
 						<div class="content">
 							<div class="header">
@@ -130,6 +78,58 @@
 							{{filters.current || 'Showing All'}}
 							<i class="fa fa-filter"></i>
 						</button>
+						<div id="filter-view" class="panel" ng-if="filters.visible()">
+							<div class="content">
+								<div class="header">
+									<button class="close" ng-click="filters.toggleVisibility()">
+										<i class="fa fa-times"></i>
+									</button>
+									<h4>
+										Filters
+									</h4>
+								</div>
+								<ul>
+									<li ng-repeat="(catName, cat) in filters.categories">
+										<button ng-click="filters.toggle(catName)" 
+											ng-class="{active:filters.current == catName}">
+											{{catName}}
+											<i class="fa fa-times" ng-if="filters.current == catName"></i>
+										</button>
+									</li>
+								</ul>
+								<div class="header">
+									<h4>Sorts</h4>
+								</div>
+								<ul>
+									<li>
+										<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
+											ng-class="{active: activeOrder == 'Amount'}">
+											Amount
+										</button>
+									</li>
+									<li>
+										<button ng-click="ordering = 'year'; activeOrder = 'Year'"
+											ng-class="{active: activeOrder == 'Year'}">
+											Year
+										</button>
+									</li>
+									<!--
+									this is exhibiting strange behavior, captain!
+									<li>
+										<button ng-click="ordering = 'stars'; activeOrder = 'Stars'"
+											ng-class="{active: activeOrder == 'Stars'}">
+											Stars
+										</button>
+									</li>-->
+									<li>
+										<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
+											ng-class="{active: activeOrder == 'Ratings'}">
+											Ratings
+										</button>
+									</li>
+								</ul>
+							</div>
+						</div>
 						<ul>
 							<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 								ng-include="'/assets/templates/leafStub.html'">
