@@ -124,10 +124,12 @@
 						ng-include="'/assets/templates/leafDetail.html'">
 					</div>
 
-					<ul class="children">
+					<ul class="locations">
 						<li ng-repeat="child in focus.value.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
+					</ul>
+					<ul class="projects">
 						<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
