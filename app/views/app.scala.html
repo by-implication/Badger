@@ -62,12 +62,19 @@
 					<div class="data" ng-if="focus.value.kind == 'loc'"
 						ng-include="'/assets/templates/locDetail.html'">
 					</div>
-					<button class="tab-button" ng-click="currentTab = 'locations'">
-						Locations({{focus.value.children.locs.length}})
-					</button>
-					<button class="tab-button" ng-click="currentTab = 'projects'">
-						Projects({{focus.value.children.leaves.length}})
-					</button>
+
+					<nav class="tabs">
+						<button class="tab-button" 
+						ng-click="currentTab = 'locations'"
+						ng-class="{active: currentTab == 'locations'}">
+							Locations ({{focus.value.children.locs.length}})
+						</button>
+						<button class="tab-button" 
+						ng-click="currentTab = 'projects'"
+						ng-class="{active: currentTab == 'projects'}">
+							Projects ({{focus.value.children.leaves.length}})
+						</button>
+					</nav>
 
 					<div class="data" ng-if="focus.value.kind == 'leaf'"
 						ng-include="'/assets/templates/leafDetail.html'">

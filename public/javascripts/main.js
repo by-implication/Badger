@@ -379,6 +379,8 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Filter
 
 	$scope.marker = [];
 
+	$scope.currentTab = 'locations';
+
 	$scope.lastRetrieval = 0;
 	$scope.showMoreLink = function(){
 		var params = $location.search();

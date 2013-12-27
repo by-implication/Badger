@@ -54,8 +54,16 @@ body
 		font-size: 14px
 		color: #aaa
 
-.tab-button
-	+reset-button
+.tabs
+	.tab-button
+		+reset-button
+		margin-right: 10px
+		text-transform: uppercase
+		font-size: 12px
+		font-weight: bold
+		color: #aaa
+		&.active
+			color: #333
 
 header
 	height: 64px
