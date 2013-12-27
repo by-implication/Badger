@@ -1,28 +1,11 @@
 @import bourbon/bourbon
 @import neat/neat
 @import font-awesome/font-awesome
+
+@import mixins
+@import variables
+
 @import comments
-
-$color: #0FF
-$accent: adjust-hue(teal, 10)
-$font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
-$mobile: new-breakpoint(max-width 768px)
-
-=reset-button
-	background: transparent
-	border-width: 0px
-	font-family: $font
-	padding: 0px
-	outline: none
-	outline-color: transparent
-	color: #333
-
-=reset-textarea
-	outline: none
-	outline-color: transparent
-
-.pull-right
-	float: right
 
 body
 	+reset-and-normalize
