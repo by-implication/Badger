@@ -102,13 +102,8 @@
 				</div>
 				<div id="sidebar">
 					<nav>
-
-						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
-							{{filters.current || 'Showing All'}}
-							<i class="fa fa-filter"></i>
-						</button>
 						<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
-							<i class="fa fa-chevron-left"></i>
+							<i class="fa fa-angle-left"></i>
 							{{focus.value.parent.name}}
 						</a>
 						<span ng-if="!focus.value.parent">
@@ -123,20 +118,27 @@
 					<div class="data" ng-if="focus.value.kind == 'leaf'"
 						ng-include="'/assets/templates/leafDetail.html'">
 					</div>
-
-					<ul class="locations">
-						<li class="int-item" ng-repeat="child in focus.value.children.locs"
-							ng-include="'/assets/templates/locStub.html'">
-						</li>
-					</ul>
-					<ul class="projects" ng-show="focus.value.children.leaves.length">
-						<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
-							ng-include="'/assets/templates/leafStub.html'">
-						</li>
-						<li class="int-item" ng-if="lastRetrieval >= 30">
-							<a ng-href="{{showMoreLink()}}">Show more</a>
-						</li>
-					</ul>
+					<div class="locations">
+						<ul>
+							<li class="int-item" ng-repeat="child in focus.value.children.locs"
+								ng-include="'/assets/templates/locStub.html'">
+							</li>
+						</ul>
+					</div>
+					<div class="projects" ng-show="focus.value.children.leaves.length">
+						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
+							{{filters.current || 'Showing All'}}
+							<i class="fa fa-filter"></i>
+						</button>
+						<ul>
+							<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
+								ng-include="'/assets/templates/leafStub.html'">
+							</li>
+							<li class="int-item" ng-if="lastRetrieval >= 30">
+								<a ng-href="{{showMoreLink()}}">Show more</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</main>
 		</section>

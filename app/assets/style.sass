@@ -133,7 +133,7 @@ main
 
 	#sidebar
 		// +span-columns(1 of 3, "block-collapse")
-		width: 33%
+		width: 40%
 		background-color: white
 		position: absolute
 		bottom: 0px
@@ -233,11 +233,12 @@ main
 			button
 				+reset-button
 
-		ul.projects, ul.locations
-			+reset-list
-			+fill-parent
+		.projects, .locations
+			ul
+				+reset-list
+				+fill-parent
 
-		ul.projects
+		.projects
 			padding-top: 10px
 			background-color: #eee
 			li.project
@@ -263,8 +264,8 @@ main
 
 
 	#main-view
-		width: 67%
-		margin-left: 33%
+		width: 60%
+		margin-left: 40%
 		position: absolute
 		top: 0px
 		bottom: 0px
