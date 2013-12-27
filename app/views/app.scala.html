@@ -125,15 +125,15 @@
 					</div>
 
 					<ul class="locations">
-						<li ng-repeat="child in focus.value.children.locs"
+						<li class="int-item" ng-repeat="child in focus.value.children.locs"
 							ng-include="'/assets/templates/locStub.html'">
 						</li>
 					</ul>
-					<ul class="projects">
+					<ul class="projects" ng-show="focus.value.children.leaves.length">
 						<li class="project" ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
-						<li ng-if="lastRetrieval >= 30">
+						<li class="int-item" ng-if="lastRetrieval >= 30">
 							<a ng-href="{{showMoreLink()}}">Show more</a>
 						</li>
 					</ul>

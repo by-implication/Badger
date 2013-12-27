@@ -1,13 +1,13 @@
 ::-webkit-scrollbar
+	@include transition(all 0.2s)
 	width: 8px
 	position: relative
 	left: -8px
 ::-webkit-scrollbar-track 
-	background-color: #eee 
-	border-right: 1px solid #eee
-	border-left: 1px solid #eee
+	background-color: rgba(black, 0.1) 
+	// border-right: 1px solid rgba(black, 0.1)
+	// border-left: 1px solid rgba(black, 0.1)
 ::-webkit-scrollbar-thumb  
-	@include transition(all 0.2s)
 	background-color: rgba(black, 0.2) 
 	border-radius: 4px
 ::-webkit-scrollbar-thumb:hover  
