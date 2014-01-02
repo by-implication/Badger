@@ -11,7 +11,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /explore				controllers.Application.explore()
 GET     /breakdown			controllers.Application.breakdown()
 GET			/meta/explore		controllers.Application.exploreMeta(kind: String, id: Int, offset: Int ?= 0)
-GET			/meta/breakdown	controllers.Application.breakdownMeta(id: Int)
+GET			/meta/breakdown	controllers.Application.breakdownMeta(kind: String, year: Int, dpt: String, owner: String, fpap: String)
 GET			/comments				controllers.Application.comments(id: Int)
 
 # login & signup

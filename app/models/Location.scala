@@ -12,7 +12,7 @@ import scala.util.Random
 object Location extends LocationGen {
 
   def query(id: Int, offset: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
-    Location.findById(id).map(_.toJson(expand = true, offset = offset))
+    findById(id).map(_.toJson(expand = true, offset = offset))
   }
 
 }

@@ -11,7 +11,21 @@ import scala.util.Random
 
 object Leaf extends LeafGen {
 
-  def query(id: Int)(implicit user: User): Option[JsObject] = findById(id).map(_.toJson(user))
+  def query(kind: String, year: Int, dpt_cd: String, owner_cd: String, fpap_cd: String)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
+    SQL("""
+      SELECT * FROM leafs WHERE leaf_kind = {kind}
+      AND leaf_year = {year}
+      AND leaf_dpt_cd = {dpt_cd}
+      AND leaf_owner_cd = {owner_cd}
+      AND leaf_fpap_cd = {fpap_cd}
+    """).on(
+      'kind -> kind,
+      'year -> year,
+      'dpt_cd -> dpt_cd,
+      'owner_cd -> owner_cd,
+      'fpap_cd -> PGLTree(fpap_cd.split("\\."))
+    ).singleOpt(Leaf.simple).map(_.toJson(user))
+  }
 
 }
 

@@ -406,7 +406,13 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 
 app.controller('Breakdown', function($scope, $http, $location){
 
-	if(!$location.search().id || isNaN($location.search().id)){ $location.search({id: 1}); }
+	if(!$location.search().kind){ $location.search({
+		kind: 'GAA',
+		year: 2013,
+		dpt: 0,
+		owner: 0,
+		fpap: 0
+	}); }
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();

@@ -42,7 +42,7 @@ object Application extends Controller with Secured {
     kind match {
       case "leaf" | "loc" => {
         (kind match {
-          case "leaf" => Leaf.query(id)
+          case "leaf" => Leaf.findById(id).map(_.toJson(user))
           case "loc" => Location.query(id, offset)
         }).map(Ok(_)).getOrElse(NotFound("not found"))
       }
@@ -50,8 +50,8 @@ object Application extends Controller with Secured {
     }
   }
 
-  def breakdownMeta(id: Int) = UserAction(){ implicit user => request =>
-    Leaf.findById(id).map { leaf =>
+  def breakdownMeta(kind: String, year: Int, dpt: String, owner: String, fpap: String) = UserAction(){ implicit user => request =>
+    Leaf.query(kind, year, dpt, owner, fpap).map { leaf =>
       Ok("yey")
     }.getOrElse(NotFound("no such leaf"))
   }
