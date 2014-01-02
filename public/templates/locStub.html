@@ -1,5 +1,5 @@
 
-<a ng-href="{{nodeLink(child)}}" ng-click="navDown()">
+<a ng-href="{{nodeLink(child)}}" ng-click="navDown(); setCurrentTab();">
 	{{child.name}}
 	<i class="pull-right fa fa-angle-right"></i>
 </a>

@@ -379,7 +379,13 @@ app.controller('App', function($scope, $http, $location, Click, Comments, Filter
 
 	$scope.marker = [];
 
-	$scope.currentTab = 'locations';
+	$scope.setCurrentTab = function(){
+		if ($scope.focus.value.children.locs.length > 0){
+			$scope.currentTab = 'locations';
+		} else {
+			$scope.currentTab = 'projects';
+		}
+	}
 
 	$scope.lastRetrieval = 0;
 	$scope.showMoreLink = function(){
