@@ -23,11 +23,11 @@
 								</h4>
 							</div>
 							<ul>
-								<li ng-repeat="(catName, cat) in filter.categories">
-									<button ng-click="filters.toggle(catName)" 
-										ng-class="{active:filters.current == catName}">
-										{{catName}}
-										<i class="fa fa-times" ng-if="filters.current == catName"></i>
+								<li ng-repeat="cat in filters.categories">
+									<button ng-click="filters.toggle(cat)" 
+										ng-class="{active:filters.currentContains(cat)}">
+										{{cat.name}}
+										<i class="fa fa-times" ng-if="filters.currentContains(cat)"></i>
 									</button>
 								</li>
 							</ul>
@@ -104,7 +104,7 @@
 					<nav>
 
 						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
-							{{filters.current || 'Showing All'}}
+							{{filters.label()}}
 							<i class="fa fa-filter"></i>
 						</button>
 						<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">

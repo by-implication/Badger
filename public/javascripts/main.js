@@ -51,30 +51,26 @@ app.directive('starRating', function(){
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.factory('Filters', function($rootScope){
+app.factory('Filters', function($rootScope, categories){
 	return {
-		categories: {
-			"academia": ["Department of Science and Technology", "State Universities and Colleges", "DepEd - School Building Program", "Department of Education", "Department of Education - School Building Program"],
-			"defence": ["AFP  Modernization Program", "Civil Service Commission", "Department of National Defense"],
-			"agriculture": ["Department of Agrarian Reform", "Agriculture and Fisheries Modernization Program", "Agrarian Reform Fund", "Department of Agriculture"],
-			"economy": ["Commission on Audit", "General Fund Adjustments", "Economic Stimulus Fund", "Department of Finance", "Debt Service Fund-Interest Payment", "Department of Budget and Management", "Compensation Adjustment Fund", "National Economic and Development Authority", "Tax Expenditures Fund", "Budgetary Support to Government Corporations", "Priority Social and Economic Projects Fund"],
-			"public services": ["Pension and Gratuity Fund", "Department of Social Welfare and Development", "Retirement Benefits Fund (Pension and Gratuity Fund)", "Department of Public Works and Highways", "E-Government Fund", "Miscellaneous Personnel Benefits Fund", "Payapa at Masaganang Pamayanan Fund", "Department of Health", "Priority Development Assistance Fund"],
-			"industry": ["Department of Labor and Employment", "Department of Trade and Industry", "Department of Energy", "Department of Environment and Natural Resources"],
-			"communications": ["Department of Transportation and Communications", "Presidential Communications Operations Office", "Office of the Press Secretary"],
-			"local government": ["Department of the Interior and Local Government", "Allocations to Local Government Units", "Autonomous Region in Muslim Mindanao"],
-			"central government": ["Congress of the Philippines", "Commission on Elections", "National Unification Fund", "Office of the Vice-President", "Joint Legislative-Executive Councils", "Office of the President", "Contingent Fund", "Other Executive Offices", "Unprogrammed Fund", "Calamity Fund"],
-			"justice": ["Office of the Ombudsman", "Department of Justice", "The Judiciary", "Commission on Human Rights"],
-			"foreign affairs": ["Department of Foreign Affairs", "Department of Tourism", "International Commitments Fund"]
-		},
+		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
-		current: null,
+		current: [],
+		currentContains: function(cat){ return this.current.indexOf(cat) != -1; },
 		toggleVisibility: function(){ $rootScope.specialView.toggle('filters'); },
-		clear: function(){ this.current = null; },
-		toggle: function(filter){
-			this.current = (this.current == filter) ? null : filter;
+		clear: function(){ this.current = []; },
+		label: function(){
+			return this.current.length
+				? this.current.map(function(c){ return c.name; }).join(", ")
+				: 'Showing All';
 		},
-		appearsInCurrent: function(item){
-			return !this.current || this.categories[this.current].indexOf(item.dptDsc) >= 0;
+		toggle: function(cat){
+			var idx = this.current.indexOf(cat);
+			if(idx == -1){
+				this.current.push(cat);
+			} else {
+				this.current.splice(idx, 1);
+			}
 		}
 	};
 });
@@ -147,7 +143,7 @@ app.factory('Focus', function(){
 	return {
 		value: null,
 		parentLink: function(){
-			return '/app?' + $.param({id: this.value.parent.id, kind: 'loc'});
+			return '/explore?' + $.param({id: this.value.parent.id, kind: 'loc'});
 		}
 	};
 });
@@ -297,11 +293,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.focus = Focus;
 
 	if(!$location.search().id || isNaN($location.search().id)){
-		$location.search({id: 3, kind: 'loc'});
+		$location.search({id: 3, kind: 'loc', filters: Filters.active});
 	}
 
 	$scope.nodeLink = function(node){
-		return '/app?' + $.param({id: node.id, kind: node.kind});
+		return '/explore?' + $.param({id: node.id, kind: node.kind});
 	}
 
 	$scope.comatose = function(num){
@@ -394,7 +390,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 			}
 		}
 		if(!hasOffset) q.push('offset=30');
-		return '/app?' + q.join('&');
+		return '/explore?' + q.join('&');
 	}
 
 	$scope.totalAmount = function(item){

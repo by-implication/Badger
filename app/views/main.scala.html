@@ -19,6 +19,7 @@
 		<script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
 		<script type="text/javascript">
 			app.value('loggedIn', '@currentUser.handle');
+			app.value('categories', @Html(budget.models.Category.json.toString));
 		</script>
     <meta name="viewport" content="width=480, user-scalable=no">
 	</head>

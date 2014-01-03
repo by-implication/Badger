@@ -1,6 +1,6 @@
 # --- !Ups
 
-CREATE TABLE clicks (
+CREATE TABLE clicks(
 	click_id serial PRIMARY KEY,
   user_id int NOT NULL REFERENCES users,
   leaf_id int NOT NULL REFERENCES leafs,
