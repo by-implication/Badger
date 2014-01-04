@@ -31,6 +31,22 @@
 									</button>
 								</li>
 							</ul>
+
+							<div class="header">
+								<h4>
+									Regions
+								</h4>
+							</div>
+							<ul>
+								<li ng-repeat="region in filters.regions">
+									<button ng-click="filters.toggle(region)" 
+										ng-class="{active:filters.currentContains(region)}">
+										{{region.name}}
+										<i class="fa fa-times" ng-if="filters.currentContains(region)"></i>
+									</button>
+								</li>
+							</ul>
+
 							<div class="header">
 								<h4>Sorts</h4>
 							</div>

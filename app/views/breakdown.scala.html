@@ -5,9 +5,32 @@
 	<div ng-controller="Breakdown">
 
 		<section>
-			<main>
-				breakdown
-			</main>
+
+			<script type="text/javascript" src="@routes.Assets.at("javascripts/d3.js")"></script>
+			<script type="text/javascript" src="@routes.Assets.at("javascripts/d3.layout.js")"></script>
+	    <script type="text/javascript" src="@routes.Assets.at("javascripts/breakdown.js")"></script>
+	    <style type="text/css">
+				svg {
+				  font-size: 14px;
+				}
+				rect.background {
+				  fill: none;
+				  pointer-events: all;
+				}
+				.axis {
+				  shape-rendering: crispEdges;
+				}
+				.axis path, .axis line {
+				  fill: none;
+				  stroke: #000;
+				  stroke-width: .5px;
+				}
+			</style>
+
+	    <h2>
+	      Budget Breakdown
+	    </h2>
+
 		</section>
 	</div>
 }

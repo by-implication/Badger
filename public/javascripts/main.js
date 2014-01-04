@@ -51,12 +51,13 @@ app.directive('starRating', function(){
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.factory('Filters', function($rootScope, categories){
+app.factory('Filters', function($rootScope, categories, $location){
 	return {
 		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
 		current: [],
 		currentContains: function(cat){ return this.current.indexOf(cat) != -1; },
+		currentIds: function(){ return this.current.map(function(c){ return c.id; }); },
 		toggleVisibility: function(){ $rootScope.specialView.toggle('filters'); },
 		clear: function(){ this.current = []; },
 		label: function(){
@@ -71,6 +72,7 @@ app.factory('Filters', function($rootScope, categories){
 			} else {
 				this.current.splice(idx, 1);
 			}
+			$location.search($.extend($location.search(), {filters: this.currentIds()}));
 		}
 	};
 });
