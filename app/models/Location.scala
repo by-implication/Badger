@@ -21,14 +21,9 @@ object Location extends LocationGen {
 case class Location(
   id: Pk[Int] = NA,
   name: String = "",
-  locationParentId: Option[Int] = None,
+  areas: PGStringList = Nil,
   lat: BigDecimal = 0,
-  lng: BigDecimal = 0,
-  ps: Int = 0,
-  mooe: Int = 0,
-  co: Int = 0,
-  stars: Int = 0,
-  ratings: Int = 0
+  lng: BigDecimal = 0
 ) extends LocationCCGen with Entity[Location]
 // GENERATED case class end
 {
@@ -36,18 +31,6 @@ case class Location(
   lazy val alias: String = name match {
     case "CO" => "Central Office"
     case _ => name
-  }
-
-  lazy val parent: Option[Location] = locationParentId.map(Location.findById(_).get)
-
-  def cascadeChangeRating(oldStars: Int, newStars: Int): Boolean = {
-    copy(stars = stars - oldStars + newStars).save()
-    parent.map(_.cascadeChangeRating(oldStars, newStars)).isDefined
-  }
-
-  def cascadeAddRating(newStars: Int): Boolean = {
-    copy(stars = stars + newStars, ratings = ratings + 1).save()
-    parent.map(_.cascadeAddRating(newStars)).isDefined
   }
 
   def children(offset: Int = 0, limit: Int = 30): (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
@@ -83,19 +66,12 @@ case class Location(
       "id" -> id.get,
       "kind" -> "loc",
       "name" -> alias,
-      "ps" -> ps,
-      "mooe" -> mooe,
-      "co" -> co,
       "lat" -> lat,
       "lng" -> lng,
       // "stars" -> stars,
       // "ratings" -> ratings,
       "stars" -> Random.nextInt(500),
-      "ratings" -> Random.nextInt(100),
-      "parent" -> parent.map(p => Json.obj(
-        "id" -> p.id.get,
-        "name" -> p.alias
-      ))
+      "ratings" -> Random.nextInt(100)
     )
     if(expand){
       val (locs, leaves) = children(offset)
@@ -113,16 +89,11 @@ trait LocationGen extends EntityCompanion[Location] {
   val simple = {
     get[Pk[Int]]("location_id") ~
     get[String]("location_name") ~
-    get[Option[Int]]("location_parent_id") ~
+    get[PGStringList]("location_areas") ~
     get[java.math.BigDecimal]("location_lat") ~
-    get[java.math.BigDecimal]("location_lng") ~
-    get[Int]("location_ps") ~
-    get[Int]("location_mooe") ~
-    get[Int]("location_co") ~
-    get[Int]("location_stars") ~
-    get[Int]("location_ratings") map {
-      case id~name~locationParentId~lat~lng~ps~mooe~co~stars~ratings =>
-        Location(id, name, locationParentId, lat, lng, ps, mooe, co, stars, ratings)
+    get[java.math.BigDecimal]("location_lng") map {
+      case id~name~areas~lat~lng =>
+        Location(id, name, areas, lat, lng)
     }
   }
 
@@ -149,37 +120,22 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent_id,
+            location_areas,
             location_lat,
-            location_lng,
-            location_ps,
-            location_mooe,
-            location_co,
-            location_stars,
-            location_ratings
+            location_lng
           ) VALUES (
             DEFAULT,
             {name},
-            {locationParentId},
+            {areas},
             {lat},
-            {lng},
-            {ps},
-            {mooe},
-            {co},
-            {stars},
-            {ratings}
+            {lng}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'locationParentId -> o.locationParentId,
+          'areas -> o.areas,
           'lat -> o.lat.bigDecimal,
-          'lng -> o.lng.bigDecimal,
-          'ps -> o.ps,
-          'mooe -> o.mooe,
-          'co -> o.co,
-          'stars -> o.stars,
-          'ratings -> o.ratings
+          'lng -> o.lng.bigDecimal
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
       }
@@ -188,37 +144,22 @@ trait LocationGen extends EntityCompanion[Location] {
           insert into locations (
             location_id,
             location_name,
-            location_parent_id,
+            location_areas,
             location_lat,
-            location_lng,
-            location_ps,
-            location_mooe,
-            location_co,
-            location_stars,
-            location_ratings
+            location_lng
           ) VALUES (
             {id},
             {name},
-            {locationParentId},
+            {areas},
             {lat},
-            {lng},
-            {ps},
-            {mooe},
-            {co},
-            {stars},
-            {ratings}
+            {lng}
           )
         """).on(
           'id -> o.id,
           'name -> o.name,
-          'locationParentId -> o.locationParentId,
+          'areas -> o.areas,
           'lat -> o.lat.bigDecimal,
-          'lng -> o.lng.bigDecimal,
-          'ps -> o.ps,
-          'mooe -> o.mooe,
-          'co -> o.co,
-          'stars -> o.stars,
-          'ratings -> o.ratings
+          'lng -> o.lng.bigDecimal
         ).executeInsert().flatMap(x => Some(o))
       }
     }
@@ -228,26 +169,16 @@ trait LocationGen extends EntityCompanion[Location] {
     SQL("""
       update locations set
         location_name={name},
-        location_parent_id={locationParentId},
+        location_areas={areas},
         location_lat={lat},
-        location_lng={lng},
-        location_ps={ps},
-        location_mooe={mooe},
-        location_co={co},
-        location_stars={stars},
-        location_ratings={ratings}
+        location_lng={lng}
       where location_id={id}
     """).on(
       'id -> o.id,
       'name -> o.name,
-      'locationParentId -> o.locationParentId,
+      'areas -> o.areas,
       'lat -> o.lat.bigDecimal,
-      'lng -> o.lng.bigDecimal,
-      'ps -> o.ps,
-      'mooe -> o.mooe,
-      'co -> o.co,
-      'stars -> o.stars,
-      'ratings -> o.ratings
+      'lng -> o.lng.bigDecimal
     ).executeUpdate() > 0
   }
 

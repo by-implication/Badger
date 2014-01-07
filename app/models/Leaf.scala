@@ -71,15 +71,9 @@ case class Leaf(
     ).list(Leaf.simple)
   }
 
-  def changeRating(oldStars: Int, newStars: Int) = {
-    copy(stars = stars - oldStars + newStars).save()
-    parent.cascadeChangeRating(oldStars, newStars)
-  }
+  def changeRating(oldStars: Int, newStars: Int) = copy(stars = stars - oldStars + newStars).save()
 
-  def addRating(newStars: Int) = {
-    copy(stars = stars + newStars, ratings = ratings + 1).save()
-    parent.cascadeAddRating(newStars)
-  }
+  def addRating(newStars: Int) = copy(stars = stars + newStars, ratings = ratings + 1).save()
 
   lazy val parent: Location = Location.findOne("location_name", areaDsc).get
 
