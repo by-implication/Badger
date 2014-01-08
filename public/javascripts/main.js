@@ -72,12 +72,12 @@ app.factory('Filters', function($rootScope, categories, $location){
 			} else {
 				this.current.splice(idx, 1);
 			}
-			$location.search($.extend($location.search(), {filters: this.currentIds()}));
+			$location.search($.extend($location.search(), {categories: this.currentIds(), offset: 0}));
 		}
 	};
 });
 
-app.factory('Click', function($rootScope, loggedIn, Region){
+app.factory('Click', function($rootScope, loggedIn, Regions){
 	return {
 		active: function(){ return $rootScope.specialView.current == 'click'; },
 		listener: function(e){
@@ -98,10 +98,10 @@ app.factory('Click', function($rootScope, loggedIn, Region){
 			$rootScope.specialView.toggle('click');
 			var active = this.active();
 			map[active ? 'on' : 'off']('click', this.listener);
-			if(active) Region.features.clear();
+			if(active) Regions.features.clear();
 		},
 		deactivate: function(){
-			$rootScope.specialView.deactivate();
+			$rootScope.specialView.deactivate('click');
 			map.off('click', this.listener);
 		},
 		text: function(){ return this.active() ? 'Cancel' : 'Point this out!'; }
@@ -150,7 +150,7 @@ app.factory('Focus', function(){
 	};
 });
 
-app.factory('Region', function($rootScope, $http, $location){
+app.factory('Regions', function($rootScope, $http, $location, regions){
 
 	var COLORS = [
 	  {rating:   0, hsl: [ 0, 59, 50]},
@@ -206,7 +206,19 @@ app.factory('Region', function($rootScope, $http, $location){
 			'Nationwide': ['Mindanao', 'Luzon', 'Visayas'],
 			'Region IV': ['Region IV-A', 'Region IV-B']
 		},
-		list: list,
+		list: regions,
+		current: [],
+		toggle: function(region){
+			var idx = this.current.indexOf(region);
+			if(idx == -1){
+				this.current.push(region);
+			} else {
+				this.current.splice(idx, 1);
+			}
+			$location.search($.extend($location.search(), {regions: this.currentIds(), offset: 0}));
+		},
+		currentIds: function(){ return this.current.map(function(c){ return c.id; }); },
+		currentContains: function(region){ return this.current.indexOf(region) != -1; },
 		highlight: function(region){
 			var id = this.list.indexOf(region);
 			if(id != -1){
@@ -273,7 +285,11 @@ app.run(function($rootScope, Click, Comments, Filters){
 
   $rootScope.specialView = {
   	current: null,
-  	deactivate: function(){ this.current = null; },
+  	deactivate: function(view){
+  		if(view){
+  			if(this.current == view) this.current = null;
+  		} else this.current = null;
+  	},
   	toggle: function(view){ this.current = (this.current == view ? null : view); }
   }
 
@@ -287,19 +303,21 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Focus, Region){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Focus, Regions){
 
 	$scope.click = Click;
   $scope.comments = Comments;
   $scope.filters = Filters;
 	$scope.focus = Focus;
+	$scope.regions = Regions;
+	$scope.leaves = [];
 
-	if(!$location.search().id || isNaN($location.search().id)){
-		$location.search({id: 3, kind: 'loc', filters: Filters.active});
+	if(!$location.search().filters || !$location.search().regions || !$location.search().offset){
+		$location.search({categories: Filters.currentIds(), regions: Regions.currentIds(), offset: 0});
 	}
 
 	$scope.nodeLink = function(node){
-		return '/explore?' + $.param({id: node.id, kind: node.kind});
+		return '/explore?' + $.param({focus: node.id});
 	}
 
 	$scope.comatose = function(num){
@@ -308,35 +326,26 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	
 	var zoomLevel = 6;
 
+	function getSearchParams(path){
+		return path.split("?")[1].split("&").map(function(s){
+			var a = s.split("=");
+			var o = {};
+			o[a[0]] = a[1];
+			return o;
+		}).reduce(function(prev, cur){ return $.extend(prev, cur); }, {});
+	}
+
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
-		$http.get('/meta/explore', {params: searchParams}).success(function(r){
-
-			Region.features.clear();
-			
-			$scope.lastRetrieval = r.children ? r.children.leaves.length : 0;
-			if(searchParams.offset){
-				Focus.value.children.leaves = Focus.value.children.leaves.concat(r.children.leaves);
-			} else {
-
-				Focus.value = r;
-
-				if(r.userClick){
-					map.setView([r.userClick.lat, r.userClick.lng], 10);
-				} else if(r.lat && r.lng){
-					map.setView([r.lat, r.lng], zoomLevel);
-				}
-
-				switch(Focus.value.kind){
-					case 'loc': Region.highlight(Focus.value.name); break;
-					case 'leaf': Region.highlight(Focus.value.parent.name); break;
-				}
-
-			}
-
-			Click.deactivate();
-
-		});
+		if(!searchParams.focus){
+			$http.get('/meta/explore', {params: searchParams}).success(function(r){
+				$scope.lastRetrieval = r.length;
+				var oldSearch = getSearchParams(oldPath);
+				$scope.leaves = (parseInt(searchParams.offset) > parseInt(oldSearch.offset))
+					? $scope.leaves.concat(r)
+					: r;
+			});
+		}
 	});
 
 	$scope.navUp = function(){

@@ -38,16 +38,10 @@ object Application extends Controller with Secured {
     Ok(views.html.breakdown(user))
   }
 
-  def exploreMeta(kind: String, id: Int, offset: Int) = UserAction(){ implicit user => request =>
-    kind match {
-      case "leaf" | "loc" => {
-        (kind match {
-          case "leaf" => Leaf.findById(id).map(_.toJson(user))
-          case "loc" => Location.query(id, offset)
-        }).map(Ok(_)).getOrElse(NotFound("not found"))
-      }
-      case _ => BadRequest("invalid type")
-    }
+  def exploreMeta(categories: List[Int], regions: List[Int], offset: Int) = UserAction(){ implicit user => request =>
+    val dptDscs: Seq[String] = categories.map(Category.findById(_).get.subcats.list).fold(List.empty[String])(_ ++ _)
+    val areaDscs: Seq[String] = regions.map(Location.findById(_).get.areas.list).fold(List.empty[String])(_ ++ _)
+    Ok(Json.toJson(Leaf.exploreQuery(dptDscs, areaDscs, offset).map(_.toJson(user))))
   }
 
   def breakdownMeta(kind: String, year: Int, dpt: String, owner: String, fpap: String) = UserAction(){ implicit user => request =>

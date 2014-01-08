@@ -38,11 +38,11 @@
 								</h4>
 							</div>
 							<ul>
-								<li ng-repeat="region in filters.regions">
-									<button ng-click="filters.toggle(region)" 
-										ng-class="{active:filters.currentContains(region)}">
+								<li ng-repeat="region in regions.list">
+									<button ng-click="regions.toggle(region)" 
+										ng-class="{active:regions.currentContains(region)}">
 										{{region.name}}
-										<i class="fa fa-times" ng-if="filters.currentContains(region)"></i>
+										<i class="fa fa-times" ng-if="regions.currentContains(region)"></i>
 									</button>
 								</li>
 							</ul>
@@ -141,10 +141,7 @@
 					</div>
 
 					<ul class="children">
-						<li ng-repeat="child in focus.value.children.locs"
-							ng-include="'/assets/templates/locStub.html'">
-						</li>
-						<li ng-repeat="child in focus.value.children.leaves | filter:appearsInfilters.current | orderBy: ordering:true"
+						<li ng-repeat="leaf in leaves"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 						<li ng-if="lastRetrieval >= 30">

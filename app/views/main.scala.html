@@ -20,6 +20,7 @@
 		<script type="text/javascript">
 			app.value('loggedIn', '@currentUser.handle');
 			app.value('categories', @Html(budget.models.Category.json.toString));
+			app.value('regions', @Html(budget.models.Location.json.toString));
 		</script>
     <meta name="viewport" content="width=480, user-scalable=no">
 	</head>

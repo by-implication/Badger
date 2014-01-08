@@ -11,6 +11,23 @@ import scala.util.Random
 
 object Leaf extends LeafGen {
 
+  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], offset: Int): Seq[Leaf] = DB.withConnection { implicit c =>
+    val constraints = Seq(dptDscs, areaDscs).filter(!_.isEmpty)
+    SQL("SELECT * FROM leafs " +
+      (if(!constraints.isEmpty){
+        "WHERE " +
+        (if(!dptDscs.isEmpty){ "leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
+        (if(constraints.length == 2){ "AND " } else {""}) +
+        (if(!areaDscs.isEmpty){ "leaf_area_dsc = ANY({areaDscs}) " } else {""})
+      } else {""}) +
+      "LIMIT 30 OFFSET {offset}"
+    ).on(
+      'dptDscs -> PGStringList(dptDscs),
+      'areaDscs -> PGStringList(areaDscs),
+      'offset -> offset
+    ).list(Leaf.simple)
+  }
+
   def query(kind: String, year: Int, dpt_cd: String, owner_cd: String, fpap_cd: String)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
     SQL("""
       SELECT * FROM leafs WHERE leaf_kind = {kind}
@@ -75,8 +92,6 @@ case class Leaf(
 
   def addRating(newStars: Int) = copy(stars = stars + newStars, ratings = ratings + 1).save()
 
-  lazy val parent: Location = Location.findOne("location_name", areaDsc).get
-
   def toJson(user: User): JsObject = Json.obj(
     // "dptCd" -> dptCd,
     "dptDsc" -> dptDsc,
@@ -86,7 +101,7 @@ case class Leaf(
     // "fpapCd" -> fpapCd,
     "fpapDsc" -> fpapDsc,
     // "areaCd" -> areaCd,
-    // "areaDsc" -> areaDsc,
+    "areaDsc" -> areaDsc,
     "ps" -> ps,
     "mooe" -> mooe,
     "co" -> co,
@@ -95,10 +110,6 @@ case class Leaf(
     "xkind" -> kind,
     "id" -> id.get,
     "kind" -> "leaf",
-    "parent" -> Json.obj(
-      "id" -> parent.id.get,
-      "name" -> parent.alias
-    ),
     "id" -> id.get,
     // "stars" -> stars,
     // "ratings" -> ratings,

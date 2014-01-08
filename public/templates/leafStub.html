@@ -1,14 +1,14 @@
 <div>
-	<a ng-href="{{nodeLink(child)}}">
-		{{child.fpapDsc}} ({{child.year}})
+	<a ng-href="{{nodeLink(leaf)}}">
+		{{leaf.fpapDsc}} ({{leaf.year}})
 	</a>
 </div>
 <div class="de-em">
-	{{child.dptDsc}}
+	{{leaf.dptDsc}}
 </div>
-<star-rating item="child"></star-rating>
+<star-rating item="leaf"></star-rating>
 <div class="numeric">
 	<span class="italic monospace">
-		{{comatose(totalAmount(child) * 1000)}}
+		{{comatose(totalAmount(leaf) * 1000)}}
 	</span> PhP
 </div>

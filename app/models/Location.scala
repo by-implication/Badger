@@ -11,9 +11,7 @@ import scala.util.Random
 
 object Location extends LocationGen {
 
-  def query(id: Int, offset: Int)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>
-    findById(id).map(_.toJson(expand = true, offset = offset))
-  }
+  def json = Json.toJson(list(999).map(_.toJson))
 
 }
 
@@ -27,11 +25,6 @@ case class Location(
 ) extends LocationCCGen with Entity[Location]
 // GENERATED case class end
 {
-
-  lazy val alias: String = name match {
-    case "CO" => "Central Office"
-    case _ => name
-  }
 
   def children(offset: Int = 0, limit: Int = 30): (Seq[Location], Seq[Leaf]) = DB.withConnection { implicit c =>
 
@@ -61,27 +54,14 @@ case class Location(
 
   }
 
-  def toJson(expand: Boolean = false, offset: Int = 0)(implicit user: User): JsObject = {
-    var r = Json.obj(
-      "id" -> id.get,
-      "kind" -> "loc",
-      "name" -> alias,
-      "lat" -> lat,
-      "lng" -> lng,
-      // "stars" -> stars,
-      // "ratings" -> ratings,
-      "stars" -> Random.nextInt(500),
-      "ratings" -> Random.nextInt(100)
-    )
-    if(expand){
-      val (locs, leaves) = children(offset)
-      r ++= Json.obj("children" -> Map(
-        "locs" -> locs.map(_.toJson()),
-        "leaves" -> leaves.map(_.toJson(user))
-      ))
-    }
-    r
-  }
+  def toJson: JsObject = Json.obj(
+    "id" -> id.get,
+    "name" -> name,
+    "areas" -> areas,
+    "lat" -> lat,
+    "lng" -> lng
+  )
+
 }
 
 // GENERATED object start
