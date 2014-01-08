@@ -23,11 +23,18 @@
 								</h4>
 							</div>
 							<ul>
+								<li>
+									<button ng-click="filters.setCurrent(null)" 
+										ng-class="{active: filters.current == null}">
+										All
+										<i class="fa fa-times" ng-if="filters.current == null"></i>
+									</button>
+								</li>
 								<li ng-repeat="cat in filters.categories">
-									<button ng-click="filters.toggle(cat)" 
-										ng-class="{active:filters.currentContains(cat)}">
+									<button ng-click="filters.setCurrent(cat)" 
+										ng-class="{active: filters.current == cat}">
 										{{cat.name}}
-										<i class="fa fa-times" ng-if="filters.currentContains(cat)"></i>
+										<i class="fa fa-times" ng-if="filters.current == cat"></i>
 									</button>
 								</li>
 							</ul>
@@ -38,11 +45,18 @@
 								</h4>
 							</div>
 							<ul>
+								<li>
+									<button ng-click="regions.setCurrent(null)" 
+										ng-class="{active: regions.current == null}">
+										Everywhere
+										<i class="fa fa-times" ng-if="regions.current == null"></i>
+									</button>
+								</li>
 								<li ng-repeat="region in regions.list">
-									<button ng-click="regions.toggle(region)" 
-										ng-class="{active:regions.currentContains(region)}">
+									<button ng-click="regions.setCurrent(region)" 
+										ng-class="{active: regions.current == region}">
 										{{region.name}}
-										<i class="fa fa-times" ng-if="regions.currentContains(region)"></i>
+										<i class="fa fa-times" ng-if="regions.current == region"></i>
 									</button>
 								</li>
 							</ul>
@@ -120,7 +134,7 @@
 					<nav>
 
 						<button class="filter-button" ng-click="filters.toggleVisibility()" ng-class="{active:filters.visible()}">
-							{{filters.label()}}
+							{{filters.label()}} from {{regions.label()}}
 							<i class="fa fa-filter"></i>
 						</button>
 						<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">

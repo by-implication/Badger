@@ -55,24 +55,13 @@ app.factory('Filters', function($rootScope, categories, $location){
 	return {
 		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
-		current: [],
-		currentContains: function(cat){ return this.current.indexOf(cat) != -1; },
-		currentIds: function(){ return this.current.map(function(c){ return c.id; }); },
+		current: null,
 		toggleVisibility: function(){ $rootScope.specialView.toggle('filters'); },
 		clear: function(){ this.current = []; },
-		label: function(){
-			return this.current.length
-				? this.current.map(function(c){ return c.name; }).join(", ")
-				: 'Showing All';
-		},
-		toggle: function(cat){
-			var idx = this.current.indexOf(cat);
-			if(idx == -1){
-				this.current.push(cat);
-			} else {
-				this.current.splice(idx, 1);
-			}
-			$location.search($.extend($location.search(), {categories: this.currentIds(), offset: 0}));
+		label: function(){ return this.current ? this.current.name : 'All'; },
+		setCurrent: function(cat){
+			this.current = cat;
+			$location.search($.extend($location.search(), {category: this.current.id, offset: 0}));
 		}
 	};
 });
@@ -207,18 +196,12 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 			'Region IV': ['Region IV-A', 'Region IV-B']
 		},
 		list: regions,
-		current: [],
-		toggle: function(region){
-			var idx = this.current.indexOf(region);
-			if(idx == -1){
-				this.current.push(region);
-			} else {
-				this.current.splice(idx, 1);
-			}
-			$location.search($.extend($location.search(), {regions: this.currentIds(), offset: 0}));
+		current: null,
+		setCurrent: function(region){
+			this.current = region;
+			$location.search($.extend($location.search(), {region: this.current.id, offset: 0}));
 		},
-		currentIds: function(){ return this.current.map(function(c){ return c.id; }); },
-		currentContains: function(region){ return this.current.indexOf(region) != -1; },
+		label: function(){ return this.current ? this.current.name : 'Everywhere'; },
 		highlight: function(region){
 			var id = this.list.indexOf(region);
 			if(id != -1){
@@ -312,8 +295,16 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.regions = Regions;
 	$scope.leaves = [];
 
-	if(!$location.search().filters || !$location.search().regions || !$location.search().offset){
-		$location.search({categories: Filters.currentIds(), regions: Regions.currentIds(), offset: 0});
+	var s = $location.search()
+	if(
+		s.category == undefined ||
+		s.region == undefined ||
+		s.offset == undefined
+	){
+		var o = {offset: 0};
+		if(Filters.current) o.category = Filters.current.id;
+		if(Regions.current) o.region = Regions.current.id;
+		$location.search(o);
 	}
 
 	$scope.nodeLink = function(node){

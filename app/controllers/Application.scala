@@ -38,9 +38,9 @@ object Application extends Controller with Secured {
     Ok(views.html.breakdown(user))
   }
 
-  def exploreMeta(categories: List[Int], regions: List[Int], offset: Int) = UserAction(){ implicit user => request =>
-    val dptDscs: Seq[String] = categories.map(Category.findById(_).get.subcats.list).fold(List.empty[String])(_ ++ _)
-    val areaDscs: Seq[String] = regions.map(Location.findById(_).get.areas.list).fold(List.empty[String])(_ ++ _)
+  def exploreMeta(category: Option[Int], region: Option[Int], offset: Int) = UserAction(){ implicit user => request =>
+    val dptDscs: Seq[String] = category.map(Category.findById(_).get.subcats.list).getOrElse(Seq.empty[String])
+    val areaDscs: Seq[String] = region.map(Location.findById(_).get.areas.list).getOrElse(Seq.empty[String])
     Ok(Json.toJson(Leaf.exploreQuery(dptDscs, areaDscs, offset).map(_.toJson(user))))
   }
 
