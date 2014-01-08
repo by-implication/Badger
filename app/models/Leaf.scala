@@ -13,13 +13,17 @@ object Leaf extends LeafGen {
 
   def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], offset: Int): Seq[Leaf] = DB.withConnection { implicit c =>
     val constraints = Seq(dptDscs, areaDscs).filter(!_.isEmpty)
-    SQL("SELECT * FROM leafs " +
-      (if(!constraints.isEmpty){
-        "WHERE " +
-        (if(!dptDscs.isEmpty){ "leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
-        (if(constraints.length == 2){ "AND " } else {""}) +
-        (if(!areaDscs.isEmpty){ "leaf_area_dsc = ANY({areaDscs}) " } else {""})
-      } else {""}) +
+    SQL("""
+      SELECT * FROM leafs
+      WHERE (
+        leaf_ps IS NOT NULL
+        OR leaf_mooe IS NOT NULL
+        OR leaf_co IS NOT NULL
+        OR leaf_net IS NOT NULL
+      )
+    """ +
+      (if(!dptDscs.isEmpty){ "AND leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
+      (if(!areaDscs.isEmpty){ "AND leaf_area_dsc = ANY({areaDscs}) " } else {""}) +
       "LIMIT 30 OFFSET {offset}"
     ).on(
       'dptDscs -> PGStringList(dptDscs),
