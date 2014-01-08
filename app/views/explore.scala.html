@@ -146,16 +146,21 @@
 						</span>
 					</nav>
 
-					<div class="data" ng-if="focus.value.kind == 'loc'"
+					showing {{filters.label()}} projects in {{regions.label()}}
+
+					<div class="data" 
+						ng-if="focus.value.kind == 'loc'"
 						ng-include="'/assets/templates/locDetail.html'">
 					</div>
 
-					<div class="data" ng-if="focus.value.kind == 'leaf'"
+					<div class="data" 
+						ng-if="focus.value.kind == 'leaf'"
 						ng-include="'/assets/templates/leafDetail.html'">
 					</div>
 
 					<ul class="children">
-						<li ng-repeat="leaf in leaves"
+						<li 
+							ng-repeat="leaf in leaves"
 							ng-include="'/assets/templates/leafStub.html'">
 						</li>
 						<li ng-if="lastRetrieval >= 30">
