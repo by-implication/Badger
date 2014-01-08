@@ -1,24 +1,9 @@
 @import bourbon/bourbon
 @import neat/neat
 @import font-awesome/font-awesome
-
-$color: #0FF
-$accent: adjust-hue(teal, 10)
-$font: "Proxima Nova", "proxima-nova", "Gotham HTF", "Helvetica Neue"
-$mobile: new-breakpoint(max-width 768px)
-
-=reset-button
-	background: transparent
-	border-width: 0px
-	font-family: $font
-	padding: 0px
-	outline: none
-	outline-color: transparent
-	color: #333
-
-=reset-textarea
-	outline: none
-	outline-color: transparent
+@import mixins
+@import variables
+@import comments
 
 body
 	+reset-and-normalize
@@ -314,47 +299,4 @@ main
 								background-color: #333
 								color: white
 
-		#comment-view
-			.content
-				width: 384px
-				ul
-					+reset-list
-			.comments
-				// position: relative
-				ul
-					+reset-list
-			.user-comment
-				padding: 20px
-				border-bottom: 1px solid rgba(0,0,0,0.1)
-				button
-					+button
-					outline: none
-					outline-color: transparent
-
-				textarea
-					+reset-textarea
-					width: 100%
-					max-width: 100%
-					min-height: 72px
-					max-height: 72px
-					padding: 6px
-					margin: 0px -6px 10px -6px
-					font-family: $font
-					border-radius: 3px
-					border-width: 0px
-					box-shadow: 0px 0px 0px 1px rgba(black,0.1)
-					&+button
-						margin-left: -6px
-			.empty
-				padding: 20px
-
-			.comment
-				padding: 20px
-				border-bottom: 1px solid rgba(0,0,0,0.05)
-				background-color: rgba(white, 0.2)
-				.user
-					color: rgba(black, 0.5)
-				.timestamp
-					float: right
-					color: rgba(black, 0.5)
-					font-size: 14px
+		
