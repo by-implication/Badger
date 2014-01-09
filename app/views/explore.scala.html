@@ -57,14 +57,14 @@
 				id="projects" 
 				ng-init="viewMode = 'grid'; shownFilter = 'sector'" 
 				ng-class="{grid: viewMode == 'grid', list: viewMode == 'list'}">
-				<nav>
+				<!--<nav>
 					<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
 						<i class="fa fa-chevron-left"></i>
 						{{focus.value.parent.name}}
 					</a>
-				</nav>
+				</nav>-->
 
-				<h3 class="result-label">
+				<h2 class="result-label">
 					Showing 
 					<button 
 						class="label" 
@@ -80,8 +80,8 @@
 						{{regions.label()}}
 					</button>,
 					sorted by
-					<button
-						class="label"
+					<button 
+						class="label" 
 						ng-click="shownFilter = 'sorts'"
 						ng-class="{active: shownFilter == 'sorts'}">
 						Amount
@@ -185,10 +185,9 @@
 							<i class="fa fa-align-justify fa-lg"></i>
 						</button>
 					</div>
-
 				</div>
 
-				<div class="data"
+				<!--<div class="data"
 					ng-if="focus.value.kind == 'loc'"
 					ng-include="'/assets/templates/locDetail.html'">
 				</div>
@@ -196,7 +195,7 @@
 				<div class="data"
 					ng-if="focus.value.kind == 'leaf'"
 					ng-include="'/assets/templates/leafDetail.html'">
-				</div>
+				</div>-->
 
 				<ul class="children">
 					<li
