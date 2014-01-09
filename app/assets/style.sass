@@ -139,20 +139,23 @@ section#projects
 		.card
 			+fill-parent()
 
-h2.result-label
+.result-label
 	color: #ccc
 	margin-top: 20px
 	text-align: center
+	font-weight: 300
+	margin-bottom: 40px
+	margin-top: 20px
 	button
 		+transition(all 0.2s)
 		font-weight: 300
-		&.label
-			color: #333
+		color: #333
+		text-transform: capitalize
 			// font-weight: bold
 		&:hover
-			// box-shadow: 0px 1px 0px #333
+			box-shadow: 0px 1px 0px #333
 		&.active, &.active:hover
-			// box-shadow: 0px 4px 0px #333
+			box-shadow: 0px 4px 0px #333
 
 .filter
 	+clearfix()
@@ -171,10 +174,6 @@ h2.result-label
 					background-color: #333
 					color: white
 					border-radius: 2px
-
-			// +span-columns(3)
-			// +omega(4n)
-			// text-align: left
 
 .modifiers
 	+clearfix()
