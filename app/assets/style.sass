@@ -59,9 +59,9 @@ body
 	button
 		+reset-button()
 
-.label
-	background-color: rgba(black, 0.1)
-	padding: 6px 8px 4px 8px
+// .label
+	// background-color: rgba(black, 0.1)
+	// padding: 6px 8px 4px 8px
 
 header
 	height: 64px
@@ -110,6 +110,9 @@ header
 section#filters
 	+span-columns(3)
 	$margin: 4px
+	padding: 20px
+	.group
+		margin-bottom: 20px
 	ul
 		margin: 0 -$margin
 	button
@@ -148,10 +151,22 @@ h2.result-label
 
 .modifiers
 	+clearfix()
+	padding: 10px
+	margin-bottom: 40px
+	background-color: rgba(black, 0.05)
+	border-radius: 2px
+	// background-color: #333
+	// color: white
+	.sorts
+		float: left
+		&.active
+			background-color: #333
+			color: white
 	.view-mode
 		float: right
 		button
 			padding: 10px
+			// color: white
 
 main
 	+outer-container

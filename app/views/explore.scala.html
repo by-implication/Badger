@@ -53,45 +53,45 @@
 			</section>
 			-->
 			<section id="filters">
-				<div class="header">
+				<div id="sector" class="group">
 					<h4>
-						Filters
+						Sector
 					</h4>
+					<ul>
+					  <li>
+							<button ng-click="filters.setCurrent(null)"
+								ng-class="{active: filters.current == null}">
+								All
+							</button>
+						</li>
+						<li ng-repeat="cat in filters.categories">
+							<button ng-click="filters.setCurrent(cat)"
+								ng-class="{active: filters.current == cat}">
+								{{cat.name}}
+							</button>
+						</li>
+					</ul>
 				</div>
-				<ul>
-				  <li>
-						<button ng-click="filters.setCurrent(null)"
-							ng-class="{active: filters.current == null}">
-							All
-						</button>
-					</li>
-					<li ng-repeat="cat in filters.categories">
-						<button ng-click="filters.setCurrent(cat)"
-							ng-class="{active: filters.current == cat}">
-							{{cat.name}}
-						</button>
-					</li>
-				</ul>
 
-				<div class="header">
+				<div id="regions" class="group">
 					<h4>
 						Regions
 					</h4>
+					<ul>
+						<li>
+							<button ng-click="regions.setCurrent(null)"
+								ng-class="{active: regions.current == null}">
+								Everywhere
+							</button>
+						</li>
+						<li ng-repeat="region in regions.list">
+							<button ng-click="regions.setCurrent(region)"
+								ng-class="{active: regions.current == region}">
+								{{region.name}}
+							</button>
+						</li>
+					</ul>
 				</div>
-				<ul>
-					<li>
-						<button ng-click="regions.setCurrent(null)"
-							ng-class="{active: regions.current == null}">
-							Everywhere
-						</button>
-					</li>
-					<li ng-repeat="region in regions.list">
-						<button ng-click="regions.setCurrent(region)"
-							ng-class="{active: regions.current == region}">
-							{{region.name}}
-						</button>
-					</li>
-				</ul>
 			</section>
 
 			<section id="projects" ng-init="viewMode = 'grid'" ng-class="{grid: viewMode == 'grid', list: viewMode == 'list'}">
@@ -103,27 +103,22 @@
 				</nav>
 
 				<div class="modifiers">
-					<!--<ul>
-						<li>
-							<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
-								ng-class="{active: activeOrder == 'Amount'}">
-								Amount
+					<div class="sorts">
+						Sort: 
+						<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
+							ng-class="{active: activeOrder == 'Amount'}">
+							Amount
+						</button>
+						<button ng-click="ordering = 'year'; activeOrder = 'Year'"
+							ng-class="{active: activeOrder == 'Year'}">
+							Year
+						</button>
+						<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
+							ng-class="{active: activeOrder == 'Ratings'}">
+							Ratings
 							</button>
-						</li>
-						<li>
-							<button ng-click="ordering = 'year'; activeOrder = 'Year'"
-								ng-class="{active: activeOrder == 'Year'}">
-								Year
-							</button>
-						</li>
-						<li>
-							<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
-								ng-class="{active: activeOrder == 'Ratings'}">
-								Ratings
-							</button>
-						</li>
-						also add 'activity'. combination of number of ratings, number of comments, and its recent-ness
-					</ul>-->
+						<!--also add 'activity'. combination of number of ratings, number of comments, and its recent-ness-->
+					</div>
 					<div class="view-mode">
 						<button ng-click="viewMode = 'grid'">
 							<i class="fa fa-th"></i>
