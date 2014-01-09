@@ -109,6 +109,7 @@ header
 
 section#filters
 	+span-columns(3)
+	display: none
 	$margin: 4px
 	padding: 20px
 	background-color: rgba(black, 0.05)
@@ -125,40 +126,65 @@ section#filters
 			border-radius: 2px
 
 section#projects
-	+span-columns(9)
+	// +span-columns(9)
+	+fill-parent()
 	background-color: #eee
 	padding: 20px
 	&.grid
 		.card
-			+span-columns(3 of 9)
-			+omega(3n)
+			+span-columns(3 of 12)
+			+omega(4n)
 
 	&.list
 		.card
 			+fill-parent()
 
-.card
-	background-color: white
-	// margin: 10px
-	padding: 20px
-	margin-bottom: 20px
-	box-shadow: 0px 2px 2px rgba(black, 0.1)
-	text-decoration: none
-
 h2.result-label
 	color: #ccc
 	margin-top: 20px
-	.label
-		color: #333
+	text-align: center
+	button
+		+transition(all 0.2s)
+		font-weight: 300
+		&.label
+			color: #333
+			// font-weight: bold
+		&:hover
+			// box-shadow: 0px 1px 0px #333
+		&.active, &.active:hover
+			// box-shadow: 0px 4px 0px #333
+
+.filter
+	+clearfix()
+	+transition(height 0.4s)
+	$margin: 4px
+	padding: 20px
+	background-color: rgba(black, 0.05)
+	ul
+		+columns(6 20px)
+		margin: 0 -$margin
+		.item
+			display: block
+			button
+				padding: 2px $margin 2px $margin
+				&.active
+					background-color: #333
+					color: white
+					border-radius: 2px
+
+			// +span-columns(3)
+			// +omega(4n)
+			// text-align: left
 
 .modifiers
 	+clearfix()
 	padding: 10px
 	margin-bottom: 20px
-	background-color: rgba(black, 0.05)
-	border-radius: 2px
+	background-color: rgba(black, 0.1)
 	// background-color: #333
 	// color: white
+	.reverse
+		padding: 8px 10px
 	.sorts
 		float: left
 		&.active
@@ -167,8 +193,19 @@ h2.result-label
 	.view-mode
 		float: right
 		button
+			+transition(all 0.2s)
 			padding: 10px
+			color: #999
+			&.active, &:hover
+				color: #333
 			// color: white
+.card
+	background-color: white
+	// margin: 10px
+	padding: 20px
+	margin-bottom: 20px
+	box-shadow: 0px 2px 2px rgba(black, 0.1)
+	text-decoration: none
 
 main
 	+outer-container
