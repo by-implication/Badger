@@ -102,6 +102,10 @@
 					</a>
 				</nav>
 
+				<h2 class="result-label">
+					Showing <span class="label">{{filters.label()}} projects</span> in <span class="label">{{regions.label()}}</span>
+				</h2>
+
 				<div class="modifiers">
 					<div class="sorts">
 						Sort: 
@@ -128,10 +132,6 @@
 						</button>
 					</div>
 				</div>
-
-				<h2 class="result-label">
-					Showing <span class="label">{{filters.label()}} projects</span> in <span class="label">{{regions.label()}}</span>
-				</h2>
 
 				<div class="data"
 					ng-if="focus.value.kind == 'loc'"

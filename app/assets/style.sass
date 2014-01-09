@@ -4,7 +4,7 @@
 
 @import mixins
 @import variables
-@import scrollbar
+// @import scrollbar
 @import comments
 
 body
@@ -111,8 +111,9 @@ section#filters
 	+span-columns(3)
 	$margin: 4px
 	padding: 20px
+	background-color: rgba(black, 0.05)
 	.group
-		margin-bottom: 20px
+		margin-bottom: 40px
 	ul
 		margin: 0 -$margin
 	button
@@ -146,13 +147,14 @@ section#projects
 
 h2.result-label
 	color: #ccc
+	margin-top: 20px
 	.label
 		color: #333
 
 .modifiers
 	+clearfix()
 	padding: 10px
-	margin-bottom: 40px
+	margin-bottom: 20px
 	background-color: rgba(black, 0.05)
 	border-radius: 2px
 	// background-color: #333
