@@ -13,6 +13,7 @@ body
 	font-family: $font
 	color: #333
 	line-height: 1.4
+	background-color: #eee
 
 	a
 		color: #333
@@ -20,6 +21,7 @@ body
 	h2
 		font-size: 36px
 		font-weight: 100
+		margin-bottom: 20px
 
 	h3
 		font-size: 24px
@@ -49,6 +51,17 @@ body
 	.de-em
 		font-size: 14px
 		color: #aaa
+
+	ul
+		list-style: none
+		padding: 0
+
+	button
+		+reset-button()
+
+.label
+	background-color: rgba(black, 0.1)
+	padding: 6px 8px 4px 8px
 
 header
 	height: 64px
@@ -94,12 +107,58 @@ header
 	button
 		+button
 
+section#filters
+	+span-columns(3)
+	$margin: 4px
+	ul
+		margin: 0 -$margin
+	button
+		+reset-button()
+		padding: 2px $margin 2px $margin
+		&.active
+			background-color: #333
+			color: white
+			border-radius: 2px
+
+section#projects
+	+span-columns(9)
+	background-color: #eee
+	padding: 20px
+	&.grid
+		.card
+			+span-columns(3 of 9)
+			+omega(3n)
+
+	&.list
+		.card
+			+fill-parent()
+
+.card
+	background-color: white
+	// margin: 10px
+	padding: 20px
+	margin-bottom: 20px
+	box-shadow: 0px 2px 2px rgba(black, 0.1)
+	text-decoration: none
+
+h2.result-label
+	color: #ccc
+	.label
+		color: #333
+
+.modifiers
+	+clearfix()
+	.view-mode
+		float: right
+		button
+			padding: 10px
+
 main
-	+fill-parent
+	+outer-container
 	+clearfix
-	position: absolute
-	top: 64px
-	bottom: 0px
+	// position: absolute
+	// top: 64px
+	// bottom: 0px
 
 	#click-instructions
 		position: absolute
@@ -127,178 +186,182 @@ main
 			.current-rating
 				display: none
 
-	#sidebar
-		// +span-columns(1 of 3, "block-collapse")
-		width: 40%
-		background-color: white
-		position: absolute
-		bottom: 0px
-		top: 0px
-		overflow-y: scroll
-		overflow-x: hidden
-		z-index: 1005
-		+media($mobile)
-			width: 100%
-			// margin-top: 50%
-			overflow-y: auto
-			position: relative
-
-		nav
-			width: 100%
-			padding: 20px
-			border-bottom: 1px solid rgba(black, 0.05)
-			position: relative
-			.back
-				width: 128px
-				overflow: hidden
-				white-space: nowrap
-				text-overflow: ellipsis
-				display: block
-			button.filter-button
-				+reset-button
-				float: right
-				line-height: 22px
-				text-transform: capitalize
-			a, button.filter-button
-				+transition(all 0.3s)
-				color: #ccc
-				text-decoration: none
-				&:hover, &.active
-					color: #333
-
-		.data
-			padding: 20px
-			border-bottom: 1px solid rgba(black, 0.05)
-			.share
-				margin-bottom: 20px
-				button
-					+reset-button
-					&#point
-						float: right
-						margin-top: -4px
-						margin-left: 6px
-					&:hover, &.active
-						color: orange
-				a
-					text-decoration: none
-					i 
-						font-size: 24px
-					&#fb:hover
-						color: #44619D
-					&#twitter:hover
-						color: #00ACEE
-					&#gplus:hover
-						color: #DC4B39
-					&.show-hide
-						display: block
-						margin-bottom: 20px
-						float: right
-						&:hover, &.active
-							color: teal
-							text-decoration: underline
-						
-			.rating
-				margin-bottom: 10px
-			
-			.moolah
-				padding: 10px
-				margin-left: -10px
-				margin-right: -10px
-				background-color: rgba(wheat, 0.8)
-				border: 1px solid darken(wheat, 5%)
-				color: darken(wheat, 60%)
-				border-radius: 3px
-				margin-bottom: 10px
-				.total
-					margin-bottom: 20px
-			ul
-				+reset-list
-				+fill-parent
-				// margin-top: 40px
-				li
-					margin-bottom: 10px
-					h5
-						font-size: 12px
-						font-weight: bold
-						color: rgba(black, 0.3)
+#projects
 
 
-		.sort-n-filter
-			padding: 20px
-			border-bottom: 1px solid #ddd
+#sidebar
+	// +span-columns(1 of 3, "block-collapse")
+	// width: 40%
+	background-color: white
+	// position: absolute
+	// bottom: 0px
+	// top: 0px
+	// overflow-y: scroll
+	// overflow-x: hidden
+	// z-index: 1005
+	+media($mobile)
+		width: 100%
+		// margin-top: 50%
+		overflow-y: auto
+		position: relative
+
+	nav
+		width: 100%
+		padding: 20px
+		border-bottom: 1px solid rgba(black, 0.05)
+		position: relative
+		+clearfix()
+		.back
+			width: 128px
+			overflow: hidden
+			white-space: nowrap
+			text-overflow: ellipsis
+			display: block
+		button.filter-button
+			+reset-button
+			// float: right
+			line-height: 22px
+			text-transform: capitalize
+		a, button.filter-button
+			+transition(all 0.3s)
+			color: #ccc
+			text-decoration: none
+			&:hover, &.active
+				color: #333
+
+	.data
+		padding: 20px
+		border-bottom: 1px solid rgba(black, 0.05)
+		.share
+			margin-bottom: 20px
 			button
 				+reset-button
-
-		ul.children
+				&#point
+					float: right
+					margin-top: -4px
+					margin-left: 6px
+				&:hover, &.active
+					color: orange
+			a
+				text-decoration: none
+				i 
+					font-size: 24px
+				&#fb:hover
+					color: #44619D
+				&#twitter:hover
+					color: #00ACEE
+				&#gplus:hover
+					color: #DC4B39
+				&.show-hide
+					display: block
+					margin-bottom: 20px
+					float: right
+					&:hover, &.active
+						color: teal
+						text-decoration: underline
+					
+		.rating
+			margin-bottom: 10px
+		
+		.moolah
+			padding: 10px
+			margin-left: -10px
+			margin-right: -10px
+			background-color: rgba(wheat, 0.8)
+			border: 1px solid darken(wheat, 5%)
+			color: darken(wheat, 60%)
+			border-radius: 3px
+			margin-bottom: 10px
+			.total
+				margin-bottom: 20px
+		ul
 			+reset-list
 			+fill-parent
+			// margin-top: 40px
 			li
-				+transition(all 0.4s)
-				padding: 20px
-				border-bottom: 1px solid rgba(black, 0.05)
-				&:hover, &.active
-					background-color: #eee
-				a
-					display: block
+				margin-bottom: 10px
+				h5
+					font-size: 12px
+					font-weight: bold
+					color: rgba(black, 0.3)
 
-	#main-view
-		width: 60%
-		margin-left: 40%
-		position: absolute
-		top: 0px
-		bottom: 0px
+
+	.sort-n-filter
+		padding: 20px
+		border-bottom: 1px solid #ddd
+		button
+			+reset-button
+
+	ul.children
+		+reset-list
+		+fill-parent
+		li
+			+transition(all 0.4s)
+			padding: 20px
+			border-bottom: 1px solid rgba(black, 0.05)
+			&:hover, &.active
+				background-color: #eee
+			a
+				display: block
+
+#main-view
+	width: 60%
+	margin-left: 40%
+	position: absolute
+	top: 0px
+	bottom: 0px
+	+media($mobile)
+		width: 100%
+		height: 50%
+		margin-left: 0
+		position: relative
+	#map
+		width: 100%
+		height: 100%
+
+.panel
+	.content
 		+media($mobile)
-			width: 100%
-			height: 50%
-			margin-left: 0
+			// .content
+				// +position(absolute, 0px 0px 0px 0px)
 			position: relative
-		#map
-			width: 100%
-			height: 100%
+			z-index: 1006
+			width: 100% !important
+			overflow-y: visible
+		+box-sizing(border-box)
+		+position(absolute, 0px 0px 0px 0px)
+		border-left: 1px solid rgba(black, 0.1)
+		z-index: 1001
+		background-color: #efefef
+		overflow-x: hidden
+		overflow-y: scroll
+		.close
+			+reset-button
+			float: right
+		.header
+			padding: 20px
+			padding-bottom: 0px
 
-		.panel
-			.content
-				+media($mobile)
-					// .content
-						// +position(absolute, 0px 0px 0px 0px)
-					position: relative
-					z-index: 1006
-					width: 100% !important
-					overflow-y: visible
-				+box-sizing(border-box)
-				+position(absolute, 0px 0px 0px 0px)
-				border-left: 1px solid rgba(black, 0.1)
-				z-index: 1001
-				background-color: #efefef
-				overflow-x: hidden
-				overflow-y: scroll
-				.close
+
+#filter-view
+	.content
+		width: 256px
+
+		ul
+			+reset-list
+			padding: 20px
+			margin-left: -6px
+			li
+				button
 					+reset-button
-					float: right
-				.header
-					padding: 20px
-					padding-bottom: 0px
+					padding: 4px 6px 4px 6px
+					border-radius: 3px
+					color: #333
+					text-transform: capitalize
+					&:hover
+						color: $accent
+					&.active
+						background-color: #333
+						color: white
 
-
-		#filter-view
-			.content
-				width: 256px
-
-				ul
-					+reset-list
-					padding: 20px
-					margin-left: -6px
-					li
-						button
-							+reset-button
-							padding: 4px 6px 4px 6px
-							border-radius: 3px
-							color: #333
-							text-transform: capitalize
-							&:hover
-								color: $accent
-							&.active
-								background-color: #333
-								color: white
-
-		
+	
