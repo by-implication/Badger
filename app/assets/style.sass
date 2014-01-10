@@ -127,6 +127,26 @@ section#filters
 
 section#banner
 	background-color: white
+	.result-label
+		color: #ccc
+		margin-top: 20px
+		text-align: center
+		font-weight: 300
+		margin: 60px 0px
+		button
+			+transition(all 0.2s)
+			font-weight: 300
+			color: #333
+			text-transform: capitalize
+			padding: 6px 0px
+				// font-weight: bold
+			&:hover
+				box-shadow: 0px 1px 0px #333
+			&.active, &.active:hover
+				background-color: #333
+				color: white
+				padding: 6px 8px
+				box-shadow: none
 
 section#projects
 	+fill-parent()
@@ -147,27 +167,7 @@ section#projects
 		.card
 			+fill-parent()
 
-.result-label
-	color: #ccc
-	margin-top: 20px
-	text-align: center
-	font-weight: 300
-	margin-bottom: 80px
-	margin-top: 80px
-	button
-		+transition(all 0.2s)
-		font-weight: 300
-		color: #333
-		text-transform: capitalize
-		padding: 6px 0px
-			// font-weight: bold
-		&:hover
-			box-shadow: 0px 1px 0px #333
-		&.active, &.active:hover
-			background-color: #333
-			color: white
-			padding: 6px 8px
-			box-shadow: none
+
 
 .filter
 	+clearfix()
