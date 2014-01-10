@@ -97,7 +97,7 @@ app.factory('Click', function($rootScope, loggedIn, Regions){
 	}
 });
 
-app.factory('Comments', function($rootScope, $http, Focus, loggedIn){
+app.factory('Comments', function($rootScope, $http, loggedIn){
 	return c = {
 		cache: [],
 		visible: function(){ return $rootScope.specialView.current == 'comments'; },
@@ -126,15 +126,6 @@ app.factory('Comments', function($rootScope, $http, Focus, loggedIn){
 					timestamp: parseInt(r)
 				});
 			});
-		}
-	};
-});
-
-app.factory('Focus', function(){
-	return {
-		value: null,
-		parentLink: function(){
-			return '/explore?' + $.param({id: this.value.parent.id, kind: 'loc'});
 		}
 	};
 });
@@ -286,12 +277,11 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Focus, Regions){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions){
 
 	$scope.click = Click;
   $scope.comments = Comments;
   $scope.filters = Filters;
-	$scope.focus = Focus;
 	$scope.regions = Regions;
 	$scope.leaves = [];
 
@@ -329,6 +319,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
 		if(!searchParams.focus){
+			$scope.view = 'list';
 			$http.get('/meta/explore', {params: searchParams}).success(function(r){
 				$scope.lastRetrieval = r.length;
 				var oldSearch = getSearchParams(oldPath);
@@ -336,6 +327,16 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 					? $scope.leaves.concat(r)
 					: r;
 			});
+		} else {
+			$scope.view = 'focus';
+			$scope.listLink = oldPath;
+			for(var i in $scope.leaves){
+				var leaf = $scope.leaves[i];
+				if(leaf.id == searchParams.focus){
+					$scope.focus = leaf;
+					break;
+				}
+			}
 		}
 	});
 
