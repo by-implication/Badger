@@ -51,6 +51,13 @@ app.directive('starRating', function(){
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
+app.factory('Focus', function(){
+	return {
+		value: {},
+		set: function(v){ this.value = v; }
+	};
+});
+
 app.factory('Filters', function($rootScope, categories, $location){
 	return {
 		categories: categories,
@@ -66,7 +73,7 @@ app.factory('Filters', function($rootScope, categories, $location){
 	};
 });
 
-app.factory('Click', function($rootScope, loggedIn, Regions){
+app.factory('Click', function($rootScope, loggedIn, Regions, Focus){
 	return {
 		active: function(){ return $rootScope.specialView.current == 'click'; },
 		listener: function(e){
@@ -97,7 +104,7 @@ app.factory('Click', function($rootScope, loggedIn, Regions){
 	}
 });
 
-app.factory('Comments', function($rootScope, $http, loggedIn){
+app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 	return c = {
 		cache: [],
 		visible: function(){ return $rootScope.specialView.current == 'comments'; },
@@ -294,8 +301,9 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions, Sort){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions, Sort, Focus){
 
+	$scope.focus = Focus;
 	$scope.click = Click;
   $scope.comments = Comments;
   $scope.filters = Filters;
@@ -355,28 +363,12 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 			for(var i in $scope.leaves){
 				var leaf = $scope.leaves[i];
 				if(leaf.id == searchParams.focus){
-					$scope.focus = leaf;
+					Focus.set(leaf);
 					break;
 				}
 			}
 		}
 	});
-
-	$scope.navUp = function(){
-		if(Focus.value.parent.id == 24 || Focus.value.parent.id == 26 || Focus.value.parent.id == 28){
-			zoomLevel = 7;	
-		}{
-			zoomLevel = 6;
-		}
-	}
-	
-	$scope.navDown = function(){
-		if(Focus.value.id == 24 || Focus.value.id == 26 || Focus.value.id == 28){
-			zoomLevel = 9;
-		}{
-			zoomLevel = 6;
-		}
-	}
 
 	$scope.share = {
 		facebook: function(){
