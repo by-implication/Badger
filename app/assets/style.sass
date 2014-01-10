@@ -125,9 +125,11 @@ section#filters
 			color: white
 			border-radius: 2px
 
+section#banner
+	background-color: white
+
 section#projects
 	+fill-parent()
-	padding: 20px
 	&.grid
 		.card
 			+span-columns(3 of 12)
@@ -143,7 +145,7 @@ section#projects
 	text-align: center
 	font-weight: 300
 	margin-bottom: 80px
-	margin-top: 60px
+	margin-top: 80px
 	button
 		+transition(all 0.2s)
 		font-weight: 300
@@ -165,6 +167,7 @@ section#projects
 	$margin: 4px
 	$bgcolor: rgba(black, 0.05)
 	$triangleSize: 30px
+	margin-top: 30px
 	padding: 20px
 	background-color: $bgcolor
 	position: relative
@@ -192,7 +195,7 @@ section#projects
 	+clearfix()
 	padding: 10px
 	margin-bottom: 20px
-	background-color: rgba(black, 0.1)
+	background-color: rgba(black, 0.05)
 	// background-color: #333
 	// color: white
 	.reverse
@@ -219,8 +222,12 @@ section#projects
 	box-shadow: 0px 2px 2px rgba(black, 0.1)
 	text-decoration: none
 
-main
+.container
 	+outer-container
+	padding: 0px 20px
+
+main
+	// +outer-container
 	+clearfix
 	// position: absolute
 	// top: 64px
