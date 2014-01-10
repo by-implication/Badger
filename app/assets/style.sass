@@ -130,10 +130,18 @@ section#banner
 
 section#projects
 	+fill-parent()
+	ul
+		+clearfix
 	&.grid
 		.card
 			+span-columns(3 of 12)
-			+omega(4n)
+			+media($largeDesktop)
+				+omega(4n)
+			+media($smallDesktop)
+				+span-columns(4 of 12)
+				+omega(3n)
+			+media($mobile)
+				+fill-parent
 
 	&.list
 		.card
@@ -181,6 +189,10 @@ section#projects
 		left: -$triangleSize/2
 	ul
 		+columns(6 20px)
+		+media($smallDesktop)
+			+columns(4 20px)
+		+media($mobile)
+			+columns(1)
 		margin: 0 -$margin
 		.item
 			display: block
@@ -207,6 +219,8 @@ section#projects
 			color: white
 	.view-mode
 		float: right
+		+media($mobile)
+			display: none
 		button
 			+transition(all 0.2s)
 			padding: 10px
