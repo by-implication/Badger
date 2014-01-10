@@ -6,59 +6,118 @@
 
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
 
-			<div id="main-view" ng-if="view == 'focus'">
+			<div id="project-detail" ng-show="view == 'focus'">
+				<div class="container">
+					
+					<div id="map"></div>
+					<div id="detail">
+						<a ng-href="{{listLink}}">
+							back to list view
+						</a>
+						<h1>
+							{{focus.fpapDsc}} ({{focus.year}})
+						</h1>
+						<!-- 	<ul>
+							<li ng-repeat="crumb in focus.breadcrumbs">
+								<a ng-href="/explore?id={{crumb.id}}&kind=leaf">
+									{{crumb.name}}
+								</a>
+							</li>
+						</ul> -->
 
-				<a ng-href="{{listLink}}" style="position: absolute;">
-					back to list view
-				</a>
+						<star-rating item="focus"></star-rating>
 
-				<div ng-include="'/assets/templates/leafDetail.html'"></div>
-
-				<div id="map"></div>
-
-				<h3 id="click-instructions" ng-if="click.active()">
-					Click on a point on the map to drop a pin indicating the location of this project
-				</h3>
-
-				<section id="comment-view" class="panel" ng-if="comments.visible()">
-					<div class="content">
-						<div class="header">
-							<button class="close" ng-click="comments.toggle()">
-								<i class="fa fa-times"></i>
-							</button>
-							<h4>
-								Comments on {{focus.fpapDsc}}
-							</h4>
-						</div>
-
-						<div class="user-comment">
-							<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
-								Sign up / Log in to comment!
+						<div class="share">
+							<a id="fb" target="_blank" ng-href="{{share.facebook()}}">
+								<i class="fa fa-facebook-square"></i>
 							</a>
-							<form ng-if="loggedIn" ng-submit="comments.submit()">
-								<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
-								<button type="submit">Submit</button>
-							</form>
+							<a id="twitter" target="_blank" ng-href="{{share.twitter()}}">
+								<i class="fa fa-twitter-square"></i>
+							</a>
+							<a id="gplus" target="_blank" ng-href="{{share.googlePlus()}}">
+								<i class="fa fa-google-plus-square"></i>
+							</a>
+							<button id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
+								<i class="fa fa-map-marker fa-2x"></i>
+							</button>
 						</div>
 
-						<div class="comments">
-							<ul ng-if="comments.current().length">
-								<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
-									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+						<div class="moolah">
+
+							<h4>Total:</h4>
+							<div class="total numeric">
+								<span class="monospace italic ">{{comatose(totalAmount(focus) * 1000)}}</span> PhP
+							</div>
+
+							<h4>Breakdown:</h4>
+							<ul class="numeric">
+								<li ng-if="focus.ps">
+									<h5>Personnel Services</h5>
+									<span class="monospace italic">{{comatose(focus.ps * 1000)}}</span> PhP
+								</li>
+								<li ng-if="focus.mooe">
+									<h5>Maintenance and Other Operating Expenses</h5>
+									<span class="monospace italic">{{comatose(focus.mooe * 1000)}}</span> PhP
+								</li>
+								<li ng-if="focus.co">
+									<h5>Capital Outlay</h5>
+									<span class="monospace italic">{{comatose(focus.co * 1000)}}</span> PhP
 								</li>
 							</ul>
-							<div ng-if="!comments.current().length" class="empty">
-								<p>
-									No comments yet. You can be the first!
-								</p>
-							</div>
 						</div>
+
+						<h4>Ownership:</h4>
+						<ul>
+							<li>
+								<h5>Department or Region</h5>
+								{{focus.dptDsc}}
+							</li>
+							<li>
+								<h5>Owner</h5>
+								{{focus.ownerDsc}}
+							</li>
+						</ul>
+
+						<h4>Year: {{focus.year}}</h4>
+						<h3 id="click-instructions" ng-if="click.active()">
+							Click on a point on the map to drop a pin indicating the location of this project
+						</h3>
+
+						<section id="comment-view">
+							<div class="content">
+								<h2>
+									Comments
+								</h2>
+
+								<div class="user-comment">
+									<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
+										Sign up / Log in to comment!
+									</a>
+									<form ng-if="loggedIn" ng-submit="comments.submit()">
+										<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
+										<button type="submit">Submit</button>
+									</form>
+								</div>
+
+								<div class="comments">
+									<ul ng-if="comments.current().length">
+										<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
+											<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+										</li>
+									</ul>
+									<div ng-if="!comments.current().length" class="empty">
+										<p>
+											No comments yet. You can be the first!
+										</p>
+									</div>
+								</div>
+							</div>
+						</section>
 					</div>
-				</section>
-				
+				</div>
 			</div>
 
-			<div ng-if="view == 'list'">
+			<div id="project-list">
 
 				<section id="banner">
 					<div class="container">
@@ -207,5 +266,5 @@
 		</main>
 	</div>
 	<script src="@routes.Assets.at("leaflet/leaflet.js")"></script>
-  <script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
+	<script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
 }
