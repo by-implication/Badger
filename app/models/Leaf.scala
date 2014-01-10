@@ -11,20 +11,35 @@ import scala.util.Random
 
 object Leaf extends LeafGen {
 
-  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], offset: Int): Seq[Leaf] = DB.withConnection { implicit c =>
+  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], offset: Int, sort: String, order: String): Seq[Leaf] = DB.withConnection { implicit c =>
+
     val constraints = Seq(dptDscs, areaDscs).filter(!_.isEmpty)
-    SQL("""
-      SELECT * FROM leafs
+
+    val sortField = sort match {
+      case "Year" => "leaf_year"
+      case "Rating" => "leaf_rating"
+      case _ => "leaf_total"
+    }
+
+    val sortOrder = order match {
+      case "Descending" => "DESC"
+      case _ => "ASC"
+    }
+
+    SQL("""SELECT *,
+      COALESCE(leaf_ps, 0) + COALESCE(leaf_mooe, 0) + COALESCE(leaf_co, 0) + COALESCE(leaf_net, 0) AS leaf_total,
+      CASE WHEN leaf_ratings != 0 THEN leaf_stars / leaf_ratings ELSE 0 END AS leaf_rating
+      FROM leafs leaf
       WHERE (
         leaf_ps IS NOT NULL
         OR leaf_mooe IS NOT NULL
         OR leaf_co IS NOT NULL
         OR leaf_net IS NOT NULL
-      )
-    """ +
+      )""" +
       (if(!dptDscs.isEmpty){ "AND leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
       (if(!areaDscs.isEmpty){ "AND leaf_area_dsc = ANY({areaDscs}) " } else {""}) +
-      "LIMIT 30 OFFSET {offset}"
+      "ORDER BY " + sortField + " " + sortOrder +
+      " LIMIT 30 OFFSET {offset}"
     ).on(
       'dptDscs -> PGStringList(dptDscs),
       'areaDscs -> PGStringList(areaDscs),
@@ -115,10 +130,8 @@ case class Leaf(
     "id" -> id.get,
     "kind" -> "leaf",
     "id" -> id.get,
-    // "stars" -> stars,
-    // "ratings" -> ratings,
-    "stars" -> Random.nextInt(500),
-    "ratings" -> Random.nextInt(100),
+    "stars" -> stars,
+    "ratings" -> ratings,
     "userRating" -> user.ratingFor(this),
     "userClick" -> user.clickFor(this)
     // "breadcrumbs" -> breadcrumbs.map(c => Json.obj(

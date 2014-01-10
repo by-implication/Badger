@@ -142,7 +142,7 @@ app.factory('Sort', function($location){
 		order: 0,
 		setOrder: function(order){
 			this.order = order;
-			$location.search($.extend($location.search(), {sort: this.orders[this.order]}));
+			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
 		}
 	};
 });

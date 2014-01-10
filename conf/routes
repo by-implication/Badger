@@ -10,7 +10,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /explore				controllers.Application.explore()
 GET     /breakdown			controllers.Application.breakdown()
-GET			/meta/explore		controllers.Application.exploreMeta(category: Option[Int], region: Option[Int], offset: Int)
+GET			/meta/explore		controllers.Application.exploreMeta(category: Option[Int], region: Option[Int], offset: Int, sort: String, order: String)
 GET			/meta/breakdown	controllers.Application.breakdownMeta(kind: String, year: Int, dpt: String, owner: String, fpap: String)
 GET			/comments				controllers.Application.comments(id: Int)
 
