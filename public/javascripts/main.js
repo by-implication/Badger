@@ -130,6 +130,23 @@ app.factory('Comments', function($rootScope, $http, loggedIn){
 	};
 });
 
+app.factory('Sort', function($location){
+	return {
+		fields: ['Amount', 'Year', 'Ratings'],
+		field: 0,
+		setField: function(field){
+			this.field = field;
+			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
+		},
+		orders: ['Ascending', 'Descending'],
+		order: 0,
+		setOrder: function(order){
+			this.order = order;
+			$location.search($.extend($location.search(), {sort: this.orders[this.order]}));
+		}
+	};
+});
+
 app.factory('Regions', function($rootScope, $http, $location, regions){
 
 	var COLORS = [
@@ -277,23 +294,28 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions, Sort){
 
 	$scope.click = Click;
   $scope.comments = Comments;
   $scope.filters = Filters;
 	$scope.regions = Regions;
+	$scope.sort = Sort;
 	$scope.leaves = [];
 
-	var s = $location.search()
+	var s = $location.search();
 	if(
 		s.category == undefined ||
 		s.region == undefined ||
-		s.offset == undefined
+		s.offset == undefined ||
+		s.sort == undefined ||
+		s.order == undefined
 	){
 		var o = {offset: 0};
 		if(Filters.current) o.category = Filters.current.id;
 		if(Regions.current) o.region = Regions.current.id;
+		o.sort = Sort.fields[Sort.field];
+		o.order = Sort.orders[Sort.order];
 		$location.search(o);
 	}
 

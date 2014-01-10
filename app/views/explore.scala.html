@@ -73,16 +73,16 @@
 							in 
 							<button 
 								class="label"
-								ng-click="shownFilter = 'regions'"
-								ng-class="{active: shownFilter == 'regions'}">
+								ng-class="{active: shownFilter == 'regions'}"
+								ng-click="shownFilter = 'regions'">
 								{{regions.label()}}
 							</button>,
-							sorted by
-							<button 
-								class="label" 
-								ng-click="shownFilter = 'sorts'"
-								ng-class="{active: shownFilter == 'sorts'}">
-								Amount
+							sorted by {{sort.orders[sort.order]}}
+							<button
+								class="label"
+								ng-class="{active: shownFilter == 'sorts'}"
+								ng-click="shownFilter = 'sorts'">
+								{{sort.fields[sort.field]}}
 							</button>
 						</h2>
 					</div>
@@ -146,22 +146,9 @@
 									Sort
 								</h4>
 								<ul>
-									<li class="item">
-										<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
-											ng-class="{active: activeOrder == 'Amount'}">
-											Amount
-										</button>
-									</li>
-									<li class="item">
-										<button ng-click="ordering = 'year'; activeOrder = 'Year'"
-											ng-class="{active: activeOrder == 'Year'}">
-											Year
-										</button>
-									</li>
-									<li class="item">
-										<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
-											ng-class="{active: activeOrder == 'Ratings'}">
-											Ratings
+									<li class="item" ng-repeat="field in sort.fields">
+										<button ng-click="sort.setField($index)" ng-class="{active: sort.field == $index}">
+											{{field}}
 										</button>
 									</li>
 								</ul>
@@ -169,9 +156,9 @@
 							</div>
 						</div>
 						<div class="modifiers">
-							<button class="reverse">
+							<button class="reverse" ng-click="sort.setOrder(1 - sort.order)">
 								<i class="fa fa-chevron-down"></i>
-								Descending
+								{{sort.orders[sort.order]}}
 							</button>
 							
 							<div class="view-mode">
