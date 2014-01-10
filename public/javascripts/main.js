@@ -308,7 +308,9 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	var zoomLevel = 6;
 
 	$scope.getCurtainHeight = function(){
-		console.log('hi');	
+		var docH = $(document).height();
+		var detH = $("#project-detail").height();
+		console.log(docH + ", " + detH);
 	}
 
 	function getSearchParams(path){
