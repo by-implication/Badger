@@ -109,8 +109,8 @@ header
 
 section#filters
 	+span-columns(3)
-	display: none
 	$margin: 4px
+	display: none
 	padding: 20px
 	background-color: rgba(black, 0.05)
 	.group
@@ -126,9 +126,7 @@ section#filters
 			border-radius: 2px
 
 section#projects
-	// +span-columns(9)
 	+fill-parent()
-	background-color: #eee
 	padding: 20px
 	&.grid
 		.card
@@ -165,8 +163,19 @@ section#projects
 	+clearfix()
 	+transition(height 0.4s)
 	$margin: 4px
+	$bgcolor: rgba(black, 0.05)
+	$triangleSize: 30px
 	padding: 20px
-	background-color: rgba(black, 0.05)
+	background-color: $bgcolor
+	position: relative
+	&:before
+		+triangle($triangleSize, $bgcolor, up)
+		top: -$triangleSize
+		display: block
+		content: ""
+		position: absolute
+		margin-left: 50%
+		left: -$triangleSize/2
 	ul
 		+columns(6 20px)
 		margin: 0 -$margin
