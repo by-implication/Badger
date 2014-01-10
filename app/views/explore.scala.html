@@ -5,202 +5,205 @@
 	<div ng-controller="Explore">
 
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
-			<!--<div id="main-view">
-				<div id="map">
-				</div>
+
+			<div id="main-view" ng-if="view == 'focus'">
+
+				<a ng-href="{{listLink}}" style="position: absolute;">
+					back to list view
+				</a>
+
+				<div ng-include="'/assets/templates/leafDetail.html'"></div>
+
+				<div id="map"></div>
+
 				<h3 id="click-instructions" ng-if="click.active()">
 					Click on a point on the map to drop a pin indicating the location of this project
 				</h3>
+
+				<section id="comment-view" class="panel" ng-if="comments.visible()">
+					<div class="content">
+						<div class="header">
+							<button class="close" ng-click="comments.toggle()">
+								<i class="fa fa-times"></i>
+							</button>
+							<h4>
+								Comments on {{focus.fpapDsc}}
+							</h4>
+						</div>
+
+						<div class="user-comment">
+							<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
+								Sign up / Log in to comment!
+							</a>
+							<form ng-if="loggedIn" ng-submit="comments.submit()">
+								<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
+								<button type="submit">Submit</button>
+							</form>
+						</div>
+
+						<div class="comments">
+							<ul ng-if="comments.current().length">
+								<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
+									<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+								</li>
+							</ul>
+							<div ng-if="!comments.current().length" class="empty">
+								<p>
+									No comments yet. You can be the first!
+								</p>
+							</div>
+						</div>
+					</div>
+				</section>
 				
-			</div>-->
+			</div>
 
-			
-			<!--
-			<section id="comment-view" class="panel" ng-if="comments.visible()">
-				<div class="content">
-					<div class="header">
-						<button class="close" ng-click="comments.toggle()">
-							<i class="fa fa-times"></i>
-						</button>
-						<h4>
-							Comments on {{focus.value.fpapDsc}}
-						</h4>
+			<div ng-if="view == 'list'">
+
+				<section id="banner">
+					<div class="container">
+						<h2 class="result-label">
+							Showing 
+							<button 
+								class="label" 
+								ng-click="shownFilter = 'sector'"
+								ng-class="{active: shownFilter == 'sector'}">
+								{{filters.label()}} projects
+							</button> 
+							in 
+							<button 
+								class="label"
+								ng-click="shownFilter = 'regions'"
+								ng-class="{active: shownFilter == 'regions'}">
+								{{regions.label()}}
+							</button>,
+							sorted by
+							<button 
+								class="label" 
+								ng-click="shownFilter = 'sorts'"
+								ng-class="{active: shownFilter == 'sorts'}">
+								Amount
+							</button>
+						</h2>
 					</div>
+				</section>
 
-					<div class="user-comment">
-						<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
-							Sign up / Log in to comment!
-						</a>
-						<form ng-if="loggedIn" ng-submit="comments.submit()">
-							<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
-							<button type="submit">Submit</button>
-						</form>
-					</div>
+				<section id="projects" ng-class="{grid: viewMode == 'grid', list: viewMode == 'list'}">
+					<div class="container">
+						<div class="filter">
 
-					<div class="comments">
-						<ul ng-if="comments.current().length">
-							<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
-								<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+							<div 
+								id="sector" 
+								ng-show="shownFilter == 'sector'">
+								<h4>
+									Sector
+								</h4>
+								<ul>
+									<li class="item">
+										<button 
+											ng-click="filters.setCurrent(null)"
+											ng-class="{active: filters.current == null}">
+											All
+										</button>
+									</li>
+									<li class="item" ng-repeat="cat in filters.categories">
+										<button 
+											ng-click="filters.setCurrent(cat)"
+											ng-class="{active: filters.current == cat}">
+											{{cat.name}}
+										</button>
+									</li>
+								</ul>
+							</div>
+
+							<div 
+								id="regions" 
+								ng-show="shownFilter == 'regions'">
+								<h4>
+									Regions
+								</h4>
+								<ul>
+									<li class="item">
+										<button 
+											ng-click="regions.setCurrent(null)"
+											ng-class="{active: regions.current == null}">
+											Everywhere
+										</button>
+									</li>
+									<li class="item" ng-repeat="region in regions.list" >
+										<button 
+											ng-click="regions.setCurrent(region)"
+											ng-class="{active: regions.current == region}">
+											{{region.name}}
+										</button>
+									</li>
+								</ul>
+							</div>
+
+							<div 
+								ng-show="shownFilter == 'sorts'">
+								<h4>
+									Sort
+								</h4>
+								<ul>
+									<li class="item">
+										<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
+											ng-class="{active: activeOrder == 'Amount'}">
+											Amount
+										</button>
+									</li>
+									<li class="item">
+										<button ng-click="ordering = 'year'; activeOrder = 'Year'"
+											ng-class="{active: activeOrder == 'Year'}">
+											Year
+										</button>
+									</li>
+									<li class="item">
+										<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
+											ng-class="{active: activeOrder == 'Ratings'}">
+											Ratings
+										</button>
+									</li>
+								</ul>
+								<!--also add 'activity'. combination of number of ratings, number of comments, and its recent-ness-->
+							</div>
+						</div>
+						<div class="modifiers">
+							<button class="reverse">
+								<i class="fa fa-chevron-down"></i>
+								Descending
+							</button>
+							
+							<div class="view-mode">
+								<button 
+									ng-click="viewMode = 'grid'"
+									ng-class="{active: viewMode == 'grid'}">
+									<i class="fa fa-th fa-lg"></i>
+								</button>
+								<button 
+									ng-click="viewMode = 'list'"
+									ng-class="{active: viewMode == 'list'}">
+									<i class="fa fa-align-justify fa-lg"></i>
+								</button>
+							</div>
+						</div>
+						<ul class="children">
+							<li
+								class="card"
+								ng-repeat="leaf in leaves"
+								ng-include="'/assets/templates/leafStub.html'">
+							</li>
+							<li 
+								class="card"
+								ng-if="lastRetrieval >= 30">
+								<a ng-href="{{showMoreLink()}}">Show more</a>
 							</li>
 						</ul>
-						<div ng-if="!comments.current().length" class="empty">
-							<p>
-								No comments yet. You can be the first!
-							</p>
-						</div>
 					</div>
-				</div>
-			</section>
-			-->
+				</section>
 
-			<section id="banner">
-				<div class="container">
-					<h2 class="result-label">
-						Showing 
-						<button 
-							class="label" 
-							ng-click="shownFilter = 'sector'"
-							ng-class="{active: shownFilter == 'sector'}">
-							{{filters.label()}} projects
-						</button> 
-						in 
-						<button 
-							class="label"
-							ng-click="shownFilter = 'regions'"
-							ng-class="{active: shownFilter == 'regions'}">
-							{{regions.label()}}
-						</button>,
-						sorted by
-						<button 
-							class="label" 
-							ng-click="shownFilter = 'sorts'"
-							ng-class="{active: shownFilter == 'sorts'}">
-							Amount
-						</button>
-					</h2>
-				</div>
-			</section>
-			<section 
-				id="projects" 
-				ng-class="{grid: viewMode == 'grid', list: viewMode == 'list'}">
-				<div class="container">
-				<!--<nav>
-					<a class="back" ng-if="focus.value.parent" ng-href="{{focus.parentLink()}}" ng-click="navUp()">
-						<i class="fa fa-chevron-left"></i>
-						{{focus.value.parent.name}}
-					</a>
-				</nav>-->
-					<div class="filter">
+			</div>
 
-						<div 
-							id="sector" 
-							ng-show="shownFilter == 'sector'">
-							<h4>
-								Sector
-							</h4>
-							<ul>
-								<li class="item">
-									<button 
-										ng-click="filters.setCurrent(null)"
-										ng-class="{active: filters.current == null}">
-										All
-									</button>
-								</li>
-								<li class="item" ng-repeat="cat in filters.categories">
-									<button 
-										ng-click="filters.setCurrent(cat)"
-										ng-class="{active: filters.current == cat}">
-										{{cat.name}}
-									</button>
-								</li>
-							</ul>
-						</div>
-
-						<div 
-							id="regions" 
-							ng-show="shownFilter == 'regions'">
-							<h4>
-								Regions
-							</h4>
-							<ul>
-								<li class="item">
-									<button 
-										ng-click="regions.setCurrent(null)"
-										ng-class="{active: regions.current == null}">
-										Everywhere
-									</button>
-								</li>
-								<li class="item" ng-repeat="region in regions.list" >
-									<button 
-										ng-click="regions.setCurrent(region)"
-										ng-class="{active: regions.current == region}">
-										{{region.name}}
-									</button>
-								</li>
-							</ul>
-						</div>
-
-						<div 
-							ng-show="shownFilter == 'sorts'">
-							<h4>
-								Sort
-							</h4>
-							<ul>
-								<li class="item">
-									<button ng-click="ordering = totalAmount; activeOrder = 'Amount'"
-										ng-class="{active: activeOrder == 'Amount'}">
-										Amount
-									</button>
-								</li>
-								<li class="item">
-									<button ng-click="ordering = 'year'; activeOrder = 'Year'"
-										ng-class="{active: activeOrder == 'Year'}">
-										Year
-									</button>
-								</li>
-								<li class="item">
-									<button ng-click="ordering = 'ratings'; activeOrder = 'Ratings'"
-										ng-class="{active: activeOrder == 'Ratings'}">
-										Ratings
-									</button>
-								</li>
-							</ul>
-							<!--also add 'activity'. combination of number of ratings, number of comments, and its recent-ness-->
-						</div>
-					</div>
-					<div class="modifiers">
-						<button class="reverse">
-							<i class="fa fa-chevron-down"></i>
-							Descending
-						</button>
-						
-						<div class="view-mode">
-							<button 
-								ng-click="viewMode = 'grid'"
-								ng-class="{active: viewMode == 'grid'}">
-								<i class="fa fa-th fa-lg"></i>
-							</button>
-							<button 
-								ng-click="viewMode = 'list'"
-								ng-class="{active: viewMode == 'list'}">
-								<i class="fa fa-align-justify fa-lg"></i>
-							</button>
-						</div>
-					</div>
-					<ul class="children">
-						<li
-							class="card"
-							ng-repeat="leaf in leaves"
-							ng-include="'/assets/templates/leafStub.html'">
-						</li>
-						<li 
-							class="card"
-							ng-if="lastRetrieval >= 30">
-							<a ng-href="{{showMoreLink()}}">Show more</a>
-						</li>
-					</ul>
-				</div>
-			</section>
 		</main>
 	</div>
 	<script src="@routes.Assets.at("leaflet/leaflet.js")"></script>

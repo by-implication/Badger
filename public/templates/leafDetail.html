@@ -1,16 +1,16 @@
 <h2>
-	{{focus.value.fpapDsc}} ({{focus.value.year}})
+	{{focus.fpapDsc}} ({{focus.year}})
 </h2>
 
 <ul>
-	<li ng-repeat="crumb in focus.value.breadcrumbs">
+	<li ng-repeat="crumb in focus.breadcrumbs">
 		<a ng-href="/explore?id={{crumb.id}}&kind=leaf">
 			{{crumb.name}}
 		</a>
 	</li>
 </ul>
 
-<star-rating item="focus.value"></star-rating>
+<star-rating item="focus"></star-rating>
 
 <div class="share">
 	<a id="fb" target="_blank" ng-href="{{share.facebook()}}">
@@ -34,40 +34,37 @@
 
 	<h4>Total:</h4>
 	<div class="total numeric">
-		<span class="monospace italic ">{{comatose(totalAmount(focus.value) * 1000)}}</span> PhP
+		<span class="monospace italic ">{{comatose(totalAmount(focus) * 1000)}}</span> PhP
 	</div>
 
 	<h4>Breakdown:</h4>
 	<ul class="numeric">
-		<li ng-if="focus.value.ps">
+		<li ng-if="focus.ps">
 			<h5>Personnel Services</h5>
-			<span class="monospace italic">{{comatose(focus.value.ps * 1000)}}</span> PhP
+			<span class="monospace italic">{{comatose(focus.ps * 1000)}}</span> PhP
 		</li>
-		<li ng-if="focus.value.mooe">
+		<li ng-if="focus.mooe">
 			<h5>Maintenance and Other Operating Expenses</h5>
-			<span class="monospace italic">{{comatose(focus.value.mooe * 1000)}}</span> PhP
+			<span class="monospace italic">{{comatose(focus.mooe * 1000)}}</span> PhP
 		</li>
-		<li ng-if="focus.value.co">
+		<li ng-if="focus.co">
 			<h5>Capital Outlay</h5>
-			<span class="monospace italic">{{comatose(focus.value.co * 1000)}}</span> PhP
+			<span class="monospace italic">{{comatose(focus.co * 1000)}}</span> PhP
 		</li>
 	</ul>
 </div>
-
-
 
 <h4>Ownership:</h4>
 <ul>
 	<li>
 		<h5>Department or Region</h5>
-		{{focus.value.dptDsc}}
+		{{focus.dptDsc}}
 	</li>
 	<li>
 		<h5>Owner</h5>
-		{{focus.value.ownerDsc}}
+		{{focus.ownerDsc}}
 	</li>
 </ul>
 
 <h4>Year:</h4>
-{{focus.value.year}}
-
+{{focus.year}}
