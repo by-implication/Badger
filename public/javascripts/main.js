@@ -8,7 +8,7 @@ app
 	.directive('starRating', function(){
 		return {
 			restrict: 'E',
-			scope: { item: '=' },
+			scope: { item: '=', fixed: '=' },
 			templateUrl: '/assets/templates/rateStub.html',
 			transclude: true,
 			controller: function($scope, $http, loggedIn){
@@ -30,14 +30,14 @@ app
 				$scope.starClass = function(item, star){
 				  var rating = item.userRating || (item.ratings && $scope.round((item.stars / item.ratings) * 2, 0) / 2) || 0;
 				  if(rating >= star){
-				    return "fa-star";
+				    return "fa fa-star";
 				  } else if(rating >= star - 0.5){
-				    return "fa-star-half-o";
+				    return "fa fa-star-half-o";
 				  } else {
-				    return "fa-star-o";
+				    return "fa fa-star-o";
 				  }
 				}
-				
+
 				$scope.rateProject = function(item, stars) {
 					$http.post('/rate/' + item.id + '/' + stars)
 					.success(function(r){
