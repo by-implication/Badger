@@ -54,6 +54,7 @@ app
 			link: function(scope, elm, attrs){
 				var docH = $(document).height();
 				elm.css('min-height', docH+"px");
+				$(document).scrollTop(0);
 			}
 		}
 	})
