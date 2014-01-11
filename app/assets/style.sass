@@ -19,6 +19,9 @@ body
 	a
 		color: #333
 		text-decoration: none
+
+	p
+		margin-bottom: 10px
 	h1
 		font-size: 40px
 		font-weight: 300
@@ -445,6 +448,8 @@ main
 
 #project-detail
 	+box-sizing(border-box)
+	+media($smallDesktop)
+		padding: 10px
 	position: absolute
 	top: 0px
 	width: 100%
@@ -454,11 +459,27 @@ main
 	.container
 		padding: 20px
 		background-color: white
+	h1
+		margin-bottom: 40px
+		text-align: center
 	#map
-		+span-columns(4)
+		// +span-columns(4)
+		+fill-parent
 		height: 256px
 	#detail
-		+span-columns(8)
+		.info-group
+			+fill-parent
+			+clearfix
+			.info
+				+span-columns(4)
+				+media($smallDesktop)
+					+fill-parent
+
+		#comment-view
+			+fill-parent
+		// .financial
+		// 	+span-columns(4)
+		// .ownership
 
 
 .panel
