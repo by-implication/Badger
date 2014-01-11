@@ -9,7 +9,7 @@
 			<div id="project-detail" ng-if="view == 'focus'" bi-curtain>
 				<div class="container">
 					
-					<div id="map"></div>
+					<div id="map" bi-map></div>
 					<div id="detail">
 						<a ng-href="{{listLink}}">
 							back to list view
@@ -253,5 +253,5 @@
 		</main>
 	</div>
 	<script src="@routes.Assets.at("leaflet/leaflet.js")"></script>
-	<script src="@routes.Assets.at("javascripts/map-sample.js")"></script>
+	@*<script src="@routes.Assets.at("javascripts/map-sample.js")"></script>*@
 }
