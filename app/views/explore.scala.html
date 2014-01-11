@@ -224,7 +224,8 @@
 						</div>
 						<div class="modifiers">
 							<button class="reverse" ng-click="sort.setOrder(1 - sort.order)">
-								<i class="fa fa-chevron-down"></i>
+								<i class="fa fa-chevron-up" ng-show="sort.order == 0"></i>
+								<i class="fa fa-chevron-down" ng-show="sort.order == 1"></i>
 								{{sort.orders[sort.order]}}
 							</button>
 							
