@@ -52,14 +52,8 @@ app
 	.directive('biCurtain', function(){
 		return {
 			link: function(scope, elm, attrs){
-				// elm.css('height', '');
 				var docH = $(document).height();
 				elm.css('min-height', docH+"px");
-				// var detH = $("#project-detail").height();
-				// if(docH > detH){
-					// console.log(docH);
-					// elm.css('min-height', docH+"px");
-				// }
 			}
 		}
 	})
