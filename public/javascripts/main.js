@@ -177,13 +177,13 @@ app.factory('Sort', function($location){
 		field: 0,
 		setField: function(field){
 			this.field = field;
-			$.extend($location.search(), {sort: this.fields[this.field]});
+			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
 		},
 		orders: ['Ascending', 'Descending'],
 		order: 1,
 		setOrder: function(order){
 			this.order = order;
-			$.extend($location.search(), {order: this.orders[this.order]});
+			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
 		}
 	};
 });
