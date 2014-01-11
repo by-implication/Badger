@@ -369,7 +369,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	}
 
 	$scope.nodeLink = function(node){
-		return '/explore?' + $.param({focus: node.id});
+		return '/explore?' + $.param($.extend($location.search(), {focus: node.id}));
 	}
 
 	$scope.comatose = function(num){
