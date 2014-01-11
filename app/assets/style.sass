@@ -17,6 +17,7 @@ body
 
 	a
 		color: #333
+		text-decoration: none
 	h1
 		font-size: 40px
 		font-weight: 300
@@ -76,12 +77,12 @@ body
 	+transition(all 1s)
 	&.ng-enter, &.ng-leave.ng-leave-active, &.ng-move
 		opacity: 0
-		max-height: 0
-		max-width: 0
+		// max-height: 0
+		// max-width: 0
 	&.ng-leave, &.ng-enter.ng-enter-active, &.ng-move.ng-move-active
 		opacity: 1
-		max-height: 256px
-		max-width: 512px
+		// max-height: 256px
+		// max-width: 512px
 
 header
 	height: 64px
@@ -182,6 +183,11 @@ section#projects
 				+omega(3n)
 			+media($mobile)
 				+fill-parent
+			a:hover
+				text-decoration: underline
+			&.show-more
+				+fill-parent
+				text-align: center
 
 	&.list
 		.card
