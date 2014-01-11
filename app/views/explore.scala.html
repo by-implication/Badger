@@ -136,13 +136,14 @@
 								ng-click="shownFilter = 'regions'">
 								{{regions.label()}}
 							</button>,
-							sorted by {{sort.orders[sort.order]}}
+							sorted by
 							<button
 								class="label"
 								ng-class="{active: shownFilter == 'sorts'}"
 								ng-click="shownFilter = 'sorts'">
 								{{sort.fields[sort.field]}}
 							</button>
+							in {{sort.orders[sort.order]}} order
 						</h2>
 					</div>
 				</section>

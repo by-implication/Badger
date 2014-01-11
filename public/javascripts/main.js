@@ -172,7 +172,7 @@ app.factory('Sort', function($location){
 			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
 		},
 		orders: ['Ascending', 'Descending'],
-		order: 0,
+		order: 1,
 		setOrder: function(order){
 			this.order = order;
 			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
