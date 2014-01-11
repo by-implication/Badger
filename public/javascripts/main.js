@@ -177,13 +177,13 @@ app.factory('Sort', function($location){
 		field: 0,
 		setField: function(field){
 			this.field = field;
-			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
+			$.extend($location.search(), {sort: this.fields[this.field]});
 		},
 		orders: ['Ascending', 'Descending'],
 		order: 1,
 		setOrder: function(order){
 			this.order = order;
-			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
+			$.extend($location.search(), {order: this.orders[this.order]});
 		}
 	};
 });
@@ -369,7 +369,8 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	}
 
 	$scope.nodeLink = function(node){
-		return '/explore?' + $.param($.extend($location.search(), {focus: node.id}));
+		var s = $.extend({}, $location.search());
+		return '/explore?' + $.param($.extend(s, {focus: node.id}));
 	}
 
 	$scope.comatose = function(num){
