@@ -54,7 +54,7 @@ app
 			link: function(scope, elm, attrs){
 				var docH = $(document).height();
 				elm.css('min-height', docH+"px");
-				$(document).scrollTop(0);
+				$("html, body").animate({scrollTop: "0px"});
 			}
 		}
 	})
