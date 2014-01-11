@@ -282,22 +282,45 @@ main
 		padding: 10px
 		background-color: rgba(white, 0.6)
 
-	.rating-group
-		margin-bottom: 10px
-		&.ratable i
-			color: #EB0
+	.rate-stub
+		.num-rates
+			font-size: 12px
+		&.fixed i
+			color: #333 
+		&.rated i
+			color: $accent 
+		i
+			color: #EB0 
 		.apply-rating
 			display: none
 			i:hover
 				cursor: pointer
 				~ i
 					&:before
-						content: "\f006"
-		&.ratable .rating:hover
+						content: "\f006"  
+		&:not(.fixed) .ratings:hover
 			.apply-rating
-				display: inline
-			.current-rating
-				display: none
+				display: inline 
+			.rating
+				display: none 
+		
+	
+	// .rating-group
+	// 	margin-bottom: 10px
+	// 	&.ratable i
+	// 		color: #EB0
+	// 	.apply-rating
+	// 		display: none
+	// 		i:hover
+	// 			cursor: pointer
+	// 			~ i
+	// 				&:before
+	// 					content: "\f006"
+	// 	&.ratable .rating:hover
+	// 		.apply-rating
+	// 			display: inline
+	// 		.current-rating
+	// 			display: none
 
 #projects
 
