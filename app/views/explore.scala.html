@@ -143,7 +143,13 @@
 								ng-click="shownFilter = 'sorts'">
 								{{sort.fields[sort.field]}}
 							</button>
-							in {{sort.orders[sort.order]}} order
+							in 
+							<button
+								class="label"
+								ng-click="sort.setOrder(1 - sort.order)">
+								{{sort.orders[sort.order]}}
+							</button>
+							order
 						</h2>
 					</div>
 				</section>
