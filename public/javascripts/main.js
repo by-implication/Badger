@@ -1,4 +1,4 @@
-var app = angular.module('budget', ['ui']);
+var app = angular.module('budget', ['ui', 'ngAnimate']);
 
 app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 

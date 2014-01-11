@@ -6,7 +6,11 @@
 
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
 
-			<div id="project-detail" ng-if="view == 'focus'" bi-curtain>
+			<div 
+				id="project-detail" 
+				class="fade" 
+				ng-if="view == 'focus'" 
+				bi-curtain>
 				<div class="container">
 					
 					<div id="map" bi-map></div>
