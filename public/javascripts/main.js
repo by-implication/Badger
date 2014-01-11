@@ -86,6 +86,7 @@ app.factory('Focus', function(){
 });
 
 app.factory('Filters', function($rootScope, categories, $location){
+	categories.unshift({id: null, name: 'All'});
 	return {
 		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
@@ -95,7 +96,13 @@ app.factory('Filters', function($rootScope, categories, $location){
 		label: function(){ return this.current ? this.current.name : 'All'; },
 		setCurrent: function(cat){
 			this.current = cat;
-			$location.search($.extend($location.search(), {category: this.current.id, offset: 0}));
+			var s = $location.search();
+			if(this.current.id){
+				$location.search($.extend(s, {category: this.current.id, offset: 0}));
+			} else {
+				delete s.category;
+				$location.search($.extend(s, {offset: 0}));
+			}
 		}
 	};
 });
@@ -228,6 +235,7 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 	list[21] = 'Autonomous Region in Muslim Mindanao';
 	list[23] = 'Metro Manila';
 
+	regions.unshift({id: null, name: 'Everywhere'});
 	var r = {
 		sets: {
 			'Luzon': ['Region III', 'Region V', 'National Capital Region', 'Region I', 'Region II', 'Cordillera Administrative Region', 'Region IV', 'Metro Manila'],
@@ -241,7 +249,13 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 		current: null,
 		setCurrent: function(region){
 			this.current = region;
-			$location.search($.extend($location.search(), {region: this.current.id, offset: 0}));
+			var s = $location.search();
+			if(this.current.id){
+				$location.search($.extend(s, {region: this.current.id, offset: 0}));
+			} else {
+				delete s.region;
+				$location.search($.extend(s, {offset: 0}));
+			}
 		},
 		label: function(){ return this.current ? this.current.name : 'Everywhere'; },
 		highlight: function(region){

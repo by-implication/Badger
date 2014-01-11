@@ -170,13 +170,6 @@
 									Sector
 								</h4>
 								<ul>
-									<li class="item">
-										<button 
-											ng-click="filters.setCurrent(null)"
-											ng-class="{active: filters.current == null}">
-											All
-										</button>
-									</li>
 									<li class="item" ng-repeat="cat in filters.categories">
 										<button 
 											ng-click="filters.setCurrent(cat)"
@@ -194,13 +187,6 @@
 									Regions
 								</h4>
 								<ul>
-									<li class="item">
-										<button 
-											ng-click="regions.setCurrent(null)"
-											ng-class="{active: regions.current == null}">
-											Everywhere
-										</button>
-									</li>
 									<li class="item" ng-repeat="region in regions.list" >
 										<button 
 											ng-click="regions.setCurrent(region)"
