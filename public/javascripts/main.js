@@ -4,50 +4,63 @@ app.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 
 ///////////////////////////////////////////// directives ///////////////////////////////
 
-app.directive('starRating', function(){
-	return {
-		restrict: 'E',
-		scope: { item: '=' },
-		templateUrl: '/assets/templates/rateStub.html',
-		transclude: true,
-		controller: function($scope, $http, loggedIn){
+app
+	.directive('starRating', function(){
+		return {
+			restrict: 'E',
+			scope: { item: '=' },
+			templateUrl: '/assets/templates/rateStub.html',
+			transclude: true,
+			controller: function($scope, $http, loggedIn){
 
-			$scope.loggedIn = loggedIn;
-			$scope.stars = [1,2,3,4,5];
+				$scope.loggedIn = loggedIn;
+				$scope.stars = [1,2,3,4,5];
 
-			$scope.roundFix = function(n){
-			  var decimal_places = 2;
-			  var pow = Math.pow(10, decimal_places);
-			  return (Math.round(n*pow)/pow).toFixed(decimal_places);
+				$scope.roundFix = function(n){
+				  var decimal_places = 2;
+				  var pow = Math.pow(10, decimal_places);
+				  return (Math.round(n*pow)/pow).toFixed(decimal_places);
+				}
+
+				$scope.round = function(num, deg){
+				  var coeff = Math.pow(10, deg);
+				  return Math.round(num * coeff)/coeff;
+				}
+
+				$scope.starClass = function(item, star){
+				  var rating = item.userRating || (item.ratings && $scope.round((item.stars / item.ratings) * 2, 0) / 2) || 0;
+				  if(rating >= star){
+				    return "fa-star";
+				  } else if(rating >= star - 0.5){
+				    return "fa-star-half-o";
+				  } else {
+				    return "fa-star-o";
+				  }
+				}
+				
+				$scope.rateProject = function(item, stars) {
+					$http.post('/rate/' + item.id + '/' + stars)
+					.success(function(r){
+						if(!item.userRating) item.ratings++;
+						item.userRating = stars;
+					});
+				}
+
 			}
-
-			$scope.round = function(num, deg){
-			  var coeff = Math.pow(10, deg);
-			  return Math.round(num * coeff)/coeff;
-			}
-
-			$scope.starClass = function(item, star){
-			  var rating = item.userRating || (item.ratings && $scope.round((item.stars / item.ratings) * 2, 0) / 2) || 0;
-			  if(rating >= star){
-			    return "fa-star";
-			  } else if(rating >= star - 0.5){
-			    return "fa-star-half-o";
-			  } else {
-			    return "fa-star-o";
-			  }
-			}
-			
-			$scope.rateProject = function(item, stars) {
-				$http.post('/rate/' + item.id + '/' + stars)
-				.success(function(r){
-					if(!item.userRating) item.ratings++;
-					item.userRating = stars;
-				});
-			}
-
 		}
-	}
-});
+	})
+	.directive('biCurtain', function(){
+		return {
+			link: function(scope, elm, attrs){
+				var docH = $(document).height();
+				var detH = $("#project-detail").height();
+				if(docH > detH){
+					console.log(docH);
+					elm.css('height', docH+"px");
+				}
+			}
+		}
+	});
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
@@ -337,11 +350,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	
 	var zoomLevel = 6;
 
-	$scope.getCurtainHeight = function(){
-		var docH = $(document).height();
-		var detH = $("#project-detail").height();
-		console.log(docH + ", " + detH);
-	}
+	// $scope.getCurtainHeight = function(){
+	// 	var docH = $(document).height();
+	// 	var detH = $("#project-detail").height();
+	// 	return Math.max(docH, detH);
+	// }
 
 	function getSearchParams(path){
 		return path.split("?")[1].split("&").map(function(s){

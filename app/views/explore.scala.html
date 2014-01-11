@@ -6,7 +6,7 @@
 
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
 
-			<div id="project-detail" ng-show="view == 'focus'">
+			<div id="project-detail" ng-if="view == 'focus'" bi-curtain>
 				<div class="container">
 					
 					<div id="map"></div>
