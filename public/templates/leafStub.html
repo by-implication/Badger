@@ -1,14 +1,14 @@
-<div>
-	<a ng-href="{{nodeLink(leaf)}}" ng-click="getCurtainHeight()">
+<a class="card" ng-href="{{nodeLink(leaf)}}" ng-click="getCurtainHeight()">
+	<div>
 		{{leaf.fpapDsc}} ({{leaf.year}})
-	</a>
-</div>
-<div class="de-em">
-	{{leaf.dptDsc}}
-</div>
-<star-rating item="leaf"></star-rating>
-<div class="numeric">
-	<span class="italic monospace">
-		{{comatose(totalAmount(leaf) * 1000)}}
-	</span> PhP
-</div>
+	</div>
+	<div class="de-em">
+		{{leaf.dptDsc}}
+	</div>
+	<star-rating item="leaf" fixed="true"></star-rating>
+	<div class="numeric">
+		<span class="italic monospace">
+			{{comatose(totalAmount(leaf) * 1000)}}
+		</span> PhP
+	</div>
+</a>

@@ -234,14 +234,14 @@
 						</div>
 						<ul class="children">
 							<li
-								class="card move"
+								class="project move"
 								ng-repeat="leaf in leaves"
 								ng-include="'/assets/templates/leafStub.html'">
 							</li>
 							<li 
-								class="card show-more"
+								class="project show-more"
 								ng-if="lastRetrieval >= 30">
-								<a ng-href="{{showMoreLink()}}">Show more</a>
+								<a class="card" ng-href="{{showMoreLink()}}">Show more</a>
 							</li>
 						</ul>
 					</div>

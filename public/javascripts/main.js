@@ -8,7 +8,7 @@ app
 	.directive('starRating', function(){
 		return {
 			restrict: 'E',
-			scope: { item: '=' },
+			scope: { item: '=', fixed: '=' },
 			templateUrl: '/assets/templates/rateStub.html',
 			transclude: true,
 			controller: function($scope, $http, loggedIn){
