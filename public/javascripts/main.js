@@ -141,17 +141,15 @@ app.factory('Click', function($rootScope, loggedIn, Regions, Focus){
 app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 	return c = {
 		cache: [],
-		visible: function(){ return $rootScope.specialView.current == 'comments'; },
-		current: function(){ return this.cache[Focus.value.id]; },
-		toggle: function(){
-			$rootScope.specialView.toggle('comments');
+		current: function(){
 			var fid = Focus.value.id;
-			if(this.visible() && Focus.value.kind == 'leaf' && !this.cache[fid]){
+			if(!this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
 				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
 				});
 			}
+			return this.cache[fid];
 		},
 		input: null,
 		submit: function(){
