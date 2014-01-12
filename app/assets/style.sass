@@ -4,6 +4,7 @@
 
 @import mixins
 @import variables
+@import flatbutton
 // @import scrollbar
 
 @import comments
@@ -306,14 +307,15 @@ main
 			color: orange
 	a
 		text-decoration: none
+		text-align: left
 		i 
 			font-size: 24px
-		&#fb:hover
-			color: #44619D
-		&#twitter:hover
-			color: #00ACEE
-		&#gplus:hover
-			color: #DC4B39
+		// &#fb:hover
+		// 	color: #44619D
+		// &#twitter:hover
+		// 	color: #00ACEE
+		// &#gplus:hover
+		// 	color: #DC4B39
 		&.show-hide
 			display: block
 			margin-bottom: 20px
@@ -343,16 +345,18 @@ main
 		+fill-parent
 		height: 256px
 	#detail
-		.info-group
-			+fill-parent
-			+clearfix
-			.info
-				+span-columns(4)
-				+media($smallDesktop)
-					+fill-parent
-
-		#comment-view
-			+fill-parent
+		+fill-parent
+		+clearfix
+		.rate-stub
+			font-size: 24px
+		.info
+			+span-columns(4)
+			+media($mobile)
+				+fill-parent
+		.contribute
+			+span-columns(8)
+			+media($mobile)
+				+fill-parent
 		// .financial
 		// 	+span-columns(4)
 		// .ownership

@@ -12,102 +12,102 @@
 				ng-if="view == 'focus'" 
 				bi-curtain>
 				<div class="container">
-					
-					<div id="map" bi-map></div>
+					<a ng-href="{{listLink}}">
+						back to list view
+					</a>
+					<h1>
+						{{focus.value.fpapDsc}} ({{focus.value.year}})
+					</h1>
 					<div id="detail">
-						<a ng-href="{{listLink}}">
-							back to list view
-						</a>
-						<h1>
-							{{focus.value.fpapDsc}} ({{focus.value.year}})
-						</h1>
-						<div class="info-group">
-							<div class="info">
-								<h2>Basic Info</h2>
-								<h4>Year: {{focus.value.year}}</h4>
-								<star-rating item="focus"></star-rating>
+						<div class="info">
+							<h2>Basic Info</h2>
 
-								<div class="share">
-									<a id="fb" target="_blank" ng-href="{{share.facebook()}}">
-										<i class="fa fa-facebook-square"></i>
-									</a>
-									<a id="twitter" target="_blank" ng-href="{{share.twitter()}}">
-										<i class="fa fa-twitter-square"></i>
-									</a>
-									<a id="gplus" target="_blank" ng-href="{{share.googlePlus()}}">
-										<i class="fa fa-google-plus-square"></i>
-									</a>
-									<!--<button id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-										<i class="fa fa-map-marker fa-2x"></i>
-									</button>-->
-								</div>
+							<h4>Total</h4>
+							<div class="total numeric">
+								<span class="monospace italic ">{{comatose(totalAmount(focus.value) * 1000)}}</span> PhP
 							</div>
-							<div class="info">
-								<h2>Financial</h2>
-								<h4>Total:</h4>
-								<div class="total numeric">
-									<span class="monospace italic ">{{comatose(totalAmount(focus.value) * 1000)}}</span> PhP
-								</div>
 
-								<h4>Breakdown:</h4>
-								<ul class="numeric">
-									<li ng-if="focus.value.ps">
-										<h5>Personnel Services</h5>
-										<span class="monospace italic">{{comatose(focus.value.ps * 1000)}}</span> PhP
-									</li>
-									<li ng-if="focus.value.mooe">
-										<h5>Maintenance and Other Operating Expenses</h5>
-										<span class="monospace italic">{{comatose(focus.value.mooe * 1000)}}</span> PhP
-									</li>
-									<li ng-if="focus.value.co">
-										<h5>Capital Outlay</h5>
-										<span class="monospace italic">{{comatose(focus.value.co * 1000)}}</span> PhP
-									</li>
-								</ul>
-							</div>
-							<div class="info">
-								<h2>Ownership</h2>
-								<h4>Department or Region</h4>
-								<p>{{focus.value.dptDsc}}</p>
-								<h4>Owner</h4>
-								<p>{{focus.value.ownerDsc}}</p>
+							<h4>Breakdown</h4>
+							<ul class="numeric">
+								<li ng-if="focus.value.ps">
+									<h5>Personnel Services</h5>
+									<span class="monospace italic">{{comatose(focus.value.ps * 1000)}}</span> PhP
+								</li>
+								<li ng-if="focus.value.mooe">
+									<h5>Maintenance and Other Operating Expenses</h5>
+									<span class="monospace italic">{{comatose(focus.value.mooe * 1000)}}</span> PhP
+								</li>
+								<li ng-if="focus.value.co">
+									<h5>Capital Outlay</h5>
+									<span class="monospace italic">{{comatose(focus.value.co * 1000)}}</span> PhP
+								</li>
+							</ul>
+
+							<h4>Department or Region</h4>
+							<p>{{focus.value.dptDsc}}</p>
+							<h4>Owner</h4>
+							<p>{{focus.value.ownerDsc}}</p>
+
+							<h4>Share</h4>
+							<div class="share">
+								<a class="btn facebook btn-block" target="_blank" ng-href="{{share.facebook()}}">
+									<i class="fa fa-facebook fa-fw"></i>
+									Share on Facebook
+								</a>
+								<a class="btn twitter btn-block" target="_blank" ng-href="{{share.twitter()}}">
+									<i class="fa fa-twitter fa-fw"></i>
+									Share on Twitter
+								</a>
+								<a  class="btn google-id btn-block" target="_blank" ng-href="{{share.googlePlus()}}">
+									<i class="fa fa-google-plus fa-fw"></i>
+									Share on Google Plus
+								</a>
+								<!--<button id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
+									<i class="fa fa-map-marker fa-2x"></i>
+								</button>-->
 							</div>
 						</div>
-						<!--<h3 id="click-instructions" ng-if="click.active()">
-							Click on a point on the map to drop a pin indicating the location of this project
-						</h3>-->
+						<div class="contribute">
+							<h2>Contribute</h2>
+							<star-rating item="focus"></star-rating>
+							<div id="map" bi-map></div>
+							<div id="comment-view">
+								<div class="content">
+									<h2>
+										Comments
+									</h2>
 
-						<section id="comment-view">
-							<div class="content">
-								<h2>
-									Comments
-								</h2>
+									<div class="user-comment">
+										<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
+											Sign up / Log in to comment!
+										</a>
+										<form ng-if="loggedIn" ng-submit="comments.submit()">
+											<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
+											<button type="submit">Submit</button>
+										</form>
+									</div>
 
-								<div class="user-comment">
-									<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
-										Sign up / Log in to comment!
-									</a>
-									<form ng-if="loggedIn" ng-submit="comments.submit()">
-										<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
-										<button type="submit">Submit</button>
-									</form>
-								</div>
-
-								<div class="comments">
-									<ul ng-if="comments.current().length">
-										<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
-											<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
-										</li>
-									</ul>
-									<div ng-if="!comments.current().length" class="empty">
-										<p>
-											No comments yet. You can be the first!
-										</p>
+									<div class="comments">
+										<ul ng-if="comments.current().length">
+											<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">
+												<ng-include src="'/assets/templates/commentStub.html'"></ng-include>
+											</li>
+										</ul>
+										<div ng-if="!comments.current().length" class="empty">
+											<p>
+												No comments yet. You can be the first!
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
-						</section>
+						</div>
 					</div>
+					<!--<h3 id="click-instructions" ng-if="click.active()">
+						Click on a point on the map to drop a pin indicating the location of this project
+					</h3>-->
+
+					
 				</div>
 			</div>
 
