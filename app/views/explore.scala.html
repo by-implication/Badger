@@ -12,7 +12,7 @@
 				ng-if="view == 'focus'" 
 				bi-curtain>
 				<div class="container">
-					<a ng-href="{{listLink}}">
+					<a ng-click="listView()">
 						back to list view
 					</a>
 					<i class="fa" ng-class="badges[focus.category]"></i>
@@ -87,7 +87,6 @@
 											<button class="btn btn-primary" type="submit">Submit</button>
 										</form>
 									</div>
-
 									<div class="comments">
 										<ul ng-if="comments.current().length">
 											<li ng-repeat="comment in comments.current() | orderBy:'timestamp':true ">

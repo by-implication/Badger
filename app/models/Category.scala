@@ -24,7 +24,8 @@ case class Category(
 {
   def toJson = Json.obj(
     "id" -> id.get,
-    "name" -> name
+    "name" -> name,
+    "subcats" -> subcats
   )
 }
 

@@ -78,15 +78,21 @@ app
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.factory('Focus', function(){
+app.factory('Focus', function(categories){
 	return {
 		value: {},
-		set: function(v){ this.value = v; }
+		set: function(v){ this.value = v; },
+		getCategory: function(){
+			for(var i in categories){
+				var cat = categories[i];
+				if(cat.subcats.indexOf(this.value.dptDsc) != -1) return cat.name;
+			}
+		}
 	};
 });
 
 app.factory('Filters', function($rootScope, categories, $location){
-	categories.unshift({id: null, name: 'All'});
+	categories.unshift({id: null, name: 'All', subcats: []});
 	return {
 		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
@@ -432,6 +438,13 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		}).reduce(function(prev, cur){ return $.extend(prev, cur); }, {});
 	}
 
+	$scope.listView = function(view){
+		$scope.view = view;
+		var s = $.extend({}, $location.search());
+		delete s.focus;
+		$location.search(s);
+	}
+
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
 		if(!searchParams.focus){
@@ -445,7 +458,6 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 			});
 		} else {
 			$scope.view = 'focus';
-			$scope.listLink = oldPath;
 			for(var i in $scope.leaves){
 				var leaf = $scope.leaves[i];
 				if(leaf.id == searchParams.focus){
