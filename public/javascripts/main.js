@@ -349,6 +349,48 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.regions = Regions;
 	$scope.sort = Sort;
 	$scope.leaves = [];
+	$scope.badges = {
+		'academia': {
+			'icon': 'fa-pencil',
+			'color': '#'
+		}, 
+		'defence': {
+			'icon': 'fa-shield',
+			'color': '#'
+		}, 
+		'agriculture': {
+			'icon': 'fa-leaf',
+			'color': '#'
+		}, 
+		'economy': {
+			'icon': 'fa-money',
+			'color': '#'
+		}, 
+		'public services': {
+			'icon': 'fa-group',
+			'color': '#'
+		}, 
+		'industry': {
+			'icon': 'fa-wrench',
+			'color': '#'
+		}, 
+		'communications': {
+			'icon': 'fa-phone',
+			'color': '#'
+		}, 
+		'local government': {
+			'icon': 'fa-building-o',
+			'color': '#'
+		}, 
+		'central government': {
+			'icon': 'fa-flag',
+			'color': '#'
+		}, 
+		'foreign affairs': {
+			'icon': 'fa-plane',
+			'color': '#'
+		}
+	};
 
 	var s = $location.search();
 	// console.log(Filters.categories[0]);
