@@ -1,36 +1,13 @@
-<!-- <div class="rating-group" ng-class="{ratable: item.kind == 'leaf'}">
-	<span class="rating" ng-if="!item.userRated">
-		<span class="current-rating">
-			<i class="fa"
-				ng-repeat="star in stars"
-				ng-class="starClass(item, star)"></i>
-		</span>
-		<span class="apply-rating">
+<div class="rate-stub" ng-class="{rated: item.hasRating, fixed: fixed}">
+  <span class="ratings">
+    <span class="rating">
+      <i ng-repeat="star in stars" ng-class="starClass(item, star)"></i>
+    </span>
+    <span class="apply-rating">
       <i ng-if="loggedIn" ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
       <a ng-if="!loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a>
     </span>
   </span>
-  <span class="rating" ng-if="item.userRated">
-		<span class="current-rating">
-			<i class="fa"
-				ng-repeat="star in stars"
-				ng-class="starClass(item, star)"></i>
-		</span>
-  </span>
-	<span ng-if="item.ratings">
-		{{item.ratings}} rating(s)
-	</span>
-</div> -->
-
-
-<div class="rate-stub" ng-class="{rated: item.hasRating, fixed: fixed}">
-  <span class="ratings">
-    <span class="rating" title="{{roundFix(item.rating)}} star(s)">
-      <i ng-repeat="star in stars" ng-class="starClass(item, star)"></i>
-    </span>
-    <span class="apply-rating">
-      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateIssue(item, star)"></i>
-    </span>
-  </span>
+  {{item.ratings}}
   <span class="num-rates">({{item.ratings}} rating<span ng-if="item.ratings != 1">s</span>)</span>
 </div>
