@@ -54,8 +54,6 @@ body
 	.italic
 		font-style: oblique
 
-	.numeric
-		text-align: right
 	.de-em
 		font-size: 14px
 		color: #aaa
@@ -334,6 +332,9 @@ main
 	z-index: 1011
 	padding: 64px
 	background-color: rgba(black, 0.8)
+	.rate-stub
+		font-size: 24px
+		text-align: center
 	.container
 		padding: 20px
 		background-color: white
@@ -347,17 +348,27 @@ main
 	#detail
 		+fill-parent
 		+clearfix
-		.rate-stub
-			font-size: 24px
+		h2
+			margin-top: 20px
 		.info
 			+span-columns(4)
 			+media($mobile)
 				+fill-parent
+			padding: 20px
 		.contribute
 			+span-columns(8)
 			+media($mobile)
 				+fill-parent
-		// .financial
+			padding: 20px
+		.financial
+			background-color: wheat
+			padding: 20px
+			margin: 10px -20px
+			text-align: right
+			h4
+				margin-top: 20px
+				&:first-child
+					margin-top: 0px
 		// 	+span-columns(4)
 		// .ownership
 
