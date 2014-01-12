@@ -353,6 +353,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.leaves = [];
 
 	var s = $location.search();
+	// console.log(Filters.categories[0]);
 	if(
 		s.category == undefined ||
 		s.region == undefined ||
@@ -361,8 +362,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		s.order == undefined
 	){
 		var o = {offset: 0};
-		if(Filters.current) o.category = Filters.current.id;
-		if(Regions.current) o.region = Regions.current.id;
+		if(!Filters.current) Filters.current = Filters.categories[0];
+		if(!Regions.current) Regions.current = Regions.list[0];
+
+		if(Filters.current.id) o.category = Filters.current.id;
+		if(Regions.current.id) o.region = Regions.current.id;
 		o.sort = Sort.fields[Sort.field];
 		o.order = Sort.orders[Sort.order];
 		$location.search(o);
