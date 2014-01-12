@@ -132,24 +132,6 @@ header
 	button
 		+button
 
-section#filters
-	+span-columns(3)
-	$margin: 4px
-	display: none
-	padding: 20px
-	background-color: rgba(black, 0.05)
-	.group
-		margin-bottom: 40px
-	ul
-		margin: 0 -$margin
-	button
-		+reset-button()
-		padding: 2px $margin 2px $margin
-		&.active
-			background-color: #333
-			color: white
-			border-radius: 2px
-
 section#banner
 	background-color: white
 	.result-label
@@ -311,140 +293,34 @@ main
 			.rating
 				display: none 
 		
-	
-	// .rating-group
-	// 	margin-bottom: 10px
-	// 	&.ratable i
-	// 		color: #EB0
-	// 	.apply-rating
-	// 		display: none
-	// 		i:hover
-	// 			cursor: pointer
-	// 			~ i
-	// 				&:before
-	// 					content: "\f006"
-	// 	&.ratable .rating:hover
-	// 		.apply-rating
-	// 			display: inline
-	// 		.current-rating
-	// 			display: none
 
-#projects
-
-#sidebar
-	// +span-columns(1 of 3, "block-collapse")
-	// width: 40%
-	background-color: white
-	// position: absolute
-	// bottom: 0px
-	// top: 0px
-	// overflow-y: scroll
-	// overflow-x: hidden
-	// z-index: 1005
-	+media($mobile)
-		width: 100%
-		// margin-top: 50%
-		overflow-y: auto
-		position: relative
-
-	nav
-		width: 100%
-		padding: 20px
-		border-bottom: 1px solid rgba(black, 0.05)
-		position: relative
-		+clearfix()
-		.back
-			width: 128px
-			overflow: hidden
-			white-space: nowrap
-			text-overflow: ellipsis
+.share
+	margin-bottom: 20px
+	button
+		+reset-button
+		&#point
+			float: right
+			margin-top: -4px
+			margin-left: 6px
+		&:hover, &.active
+			color: orange
+	a
+		text-decoration: none
+		i 
+			font-size: 24px
+		&#fb:hover
+			color: #44619D
+		&#twitter:hover
+			color: #00ACEE
+		&#gplus:hover
+			color: #DC4B39
+		&.show-hide
 			display: block
-		button.filter-button
-			+reset-button
-			// float: right
-			line-height: 22px
-			text-transform: capitalize
-		a, button.filter-button
-			+transition(all 0.3s)
-			color: #ccc
-			text-decoration: none
-			&:hover, &.active
-				color: #333
-
-	.data
-		padding: 20px
-		border-bottom: 1px solid rgba(black, 0.05)
-		.share
 			margin-bottom: 20px
-			button
-				+reset-button
-				&#point
-					float: right
-					margin-top: -4px
-					margin-left: 6px
-				&:hover, &.active
-					color: orange
-			a
-				text-decoration: none
-				i 
-					font-size: 24px
-				&#fb:hover
-					color: #44619D
-				&#twitter:hover
-					color: #00ACEE
-				&#gplus:hover
-					color: #DC4B39
-				&.show-hide
-					display: block
-					margin-bottom: 20px
-					float: right
-					&:hover, &.active
-						color: teal
-						text-decoration: underline
-					
-		.rating
-			margin-bottom: 10px
-		
-		.moolah
-			padding: 10px
-			margin-left: -10px
-			margin-right: -10px
-			background-color: rgba(wheat, 0.8)
-			border: 1px solid darken(wheat, 5%)
-			color: darken(wheat, 60%)
-			border-radius: 3px
-			margin-bottom: 10px
-			.total
-				margin-bottom: 20px
-		ul
-			+reset-list
-			+fill-parent
-			// margin-top: 40px
-			li
-				margin-bottom: 10px
-				h5
-					font-size: 12px
-					font-weight: bold
-					color: rgba(black, 0.3)
-
-
-	.sort-n-filter
-		padding: 20px
-		border-bottom: 1px solid #ddd
-		button
-			+reset-button
-
-	ul.children
-		+reset-list
-		+fill-parent
-		li
-			+transition(all 0.4s)
-			padding: 20px
-			border-bottom: 1px solid rgba(black, 0.05)
+			float: right
 			&:hover, &.active
-				background-color: #eee
-			a
-				display: block
+				color: teal
+				text-decoration: underline
 
 #project-detail
 	+box-sizing(border-box)
