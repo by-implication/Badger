@@ -9,7 +9,7 @@ CREATE TABLE locations (
 );;
 
 INSERT INTO locations (location_id, location_name, location_areas, location_lat, location_lng) VALUES
-	(DEFAULT, 'Nationwide', '{"Nationwide"}', 12.879721, 121.774017),
+	(DEFAULT, 'Nationwide', '{"Nationwide", "Luzon", "Region III", "Region V", "National Capital Region", "Region I", "Region II", "Cordillera Administrative Region", "Region IV", "Metro Manila", "Visayas", "Region VI", "Region VII", "Region VIII", "Mindanao", "Region X", "Region IX", "Region XII", "Region XI", "Region XIII", "Autonomous Region in Muslim Mindanao", "CO"}', 12.879721, 121.774017),
 	(DEFAULT, 'Luzon', '{"Luzon", "Region III", "Region V", "National Capital Region", "Region I", "Region II", "Cordillera Administrative Region", "Region IV", "Metro Manila"}', 16.5662318, 121.2626366),
 	(DEFAULT, 'Visayas', '{"Visayas", "Region VI", "Region VII", "Region VIII"}', 11.0049836, 122.5372741),
 	(DEFAULT, 'Mindanao', '{"Mindanao", "Region X", "Region IX", "Region XII", "Region XI", "Region XIII", "Autonomous Region in Muslim Mindanao"}', 8.4961299, 123.3034062),
