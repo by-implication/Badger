@@ -21,7 +21,7 @@
 					<star-rating item="focus"></star-rating>
 					<div id="detail">
 						<div class="info">
-							<h2>Basic Info</h2>
+							<h2>Learn</h2>
 
 							<div class="financial">
 								<h4>Total</h4>
@@ -50,7 +50,7 @@
 							<p>{{focus.value.dptDsc}}</p>
 							<h4>Owner</h4>
 							<p>{{focus.value.ownerDsc}}</p>
-							<hr>
+
 							<h2>Share</h2>
 							<div class="share">
 								<a class="btn facebook btn-block" target="_blank" ng-href="{{share.facebook()}}">
@@ -71,9 +71,9 @@
 							</div>
 						</div>
 						<div class="contribute">
-							<h2>Location</h2>
+							<h2>Locate</h2>
 							<div id="map" bi-map></div>
-							<h2>Comments</h2>
+							<h2>Discuss</h2>
 							<div id="comment-view">
 								<div class="content">
 									
@@ -84,7 +84,7 @@
 										</a>
 										<form ng-if="loggedIn" ng-submit="comments.submit()">
 											<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
-											<button type="submit">Submit</button>
+											<button class="btn btn-primary" type="submit">Submit</button>
 										</form>
 									</div>
 
