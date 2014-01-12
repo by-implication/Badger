@@ -9,13 +9,15 @@
 			<div 
 				id="project-detail" 
 				class="fade" 
-				ng-if="view == 'focus'" 
+				ng-if="view == 'focus'"
 				bi-curtain>
+				<div class="curtain" ng-click="listView()">
+				</div>
 				<div class="container">
 					<a ng-click="listView()">
-						back to list view
+						<i class="fa fa-times"></i>
 					</a>
-					<i class="fa" ng-class="badges[focus.category]"></i>
+					<i class="fa" ng-class="badges[focus.getCategory()].icon"></i>
 					<h1>
 						{{focus.value.fpapDsc}} ({{focus.value.year}})
 					</h1>

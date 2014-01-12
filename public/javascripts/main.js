@@ -370,11 +370,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		}, 
 		'economy': {
 			'icon': 'fa-money',
-			'color': '#'
+			'color': '#74886A'
 		}, 
 		'public services': {
 			'icon': 'fa-group',
-			'color': '#'
+			'color': '#D0876D'
 		}, 
 		'industry': {
 			'icon': 'fa-wrench',
@@ -399,7 +399,6 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	};
 
 	var s = $location.search();
-	// console.log(Filters.categories[0]);
 	if(
 		s.category == undefined ||
 		s.region == undefined ||
