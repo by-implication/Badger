@@ -78,15 +78,21 @@ app
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
-app.factory('Focus', function(){
+app.factory('Focus', function(categories){
 	return {
 		value: {},
-		set: function(v){ this.value = v; }
+		set: function(v){ this.value = v; },
+		getCategory: function(){
+			for(var i in categories){
+				var cat = categories[i];
+				if(cat.subcats.indexOf(this.value.dptDsc) != -1) return cat.name;
+			}
+		}
 	};
 });
 
 app.factory('Filters', function($rootScope, categories, $location){
-	categories.unshift({id: null, name: 'All'});
+	categories.unshift({id: null, name: 'All', subcats: []});
 	return {
 		categories: categories,
 		visible: function(){ return $rootScope.specialView.current == 'filters'; },
