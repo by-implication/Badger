@@ -392,6 +392,13 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		}).reduce(function(prev, cur){ return $.extend(prev, cur); }, {});
 	}
 
+	$scope.listView = function(view){
+		$scope.view = view;
+		var s = $.extend({}, $location.search());
+		delete s.focus;
+		$location.search(s);
+	}
+
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
 		if(!searchParams.focus){
@@ -405,7 +412,6 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 			});
 		} else {
 			$scope.view = 'focus';
-			$scope.listLink = oldPath;
 			for(var i in $scope.leaves){
 				var leaf = $scope.leaves[i];
 				if(leaf.id == searchParams.focus){
