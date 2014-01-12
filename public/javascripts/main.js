@@ -366,7 +366,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		}, 
 		'agriculture': {
 			'icon': 'fa-leaf',
-			'color': '#'
+			'color': '#7CB28C'
 		}, 
 		'economy': {
 			'icon': 'fa-money',
