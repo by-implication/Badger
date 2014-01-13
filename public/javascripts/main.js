@@ -375,11 +375,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Ca
 	$scope.badges = {
 		'academia': {
 			'icon': 'fa-pencil',
-			'color': '#'
+			'color': '#006B80'
 		}, 
 		'defence': {
 			'icon': 'fa-shield',
-			'color': '#'
+			'color': '#8f2f34'
 		}, 
 		'agriculture': {
 			'icon': 'fa-leaf',
@@ -395,23 +395,27 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Ca
 		}, 
 		'industry': {
 			'icon': 'fa-wrench',
-			'color': '#'
+			'color': '#FC9B35'
 		}, 
 		'communications': {
 			'icon': 'fa-phone',
-			'color': '#'
+			'color': '#30587D'
 		}, 
 		'local government': {
 			'icon': 'fa-building-o',
-			'color': '#'
+			'color': '#BC5E69'
 		}, 
 		'central government': {
 			'icon': 'fa-flag',
-			'color': '#'
+			'color': '#5a9bd1'
 		}, 
 		'foreign affairs': {
 			'icon': 'fa-plane',
-			'color': '#'
+			'color': '#B158A5'
+		},
+		'justice': {
+			'icon': 'fa-gavel',
+			'color': '#7B5D9C'
 		}
 	};
 
