@@ -356,7 +356,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 	$scope.regions = Regions;
 	$scope.sort = Sort;
 	$scope.leaves = [];
-	$scope.badges = {
+	$scope.ribbons = {
 		'academia': {
 			'icon': 'fa-pencil',
 			'color': '#006B80'
