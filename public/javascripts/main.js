@@ -81,13 +81,7 @@ app
 app.factory('Focus', function(categories){
 	return {
 		value: {},
-		set: function(v){ this.value = v; },
-		getCategory: function(){
-			for(var i in categories){
-				var cat = categories[i];
-				if(cat.subcats.indexOf(this.value.dptDsc) != -1) return cat.name;
-			}
-		}
+		set: function(v){ this.value = v; }
 	};
 });
 
@@ -324,7 +318,7 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 
 //////////////////////////////////////////// init ////////////////////////////////////////
 
-app.run(function($rootScope, Click, Comments, Filters){
+app.run(function($rootScope, categories){
 
   $rootScope.specialView = {
   	current: null,
@@ -335,6 +329,13 @@ app.run(function($rootScope, Click, Comments, Filters){
   	},
   	toggle: function(view){ this.current = (this.current == view ? null : view); }
   }
+
+  $rootScope.getCategory = function(leaf){
+		for(var i in categories){
+			var cat = categories[i];
+			if(cat.subcats.indexOf(leaf.dptDsc) != -1) return cat.name;
+		}
+	}
 
 });
 

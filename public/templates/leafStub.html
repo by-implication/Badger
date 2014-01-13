@@ -1,6 +1,6 @@
 <a class="card" ng-href="{{nodeLink(leaf)}}" ng-click="getCurtainHeight()">
-	<div class="badge" style="background-color: {{badges[focus.getCategory()].color}}">
-		<i class="fa" ng-class="badges[focus.getCategory()].icon"></i>
+	<div class="badge" style="background-color: {{badges[getCategory(leaf)].color}}">
+		<i class="fa" ng-class="badges[getCategory(leaf)].icon"></i>
 	</div>
 	<div>
 		{{leaf.fpapDsc}} ({{leaf.year}})
