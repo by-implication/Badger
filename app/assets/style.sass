@@ -350,9 +350,11 @@ main
 		margin-bottom: 64px
 	h1
 		margin-bottom: 40px
+		text-align: center
 	#map
 		// +span-columns(4)
-		+fill-parent
+		// +fill-parent
+		margin: 0px -30px
 		height: 256px
 	#detail
 		+fill-parent
@@ -371,7 +373,7 @@ main
 			+media($mobile)
 				+fill-parent
 			padding: 30px
-		.content
+		& > .content
 			// +span-columns(8)
 			float: left
 			width: 67%
