@@ -61,7 +61,11 @@ app
 	.directive('biMap', function(){
 		return {
 			link: function(scope, elm, attrs){
-				var map = L.map('map').setView([14.612209, 121.0527097], 7);
+				var map = L.map('map', {
+					scrollWheelZoom: false,
+					center: [14.612209, 121.0527097],
+					zoom: 7
+				});
 
 				// add an OpenStreetMap tile layer
 				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
