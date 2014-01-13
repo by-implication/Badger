@@ -14,9 +14,11 @@
 				<div class="curtain" ng-click="listView()">
 				</div>
 				<div class="container">
-					<a ng-click="listView()">
-						<i class="fa fa-times"></i>
-					</a>
+					<div class="close-container">
+						<a class="close" ng-click="listView()">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
 					<i class="fa" ng-class="badges[getCategory(focus.value)].icon"></i>
 					<h1>
 						{{focus.value.fpapDsc}} ({{focus.value.year}})
