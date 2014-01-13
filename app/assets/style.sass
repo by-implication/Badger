@@ -328,7 +328,13 @@ main
 			font-size: 18px
 		.close
 			+reset-button
+			+transition(all 0.2s)
 			float: right
+			color: rgba(black, 0.4)
+			&:hover
+				color: rgba(black, 0.8)
+			&:active
+				color: black
 	.close-container
 		text-align: right
 	.curtain
