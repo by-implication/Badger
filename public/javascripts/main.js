@@ -82,6 +82,25 @@ app
 
 //////////////////////////////////////////// services ////////////////////////////////////
 
+app.factory('Years', function(years, $location){
+	years.unshift(null);
+	return {
+		list: years,
+		current: null,
+		label: function(year){ return year ? year : 'All Years'; },
+		setCurrent: function(year){
+			this.current = year;
+			var s = $location.search();
+			if(this.current){
+				$location.search($.extend(s, {year: this.current, offset: 0}));
+			} else {
+				delete s.year;
+				$location.search($.extend(s, {offset: 0}));
+			}
+		}
+	};
+})
+
 app.factory('Focus', function(categories){
 	return {
 		value: {},
@@ -89,14 +108,10 @@ app.factory('Focus', function(categories){
 	};
 });
 
-app.factory('Filters', function($rootScope, categories, $location){
+app.factory('Categories', function($rootScope, categories, $location){
 	categories.unshift({id: null, name: 'All', subcats: []});
 	return {
-		categories: categories,
-		visible: function(){ return $rootScope.specialView.current == 'filters'; },
-		current: null,
-		toggleVisibility: function(){ $rootScope.specialView.toggle('filters'); },
-		clear: function(){ this.current = []; },
+		list: categories,
 		label: function(){ return this.current ? this.current.name : 'All'; },
 		setCurrent: function(cat){
 			this.current = cat;
@@ -351,14 +366,15 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Filters, Regions, Sort, Focus){
+app.controller('Explore', function($scope, $http, $location, Click, Comments, Categories, Regions, Sort, Focus, Years){
 
 	$scope.focus = Focus;
 	$scope.click = Click;
   $scope.comments = Comments;
-  $scope.filters = Filters;
+  $scope.categories = Categories;
 	$scope.regions = Regions;
 	$scope.sort = Sort;
+	$scope.years = Years;
 	$scope.leaves = [];
 	$scope.ribbons = {
 		'academia': {
@@ -416,10 +432,10 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Fi
 		s.order == undefined
 	){
 		var o = {offset: 0};
-		if(!Filters.current) Filters.current = Filters.categories[0];
+		if(!Categories.current) Categories.current = Categories.list[0];
 		if(!Regions.current) Regions.current = Regions.list[0];
 
-		if(Filters.current.id) o.category = Filters.current.id;
+		if(Categories.current.id) o.category = Categories.current.id;
 		if(Regions.current.id) o.region = Regions.current.id;
 		o.sort = Sort.fields[Sort.field];
 		o.order = Sort.orders[Sort.order];

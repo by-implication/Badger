@@ -11,7 +11,11 @@ import scala.util.Random
 
 object Leaf extends LeafGen {
 
-  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], offset: Int, sort: String, order: String): Seq[Leaf] = DB.withConnection { implicit c =>
+  def yearsJson = DB.withConnection { implicit c =>
+    Json.toJson(SQL("SELECT DISTINCT leaf_year FROM leafs ORDER BY leaf_year").list(scalar[Int]))
+  }
+
+  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], year: Option[Int], offset: Int, sort: String, order: String): Seq[Leaf] = DB.withConnection { implicit c =>
 
     val constraints = Seq(dptDscs, areaDscs).filter(!_.isEmpty)
 
@@ -38,11 +42,13 @@ object Leaf extends LeafGen {
       )""" +
       (if(!dptDscs.isEmpty){ "AND leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
       (if(!areaDscs.isEmpty){ "AND leaf_area_dsc = ANY({areaDscs}) " } else {""}) +
+      year.map(y => "AND leaf_year = {year}").getOrElse("") +
       "ORDER BY " + sortField + " " + sortOrder +
       " LIMIT 30 OFFSET {offset}"
     ).on(
       'dptDscs -> PGStringList(dptDscs),
       'areaDscs -> PGStringList(areaDscs),
+      'year -> year,
       'offset -> offset
     ).list(Leaf.simple)
   }

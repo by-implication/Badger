@@ -129,7 +129,7 @@
 								class="label" 
 								ng-click="shownFilter = 'sector'"
 								ng-class="{active: shownFilter == 'sector'}">
-								{{filters.label()}} projects
+								{{categories.label()}} projects
 							</button> 
 							from 
 							<button 
@@ -137,6 +137,13 @@
 								ng-class="{active: shownFilter == 'regions'}"
 								ng-click="shownFilter = 'regions'">
 								{{regions.label()}}
+							</button>
+							for
+							<button 
+								class="label"
+								ng-class="{active: shownFilter == 'years'}"
+								ng-click="shownFilter = 'years'">
+								{{years.label(years.current)}}
 							</button>,
 							<br>
 							sorted by
@@ -168,10 +175,10 @@
 									Sector
 								</h4>
 								<ul>
-									<li class="item" ng-repeat="cat in filters.categories">
+									<li class="item" ng-repeat="cat in categories.list">
 										<button 
-											ng-click="filters.setCurrent(cat)"
-											ng-class="{active: filters.current == cat}">
+											ng-click="categories.setCurrent(cat)"
+											ng-class="{active: categories.current == cat}">
 											{{cat.name}}
 										</button>
 									</li>
@@ -190,6 +197,23 @@
 											ng-click="regions.setCurrent(region)"
 											ng-class="{active: regions.current == region}">
 											{{region.name}}
+										</button>
+									</li>
+								</ul>
+							</div>
+
+							<div 
+								id="years" 
+								ng-show="shownFilter == 'years'">
+								<h4>
+									Years
+								</h4>
+								<ul>
+									<li class="item" ng-repeat="year in years.list" >
+										<button 
+											ng-click="years.setCurrent(year)"
+											ng-class="{active: years.current == year}">
+											{{years.label(year)}}
 										</button>
 									</li>
 								</ul>
