@@ -450,6 +450,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Ca
 	$scope.comatose = function(num){
 		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+
+	$scope.truncate = function(str){
+		return str.replace(/government/gi, 'gov\'t')
+			.replace(/communications/gi, 'comm');
+	}
 	
 	var zoomLevel = 6;
 	

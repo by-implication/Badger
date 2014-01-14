@@ -143,16 +143,11 @@
 							</button>,
 							<br>
 							sorted by
-							<button
-								class="label"
-								ng-class="{active: shownFilter == 'sorts'}"
-								ng-click="shownFilter = 'sorts'">
+							<button class="label" ng-class="{active: shownFilter == 'sorts'}" ng-click="shownFilter = 'sorts'">
 								{{sort.fields[sort.field]}}
 							</button>
 							in 
-							<button
-								class="label"
-								ng-click="sort.setOrder(1 - sort.order)">
+							<button class="label" ng-click="sort.setOrder(1 - sort.order)">
 								{{sort.orders[sort.order]}}
 							</button>
 							order

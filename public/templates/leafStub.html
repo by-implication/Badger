@@ -1,17 +1,18 @@
 <a class="card" ng-href="{{nodeLink(leaf)}}" ng-click="getCurtainHeight()">
 	<div class="ribbon" style="background-color: {{ribbons[getCategory(leaf)].color}}">
 		<i class="fa" ng-class="ribbons[getCategory(leaf)].icon"></i>
+		<p class="category">{{truncate(getCategory(leaf))}}</p>
 	</div>
-	<div>
+	<div class="card-content">
 		{{leaf.fpapDsc}} ({{leaf.year}})
-	</div>
-	<div class="de-em">
-		{{leaf.dptDsc}}
-	</div>
-	<star-rating item="leaf" fixed="true"></star-rating>
-	<div class="numeric">
-		<span class="italic monospace">
-			{{comatose(totalAmount(leaf) * 1000)}}
-		</span> PhP
+		<div class="de-em">
+			{{leaf.dptDsc}}
+		</div>
+		<star-rating item="leaf" fixed="true"></star-rating>
+		<div class="numeric">
+			<span class="italic monospace">
+				{{comatose(totalAmount(leaf) * 1000)}}
+			</span> PhP
+		</div>
 	</div>
 </a>

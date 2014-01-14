@@ -172,9 +172,23 @@ section#projects
 
 	&.list
 		.card
-			+fill-parent()
-
-
+			+fill-parent
+			+clearfix
+			.ribbon
+				float: left
+				border-radius: 50%
+				width: 80px
+				height: 80px
+				margin: 0 20px 0 0
+				padding: 14px 0
+				text-align: center
+				font-size: 24px
+				.category
+					margin-top: -2px
+					display: block
+			.card-content
+				float: left
+				margin: 0
 
 .filter
 	+clearfix()
@@ -250,9 +264,11 @@ section#projects
 	.ribbon
 		margin: -20px -20px 14px
 		padding: 14px
-		i 
-			color: white
-			text-size: 24px
+		color: white
+		.category
+			display: none
+			font-size: 10px
+			text-align: center
 
 .container
 	+outer-container
