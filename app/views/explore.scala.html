@@ -39,6 +39,9 @@
 									This project shouldn't have a location
 								</button>
 							</div>
+							<h3 id="click-instructions" class="grow" ng-if="click.active()">
+								Click on a point on the map to drop a pin indicating the location of this project
+							</h3>
 							<div id="map" bi-map></div>
 							
 
@@ -114,10 +117,6 @@
 							</div>
 						</div>
 					</div>
-					<!--<h3 id="click-instructions" ng-if="click.active()">
-						Click on a point on the map to drop a pin indicating the location of this project
-					</h3>-->
-					
 				</div>
 			</div>
 
