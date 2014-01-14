@@ -61,7 +61,11 @@ app
 	.directive('biMap', function(){
 		return {
 			link: function(scope, elm, attrs){
-				var map = L.map('map').setView([14.612209, 121.0527097], 7);
+				var map = L.map('map', {
+					scrollWheelZoom: false,
+					center: [14.612209, 121.0527097],
+					zoom: 7
+				});
 
 				// add an OpenStreetMap tile layer
 				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -372,7 +376,7 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Ca
 	$scope.sort = Sort;
 	$scope.years = Years;
 	$scope.leaves = [];
-	$scope.badges = {
+	$scope.ribbons = {
 		'academia': {
 			'icon': 'fa-pencil',
 			'color': '#006B80'
@@ -445,6 +449,11 @@ app.controller('Explore', function($scope, $http, $location, Click, Comments, Ca
 
 	$scope.comatose = function(num){
 		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	$scope.truncate = function(str){
+		return str.replace(/government/gi, 'gov\'t')
+			.replace(/communications/gi, 'comm');
 	}
 	
 	var zoomLevel = 6;

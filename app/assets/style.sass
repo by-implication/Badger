@@ -172,9 +172,26 @@ section#projects
 
 	&.list
 		.card
-			+fill-parent()
-
-
+			+fill-parent
+			+clearfix
+			&:hover
+				top: 0px
+				left: 10px
+			.ribbon
+				float: left
+				border-radius: 50%
+				width: 80px
+				height: 80px
+				margin: 0 20px 0 0
+				padding: 14px 0
+				text-align: center
+				font-size: 24px
+				.category
+					margin-top: -2px
+					display: block
+			.card-content
+				margin: 0
+				margin-left: 100px
 
 .filter
 	+clearfix()
@@ -247,12 +264,14 @@ section#projects
 	&:hover
 		top: -10px
 		box-shadow: 0px 12px 8px rgba(black, 0.1)
-	.badge
+	.ribbon
 		margin: -20px -20px 14px
 		padding: 14px
-		i 
-			color: white
-			text-size: 24px
+		color: white
+		.category
+			display: none
+			font-size: 10px
+			text-align: center
 
 .container
 	+outer-container
@@ -320,10 +339,25 @@ main
 	width: 100%
 	z-index: 1011
 	// padding: 64px
+	.ribbon
+		padding: 30px
+		color: white
+		i.fa
+			margin-right: 10px
+			font-size: 18px
+		.close
+			+reset-button
+			+transition(all 0.2s)
+			float: right
+			color: rgba(black, 0.4)
+			&:hover
+				color: rgba(black, 0.8)
+			&:active
+				color: black
 	.close-container
 		text-align: right
 	.curtain
-		background-color: rgba(black, 0.8)
+		background-color: rgba(black, 0.85)
 		position: absolute
 		z-index: 0
 		top: 0px
@@ -333,40 +367,61 @@ main
 	.rate-stub
 		font-size: 24px
 		text-align: center
+		.num-rates
+			display: block
+			font-size: 14px
 	.container
 		position: relative
 		z-index: 1
-		padding: 20px
-		background-color: white
+		padding: 0px
+		background-color: #eee
 		margin-top: 64px
 		margin-bottom: 64px
 	h1
-		margin-bottom: 40px
+		margin-bottom: 20px
 		text-align: center
 	#map
 		// +span-columns(4)
-		+fill-parent
+		// +fill-parent
+		margin: 0px -30px
 		height: 256px
 	#detail
 		+fill-parent
 		// +crfix
 		h2
 			margin-top: 30px
-		.info
-			+span-columns(4)
+		h3
+			margin-bottom: 10px
+			margin-top: 20px
+			&:first-child
+				margin-top: 0px
+		h5
+			font-size: 12px
+			margin-top: 20px
+			&:first-child
+				margin-top: 0px
+		.sidebar
+			// +span-columns(4)
+			float: left
+			width: 33%
 			+media($mobile)
 				+fill-parent
-			padding: 20px
-		.contribute
-			+span-columns(8)
+			padding: 30px
+		& > .content
+			// +span-columns(8)
+			float: left
+			width: 67%
 			+media($mobile)
 				+fill-parent
-			padding: 20px
+			padding: 30px
+			background-color: white
 		.financial
 			background-color: wheat
 			padding: 20px
-			margin: 0px -20px 10px
+			margin-top: 20px
+			// margin: 0px -20px 10px
 			text-align: right
+			color: #333
 			h4
 				margin-top: 20px
 				&:first-child
