@@ -31,11 +31,17 @@
 							<star-rating item="focus.value"></star-rating>
 
 							<h2>Locate</h2>
+							<div class="map-controls">
+								<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
+									<i class="fa fa-map-marker"></i> Specify Location
+								</button>
+								<button class="btn btn-primary pull-right">
+									This project shouldn't have a location
+								</button>
+							</div>
 							<div id="map" bi-map></div>
-							<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-								<i class="fa fa-map-marker"></i> Specify Location
-							</button>
 							
+
 							<h2>Discuss</h2>
 							<div id="comment-view">
 								<div class="user-comment">
