@@ -95,6 +95,11 @@ case class Leaf(
 // GENERATED case class end
 {
 
+  def clicks: Long = DB.withConnection { implicit c =>
+    SQL("SELECT COUNT(*) FROM clicks WHERE leaf_id = {id}")
+    .on('id -> id).as(scalar[Long].single)
+  }
+
   def breadcrumbs = DB.withConnection { implicit c =>
     SQL("""
       SELECT * FROM leafs
@@ -139,7 +144,8 @@ case class Leaf(
     "stars" -> stars,
     "ratings" -> ratings,
     "userRating" -> user.ratingFor(this),
-    "userClick" -> user.clickFor(this)
+    "userClick" -> user.clickFor(this),
+    "clicks" -> clicks
     // "breadcrumbs" -> breadcrumbs.map(c => Json.obj(
     //   "id" -> c.id.get,
     //   "name" -> c.fpapDsc

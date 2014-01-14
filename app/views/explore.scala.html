@@ -32,6 +32,7 @@
 
 							<h2>Locate</h2>
 							<div id="map" bi-map></div>
+							{{focus.value.clicks}} people have marked this location.
 							<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
 								<i class="fa fa-map-marker"></i> Specify Location
 							</button>
