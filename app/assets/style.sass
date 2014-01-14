@@ -76,6 +76,15 @@ body
 	&.ng-leave, &.ng-enter.ng-enter-active
 		opacity: 1
 
+.grow
+	+transition(all 0.2s)
+	&.ng-enter, &.ng-leave.ng-leave-active
+		max-height: 0
+		opacity: 0
+	&.ng-leave, &.ng-enter.ng-enter-active
+		max-height: 256px
+		opacity: 1
+
 .move
 	+transition(all 1s)
 	&.ng-enter, &.ng-leave.ng-leave-active, &.ng-move
@@ -285,11 +294,6 @@ main
 	// bottom: 0px
 
 	#click-instructions
-		position: absolute
-		top: 64px
-		left: 20px
-		right: 20px
-		z-index: 1003
 		padding: 10px
 		background-color: rgba(white, 0.6)
 
@@ -385,6 +389,8 @@ main
 		// +fill-parent
 		margin: 0px -30px 20px
 		height: 256px
+	.map-controls
+		margin-bottom: 20px
 	#detail
 		+fill-parent
 		+clearfix
