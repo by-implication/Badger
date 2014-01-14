@@ -29,8 +29,13 @@
 								{{focus.value.fpapDsc}} ({{focus.value.year}})
 							</h1>
 							<star-rating item="focus.value"></star-rating>
+
 							<h2>Locate</h2>
 							<div id="map" bi-map></div>
+							<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
+								<i class="fa fa-map-marker"></i> Specify Location
+							</button>
+							
 							<h2>Discuss</h2>
 							<div id="comment-view">
 								<div class="user-comment">
@@ -101,9 +106,6 @@
 									<i class="fa fa-google-plus fa-fw"></i>
 									Share on Google Plus
 								</a>
-								<!--<button id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-									<i class="fa fa-map-marker fa-2x"></i>
-								</button>-->
 							</div>
 						</div>
 					</div>

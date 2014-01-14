@@ -61,7 +61,7 @@ app
 	.directive('biMap', function(){
 		return {
 			link: function(scope, elm, attrs){
-				var map = L.map('map', {
+				scope.map = L.map('map', {
 					scrollWheelZoom: false,
 					center: [14.612209, 121.0527097],
 					zoom: 7
@@ -70,12 +70,45 @@ app
 				// add an OpenStreetMap tile layer
 				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-				}).addTo(map);
+				}).addTo(scope.map);
 
 				// add a marker in the given location, attach some popup content to it and open the popup
-				L.marker([14.612209, 121.0527097]).addTo(map)
+				L.marker([14.612209, 121.0527097]).addTo(scope.map)
 				    .bindPopup('omg wow such map<br> html <strong><em>works</em></strong>!<p><em>here is best company evar</em></p>')
 				    .openPopup();
+			},
+			controller: function($scope, $http, loggedIn, Regions, Focus){
+				$scope.click = {};
+				$scope.click.active = function(){ 
+					return $scope.specialView.current == 'click'; 
+				}
+				$scope.click.listener = function(e){
+					$scope.map.off('click', this.listener);
+					var lat = e.latlng.lat;
+					var lng = e.latlng.lng;
+					$http.post('/click/' + Focus.value.id + '/' + lat + '/' + lng).success(function(r){
+						var m = $scope.marker[Focus.value.id];
+						if(m) $scope.map.removeLayer(m);
+						$scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo($scope.map)
+			  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
+			  			.openPopup();
+		  			Focus.value.userClick = {lat: lat, lng: lng};
+		  			$scope.specialView.deactivate();
+					});
+				}
+				$scope.click.toggle = function(){
+					$scope.specialView.toggle('click');
+					var active = this.active();
+					$scope.map[active ? 'on' : 'off']('click', this.listener);
+					if(active) Regions.features.clear();
+				}
+				$scope.click.deactivate = function(){
+					$scope.specialView.deactivate('click');
+					$scope.map.off('click', this.listener);
+				}
+				$scope.click.text = function(){ 
+					return this.active() ? 'Cancel' : 'Point this out!'; 
+				}
 			}
 		}
 	});
@@ -126,36 +159,36 @@ app.factory('Categories', function($rootScope, categories, $location){
 	};
 });
 
-app.factory('Click', function($rootScope, loggedIn, Regions, Focus){
-	return {
-		active: function(){ return $rootScope.specialView.current == 'click'; },
-		listener: function(e){
-			map.off('click', this.listener);
-			var lat = e.latlng.lat;
-			var lng = e.latlng.lng;
-			$http.post('/click/' + Focus.value.id + '/' + lat + '/' + lng).success(function(r){
-				var m = $scope.marker[Focus.value.id];
-				if(m) map.removeLayer(m);
-				$scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo(map)
-	  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
-	  			.openPopup();
-  			Focus.value.userClick = {lat: lat, lng: lng};
-  			$rootScope.specialView.deactivate();
-			});
-		},
-		toggle: function(){
-			$rootScope.specialView.toggle('click');
-			var active = this.active();
-			map[active ? 'on' : 'off']('click', this.listener);
-			if(active) Regions.features.clear();
-		},
-		deactivate: function(){
-			$rootScope.specialView.deactivate('click');
-			map.off('click', this.listener);
-		},
-		text: function(){ return this.active() ? 'Cancel' : 'Point this out!'; }
-	}
-});
+// app.factory('Click', function($rootScope, loggedIn, Regions, Focus){
+// 	return {
+// 		active: function(){ return $rootScope.specialView.current == 'click'; },
+// 		listener: function(e){
+// 			map.off('click', this.listener);
+// 			var lat = e.latlng.lat;
+// 			var lng = e.latlng.lng;
+// 			$http.post('/click/' + Focus.value.id + '/' + lat + '/' + lng).success(function(r){
+// 				var m = $scope.marker[Focus.value.id];
+// 				if(m) map.removeLayer(m);
+// 				$scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo(map)
+// 	  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
+// 	  			.openPopup();
+//   			Focus.value.userClick = {lat: lat, lng: lng};
+//   			$rootScope.specialView.deactivate();
+// 			});
+// 		},
+// 		toggle: function(){
+// 			$rootScope.specialView.toggle('click');
+// 			var active = this.active();
+// 			map[active ? 'on' : 'off']('click', this.listener);
+// 			if(active) Regions.features.clear();
+// 		},
+// 		deactivate: function(){
+// 			$rootScope.specialView.deactivate('click');
+// 			map.off('click', this.listener);
+// 		},
+// 		text: function(){ return this.active() ? 'Cancel' : 'Point this out!'; }
+// 	}
+// });
 
 app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 	return c = {
@@ -366,10 +399,10 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.getDate = function(time){ return new Date(time).toString(); }
 });
 
-app.controller('Explore', function($scope, $http, $location, Click, Comments, Categories, Regions, Sort, Focus, Years){
+app.controller('Explore', function($scope, $http, $location, Comments, Categories, Regions, Sort, Focus, Years){
 
 	$scope.focus = Focus;
-	$scope.click = Click;
+	// $scope.click = Click;
   $scope.comments = Comments;
   $scope.categories = Categories;
 	$scope.regions = Regions;
