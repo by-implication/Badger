@@ -31,6 +31,7 @@
 							<star-rating item="focus.value"></star-rating>
 
 							<h2>Locate</h2>
+							{{focus.value.clicks}} people have marked this location.
 							<div class="map-controls">
 								<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
 									<i class="fa fa-map-marker"></i> Specify Location
@@ -43,11 +44,6 @@
 								Click on a point on the map to drop a pin indicating the location of this project
 							</h3>
 							<div id="map" bi-map></div>
-
-							{{focus.value.clicks}} people have marked this location.
-							<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-								<i class="fa fa-map-marker"></i> Specify Location
-							</button>
 
 							<h2>Discuss</h2>
 							<div id="comment-view">
