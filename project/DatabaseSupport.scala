@@ -5,9 +5,9 @@ import scala.io.Source
 object DatabaseSupport {
   Class.forName("org.postgresql.Driver")
 
-  val dbname = "budget"
-  val username = "postgres"
-  val password = "postgres"
+  val dbname = "badger"
+  val username = "adminnwsmjip"
+  val password = "9TMUiPAjjqvW"
 
   var _conn: java.sql.Connection = null
 
