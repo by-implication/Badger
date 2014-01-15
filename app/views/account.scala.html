@@ -3,72 +3,78 @@
 @import helper._
 
 @main("signup", currentUser) {
-  <div id="login-signup">
-    <div id="signup" class="section">
-  	@form(action = routes.Application.signup) {
-  		<h2>Sign up</h2>
+  <div class="container">
+    <div id="login-signup" ng-init="current = 'login'">
+      <div id="login" class="section" ng-show="current == 'login'">
+        @form(action = routes.Application.login) {
 
-      @inputText(
-        signupForm("handle"),
-        '_label -> "Username",
-        '_error -> signupForm.globalError,
-        '_showConstraints -> false,
-        'placeholder -> "Username",
-        '_label -> ""
-      )
+          <h2>Log in</h2>
 
-      @inputText(
-        signupForm("email"),
-        '_error -> signupForm.globalError,
-        '_showConstraints -> false,
-        'placeholder -> "Email Address",
-        '_label -> ""
-      )
+          @inputText(
+            loginForm("hp.handle"),
+            '_showConstraints -> false,
+            'placeholder -> "Username",
+            '_label -> "",
+            'autofocus -> "true"
+          )
 
-      @inputPassword(
-        signupForm("passwords.first"),
-        '_error -> signupForm.error("passwords.first"),
-        '_showConstraints -> false,
-        'placeholder -> "Password",
-        '_label -> ""
-      )
+          @inputPassword(
+            loginForm("hp.password"),
+            '_error -> loginForm.globalError,
+            '_showConstraints -> false,
+            'placeholder -> "Password",
+            '_label -> ""
+          )
 
-      @inputPassword(
-        signupForm("passwords.second"),
-        '_error -> signupForm.error("passwords.second"),
-        '_showConstraints -> false,
-        'placeholder -> "Confirm Password",
-        '_label -> ""
-      )
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+        }
+        <button class="btn btn-block" ng-click="current = 'signup'">Sign up for a new account</button>
+      </div>
+      <div id="signup" class="section" ng-show="current == 'signup'">
+      	@form(action = routes.Application.signup) {
+      		<h2>Sign up</h2>
 
-      <button type="submit">Sign up</button>
-  	}
+          @inputText(
+            signupForm("handle"),
+            '_label -> "Username",
+            '_error -> signupForm.globalError,
+            '_showConstraints -> false,
+            'placeholder -> "Username",
+            '_label -> ""
+          )
+
+          @inputText(
+            signupForm("email"),
+            '_error -> signupForm.globalError,
+            '_showConstraints -> false,
+            'placeholder -> "Email Address",
+            '_label -> ""
+          )
+
+          @inputPassword(
+            signupForm("passwords.first"),
+            '_error -> signupForm.error("passwords.first"),
+            '_showConstraints -> false,
+            'placeholder -> "Password",
+            '_label -> ""
+          )
+
+          @inputPassword(
+            signupForm("passwords.second"),
+            '_error -> signupForm.error("passwords.second"),
+            '_showConstraints -> false,
+            'placeholder -> "Confirm Password",
+            '_label -> ""
+          )
+
+          <p>
+            By signing up for an account, you acknowledge that BudgetBadger is still in its beta stages, so it may be a little buggy, and that we may remove or add features without prior notice. So please don't get mad at us.
+          </p>
+
+          <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+      	}
+        <button class="btn btn-block" ng-click="current = 'login'">Log in to an existing account</button>
+      </div>
     </div>
-    <div id="login" class="section">
-  	@form(action = routes.Application.login) {
-
-  		<h2>Log in</h2>
-
-  		@inputText(
-  		  loginForm("hp.handle"),
-  		  '_showConstraints -> false,
-  		  'placeholder -> "Username",
-  		  '_label -> "",
-  		  'autofocus -> "true"
-  		)
-
-  		@inputPassword(
-  		  loginForm("hp.password"),
-  		  '_error -> loginForm.globalError,
-  		  '_showConstraints -> false,
-  		  'placeholder -> "Password",
-  		  '_label -> ""
-  		)
-
-      <button type="submit">Log in</button>
-
-  	}
-    </div>
-  </div>
-    
+  </div>   
 }

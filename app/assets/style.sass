@@ -146,9 +146,20 @@ header
 	h2
 		margin-left: 6px
 	.section
-		+span-columns(3)
-	#signup
-		+shift(3)
+		+shift(4)
+		+span-columns(4)
+		+media($smallDesktop)
+			+shift(3)
+			+span-columns(6)
+		+media($mobile)
+			+shift(0)
+			+fill-parent
+		input
+			width: 100%
+			padding: 10px
+		form
+			margin-bottom: 10px
+		margin-bottom: 30px
 
 section#banner
 	background-color: white
