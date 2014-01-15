@@ -101,6 +101,7 @@ app
 			  			.openPopup();
 		  			Focus.value.userClick = {lat: lat, lng: lng};
 		  			$scope.specialView.deactivate();
+		  			$scope.focus.value.clicks++;
 					});
 				}
 				$scope.click.toggle = function(){
