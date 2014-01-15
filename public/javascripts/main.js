@@ -173,7 +173,7 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 			var fid = Focus.value.id;
 			if(!this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
-				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
+				$http.get('/Comments?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
 				});
 			}
@@ -432,23 +432,36 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 	};
 
 	var s = $location.search();
-	if(
-		s.category == undefined ||
-		s.region == undefined ||
-		s.offset == undefined ||
-		s.sort == undefined ||
-		s.order == undefined
-	){
-		var o = {offset: 0};
-		if(!Categories.current) Categories.current = Categories.list[0];
-		if(!Regions.current) Regions.current = Regions.list[0];
+	var refresh = false;
 
-		if(Categories.current.id) o.category = Categories.current.id;
-		if(Regions.current.id) o.region = Regions.current.id;
-		o.sort = Sort.fields[Sort.field];
-		o.order = Sort.orders[Sort.order];
-		$location.search(o);
+	if(s.category == undefined){
+		if(!Categories.current) Categories.current = Categories.list[0];
+		if(Categories.current.id) s.category = Categories.current.id;
+		refresh = true;
 	}
+
+	if(s.region == undefined){
+		if(!Regions.current) Regions.current = Regions.list[0];
+		if(Regions.current.id) s.region = Regions.current.id;
+		refresh = true;
+	}
+
+	if(s.offset == undefined){
+		s.offset = 0;
+		refresh = true;
+	}
+
+	if(s.sort == undefined){
+		s.sort = Sort.fields[Sort.field];
+		refresh = true;
+	}
+
+	if(s.order == undefined){
+		s.order = Sort.orders[Sort.order];
+		refresh = true;
+	}
+	
+	if(refresh) $location.search(s);
 
 	$scope.nodeLink = function(node){
 		var s = $.extend({}, $location.search());
@@ -482,27 +495,30 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 		$location.search(s);
 	}
 
+	function setFocusView(leafId){
+	 	$scope.view = 'focus';
+	 	for(var i in $scope.leaves){
+	 		var leaf = $scope.leaves[i];
+	 		console.log(leaf.id + " " + leafId);
+	 		if(leaf.id == leafId){
+	 			Focus.set(leaf);
+	 			break;
+	 		}
+	 	}
+	}
+
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
-		if(!searchParams.focus){
-			$scope.view = 'list';
+		if(!searchParams.focus || newPath == oldPath){
 			$http.get('/meta/explore', {params: searchParams}).success(function(r){
 				$scope.lastRetrieval = r.length;
 				var oldSearch = getSearchParams(oldPath);
 				$scope.leaves = (parseInt(searchParams.offset) > parseInt(oldSearch.offset))
 					? $scope.leaves.concat(r)
 					: r;
+				if(searchParams.focus) setFocusView(searchParams.focus); else $scope.view = 'list';
 			});
-		} else {
-			$scope.view = 'focus';
-			for(var i in $scope.leaves){
-				var leaf = $scope.leaves[i];
-				if(leaf.id == searchParams.focus){
-					Focus.set(leaf);
-					break;
-				}
-			}
-		}
+		} else setFocusView(searchParams.focus);
 	});
 
 	$scope.share = {
