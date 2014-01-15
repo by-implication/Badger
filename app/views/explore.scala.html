@@ -6,11 +6,12 @@
 
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
 
-			<div 
+			<div
+				bi-curtain
 				id="project-detail" 
 				class="fade" 
 				ng-if="view == 'focus'"
-				bi-curtain>
+				ng-style="{'min-height': curtainHeight()}">
 				<div class="curtain" ng-click="listView()">
 				</div>
 				<div class="container">
