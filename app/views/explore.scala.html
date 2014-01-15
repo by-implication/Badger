@@ -34,7 +34,9 @@
 							<!--{{focus.value.clicks}} people have marked this location.-->
 							<div class="map-controls">
 								<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-									<i class="fa fa-map-marker"></i> Specify Location
+									<i class="fa fa-map-marker"></i> 
+									<span ng-hide="click.active()">Specify Location</span>
+									<span ng-show="click.active()">Specifying Location...</span>
 								</button>
 								<button class="btn btn-primary pull-right">
 									This project shouldn't have a location
