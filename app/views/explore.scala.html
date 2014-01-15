@@ -28,21 +28,24 @@
 							<h1>
 								{{focus.value.fpapDsc}} ({{focus.value.year}})
 							</h1>
-							<bi-req-login>
+							<bi-req-login req-msg="'Log in to rate!'">
 								<star-rating item="focus.value"></star-rating>
 							</bi-req-login>
+
 							<h2>Locate</h2>
 							<!--{{focus.value.clicks}} people have marked this location.-->
-							<div class="map-controls">
-								<button class="btn btn-primary" id="point" ng-if="loggedIn" ng-click="click.toggle()" ng-class="{active: click.active()}">
-									<i class="fa fa-map-marker"></i> 
-									<span ng-hide="click.active()">Specify Location</span>
-									<span ng-show="click.active()">Specifying Location...</span>
-								</button>
-								<button class="btn btn-primary pull-right">
-									This project shouldn't have a location
-								</button>
-							</div>
+							<bi-req-login req-msg="'Log in to contribute the location of this project!'">
+								<div class="map-controls">
+									<button class="btn btn-primary" id="point" ng-click="click.toggle()" ng-class="{active: click.active()}">
+										<i class="fa fa-map-marker"></i> 
+										<span ng-hide="click.active()">Specify Location</span>
+										<span ng-show="click.active()">Specifying Location...</span>
+									</button>
+									<button class="btn btn-primary pull-right">
+										This project shouldn't have a location
+									</button>
+								</div>
+							</bi-req-login>
 
 							<h3 class="map-note" ng-show="focus.value.clicks <= 0 && !click.active()">No-one has specified a location for this project yet. Be the first!</h3>
 							<h3 class="map-note" ng-show="click.active()">
@@ -54,14 +57,14 @@
 								ng-show="focus.value.clicks > 0 || click.active()"></div>
 							<h2>Discuss</h2>
 							<div id="comment-view">
+								
 								<div class="user-comment">
-									<a ng-if="!loggedIn" target="_self" href="@routes.Application.account">
-										Sign up / Log in to comment!
-									</a>
-									<form ng-if="loggedIn" ng-submit="comments.submit()">
-										<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
-										<button class="btn btn-primary" type="submit">Submit</button>
-									</form>
+									<bi-req-login req-msg="'Log in to comment!'">
+										<form ng-submit="comments.submit()">
+											<textarea placeholder="Please be civil!" ng-model="comments.input"></textarea>
+											<button class="btn btn-primary" type="submit">Submit</button>
+										</form>
+									</bi-req-login>
 								</div>
 								<div class="comments">
 									<ul ng-if="comments.current().length">

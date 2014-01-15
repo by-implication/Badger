@@ -49,14 +49,17 @@ app
 			}
 		}
 	})
-	.directive('biRequireLogin', function(){
+	.directive('biReqLogin', function(){
 		return {
 			restrict: 'E',
 			templateUrl: '/assets/templates/biReqLogin.html',
-			transclude: true,
-			controller: function($scope){
-
+			transclude: true, 
+			scope: {
+				biReqMessage: '=reqMsg' 
 			}
+			// controller: function($scope){
+
+			// }
 		}
 	})
 	.directive('biCurtain', function(){
