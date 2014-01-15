@@ -173,7 +173,7 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 			var fid = Focus.value.id;
 			if(!this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
-				$http.get('/Comments?' + $.param({id: fid})).success(function(r){ 
+				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
 				});
 			}
@@ -499,11 +499,10 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 	 	$scope.view = 'focus';
 	 	for(var i in $scope.leaves){
 	 		var leaf = $scope.leaves[i];
-	 		console.log(leaf.id + " " + leafId);
 	 		if(leaf.id == leafId){
 	 			Focus.set(leaf);
 	 			break;
-	 		}
+	 		}	
 	 	}
 	}
 
