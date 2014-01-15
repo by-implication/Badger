@@ -49,11 +49,9 @@ app
 			}
 		}
 	})
-	.directive('biCurtain', function(){
+	.directive('biCurtain', function($window){
 		return {
 			link: function(scope, elm, attrs){
-				var docH = $(document).height();
-				elm.css('min-height', docH+"px");
 				$("html, body").animate({scrollTop: "0px"});
 			}
 		}
@@ -377,6 +375,9 @@ app.controller('Main', function($scope, loggedIn){
 	$scope.loggedIn = loggedIn;
 	$scope.timeago = $.timeago;
 	$scope.getDate = function(time){ return new Date(time).toString(); }
+	$scope.curtainHeight = function(){
+		return $(document).height() + "px";
+	}
 });
 
 app.controller('Explore', function($scope, $http, $location, Comments, Categories, Regions, Sort, Focus, Years){
