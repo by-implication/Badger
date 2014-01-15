@@ -254,7 +254,7 @@
 								</button>
 							</div>
 						</div>
-						<ul class="children">
+						<ul class="projects">
 							<li
 								class="project move"
 								ng-repeat="leaf in leaves"
@@ -264,6 +264,11 @@
 								class="project show-more"
 								ng-if="lastRetrieval >= 30">
 								<a class="card" ng-href="{{showMoreLink()}}">Show more</a>
+							</li>
+							<li ng-if="!leaves.length">
+								<h3 class="empty">
+									No projects matched your criteria. Try changing the sectors, regions or time frame.
+								</h3>
 							</li>
 						</ul>
 					</div>
