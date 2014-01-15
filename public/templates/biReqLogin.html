@@ -1,6 +1,6 @@
 <div class="victim" ng-transclude>
 	<!-- Sign up / Log in to rate! -->
 </div>
-<a href="/login" target="_self" class="req-message">
+<a ng-if="!loggedIn" href="/login" target="_self" class="req-message">
 	<h3>{{biReqMessage}}</h3>
 </a>

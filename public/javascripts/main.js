@@ -48,17 +48,17 @@ app
 			}
 		}
 	})
-	.directive('biReqLogin', function(){
+	.directive('biReqLogin', function(loggedIn){
 		return {
 			restrict: 'E',
 			templateUrl: '/assets/templates/biReqLogin.html',
 			transclude: true, 
 			scope: {
-				biReqMessage: '=reqMsg' 
+				biReqMessage: '=reqMsg'
+			},
+			controller: function($scope){
+				$scope.loggedIn = loggedIn;
 			}
-			// controller: function($scope){
-
-			// }
 		}
 	})
 	.directive('biCurtain', function($window){
