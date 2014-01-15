@@ -211,16 +211,20 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 
 app.factory('Sort', function($location){
 	var fields = ['Amount', 'Year', 'Ratings'];
+	var field = fields.indexOf($location.search().sort)
+	if(field == -1) field = 0;
 	var orders = ['Ascending', 'Descending'];
+	var order = orders.indexOf($location.search().sort)
+	if(order == -1) order = 0;
 	return {
 		fields: fields,
-		field: fields.indexOf($location.search().sort),
+		field: field,
 		setField: function(field){
 			this.field = field;
 			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
 		},
 		orders: orders,
-		order: orders.indexOf($location.search().order),
+		order: order,
 		setOrder: function(order){
 			this.order = order;
 			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
