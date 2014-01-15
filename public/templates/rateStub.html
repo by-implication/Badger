@@ -4,8 +4,8 @@
       <i ng-repeat="star in stars" ng-class="starClass(item, star)"></i>
     </span>
     <span class="apply-rating">
-      <i ng-if="loggedIn" ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
-      <a ng-if="!loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a>
+      <i ng-repeat="star in stars" class="fa fa-star" ng-click="rateProject(item, star)"></i>
+      <!-- <a ng-if="!loggedIn" target="_self" href="/login">Sign up / Log in to rate!</a> -->
     </span>
   </span>
   <span class="num-rates">({{item.ratings}} rating<span ng-if="item.ratings != 1">s</span>)</span>

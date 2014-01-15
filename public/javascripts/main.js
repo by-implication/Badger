@@ -49,6 +49,16 @@ app
 			}
 		}
 	})
+	.directive('biRequireLogin', function(){
+		return {
+			restrict: 'E',
+			templateUrl: '/assets/templates/biReqLogin.html',
+			transclude: true,
+			controller: function($scope){
+
+			}
+		}
+	})
 	.directive('biCurtain', function(){
 		return {
 			link: function(scope, elm, attrs){
