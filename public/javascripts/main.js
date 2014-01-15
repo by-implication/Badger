@@ -127,7 +127,7 @@ app.factory('Years', function(years, $location){
 	years.unshift(null);
 	return {
 		list: years,
-		current: null,
+		current: $location.search().year,
 		label: function(year){ return year ? year : 'All Years'; },
 		setCurrent: function(year){
 			this.current = year;
@@ -153,6 +153,7 @@ app.factory('Categories', function($rootScope, categories, $location){
 	categories.unshift({id: null, name: 'All', subcats: []});
 	return {
 		list: categories,
+		current: categories[$location.search().category],
 		label: function(){ return this.current ? this.current.name : 'All'; },
 		setCurrent: function(cat){
 			this.current = cat;
@@ -199,15 +200,17 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 });
 
 app.factory('Sort', function($location){
+	var fields = ['Amount', 'Year', 'Ratings'];
+	var orders = ['Ascending', 'Descending'];
 	return {
-		fields: ['Amount', 'Year', 'Ratings'],
-		field: 0,
+		fields: fields,
+		field: fields.indexOf($location.search().sort),
 		setField: function(field){
 			this.field = field;
 			$location.search($.extend($location.search(), {sort: this.fields[this.field]}));
 		},
-		orders: ['Ascending', 'Descending'],
-		order: 1,
+		orders: orders,
+		order: orders.indexOf($location.search().order),
 		setOrder: function(order){
 			this.order = order;
 			$location.search($.extend($location.search(), {order: this.orders[this.order]}));
@@ -273,7 +276,7 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 			'Region IV': ['Region IV-A', 'Region IV-B']
 		},
 		list: regions,
-		current: null,
+		current: regions[$location.search().region],
 		setCurrent: function(region){
 			this.current = region;
 			var s = $location.search();
