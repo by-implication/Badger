@@ -76,14 +76,25 @@ body
 	&.ng-leave, &.ng-enter.ng-enter-active
 		opacity: 1
 
-.grow
+// .grow
+// 	+transition(all 0.2s)
+// 	&.ng-enter, &.ng-leave.ng-leave-active
+// 		max-height: 0
+// 		opacity: 0
+// 	&.ng-leave, &.ng-enter.ng-enter-active
+// 		max-height: 256px
+// 		opacity: 1
+
+=grow($height)
 	+transition(all 0.2s)
-	&.ng-enter, &.ng-leave.ng-leave-active
-		max-height: 0
-		opacity: 0
-	&.ng-leave, &.ng-enter.ng-enter-active
-		max-height: 256px
-		opacity: 1
+	display: block!important
+	&.ng-hide-add, &.ng-hide-remove.ng-hide-remove-active
+		height: $height
+	&.ng-hide-remove, &.ng-hide-add.ng-hide-add-active
+		height: 0px
+	&.ng-hide
+		height: 0px
+	
 
 .move
 	+transition(all 1s)
@@ -287,14 +298,11 @@ section#projects
 	padding: 0px 20px
 
 main
-	// +outer-container
 	+clearfix
-	// position: absolute
-	// top: 64px
-	// bottom: 0px
-
 	#click-instructions
-		padding: 10px
+		+grow(72px)
+		height: 72px
+		overflow: hidden
 		background-color: rgba(white, 0.6)
 
 	.rate-stub
@@ -333,6 +341,14 @@ main
 	a
 		text-decoration: none
 		text-align: left
+
+#map
+	+transition(all 0.4s)
+	+grow(256px)
+	margin: 0px -30px 20px
+	height: 256px
+.map-controls
+	margin-bottom: 20px
 
 #project-detail
 	+box-sizing(border-box)
@@ -384,13 +400,6 @@ main
 	h1
 		margin-bottom: 20px
 		text-align: center
-	#map
-		// +span-columns(4)
-		// +fill-parent
-		margin: 0px -30px 20px
-		height: 256px
-	.map-controls
-		margin-bottom: 20px
 	#detail
 		+fill-parent
 		+clearfix

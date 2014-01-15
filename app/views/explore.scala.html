@@ -40,10 +40,13 @@
 									This project shouldn't have a location
 								</button>
 							</div>
-							<h3 id="click-instructions" class="grow" ng-if="click.active()">
+							<h3 id="click-instructions" ng-show="click.active()">
 								Click on a point on the map to drop a pin indicating the location of this project
 							</h3>
-							<div id="map" bi-map></div>
+							<div 
+								id="map"  
+								bi-map 
+								ng-show="focus.value.clicks > 0 || click.active()"></div>
 
 							<h2>Discuss</h2>
 							<div id="comment-view">
