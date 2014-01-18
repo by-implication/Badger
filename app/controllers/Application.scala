@@ -27,6 +27,10 @@ import scala.concurrent._
 object Application extends Controller with Secured {
   
   def landing = UserAction(){ user => request =>
+    Redirect(routes.Application.explore)
+  }
+
+  def about = UserAction(){ user => request =>
     Ok(views.html.landing(user))
   }
 

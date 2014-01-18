@@ -4,13 +4,18 @@
 
 	<div ng-controller="Explore">
 
+		<div id="loading" ng-show="loading.pending">
+			<div><i class="fa fa-fw fa-spinner"></i></div>
+			<h1>Loading</h1>
+		</div>
+
 		<main ng-init="viewMode = 'grid'; shownFilter = 'sector'">
 
-			<div
-				bi-curtain
+			<div 
+				bi-curtain 
 				id="project-detail" 
 				class="fade" 
-				ng-if="view == 'focus'"
+				ng-if="view == 'focus'" 
 				ng-style="{'min-height': curtainHeight()}">
 				<div class="curtain" ng-click="listView()">
 				</div>
@@ -42,7 +47,8 @@
 										<span ng-hide="click.active()">Specify Location</span>
 										<span ng-show="click.active()">Specifying Location...</span>
 									</button>
-									<button class="btn btn-primary pull-right">
+									<!-- todo -->
+									<button ng-if="false" class="btn btn-primary pull-right">
 										This project shouldn't have a location
 									</button>
 								</div>

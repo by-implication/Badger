@@ -8,6 +8,7 @@ GET     /					controllers.Application.landing()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+GET			/about					controllers.Application.about()
 GET     /explore				controllers.Application.explore()
 GET     /breakdown			controllers.Application.breakdown()
 GET			/meta/explore		controllers.Application.exploreMeta(category: Option[Int], region: Option[Int], year: Option[Int], offset: Int, sort: String, order: String)

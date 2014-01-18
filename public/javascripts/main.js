@@ -52,7 +52,7 @@ app
 		return {
 			restrict: 'E',
 			templateUrl: '/assets/templates/biReqLogin.html',
-			transclude: true, 
+			transclude: true,
 			scope: {
 				biReqMessage: '=reqMsg'
 			},
@@ -132,6 +132,14 @@ app
 	});
 
 //////////////////////////////////////////// services ////////////////////////////////////
+
+app.factory('Loading', function(){
+	return {
+		pending: 0,
+		on: function(){ this.pending++; },
+		off: function(){ this.pending--; }
+	};
+});
 
 app.factory('Years', function(years, $location){
 	years.unshift(null);
@@ -215,7 +223,7 @@ app.factory('Sort', function($location){
 	if(field == -1) field = 0;
 	var orders = ['Ascending', 'Descending'];
 	var order = orders.indexOf($location.search().sort)
-	if(order == -1) order = 0;
+	if(order == -1) order = 1;
 	return {
 		fields: fields,
 		field: field,
@@ -396,8 +404,9 @@ app.controller('Main', function($scope, loggedIn){
 	}
 });
 
-app.controller('Explore', function($scope, $http, $location, Comments, Categories, Regions, Sort, Focus, Years){
+app.controller('Explore', function($scope, $http, $location, Comments, Categories, Regions, Sort, Focus, Years, Loading){
 
+	$scope.loading = Loading;
 	$scope.focus = Focus;
   $scope.comments = Comments;
   $scope.categories = Categories;
@@ -530,6 +539,7 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
 		if(!searchParams.focus || newPath == oldPath){
+			Loading.on();
 			$http.get('/meta/explore', {params: searchParams}).success(function(r){
 				$scope.lastRetrieval = r.length;
 				var oldSearch = getSearchParams(oldPath);
@@ -537,6 +547,7 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 					? $scope.leaves.concat(r)
 					: r;
 				if(searchParams.focus) setFocusView(searchParams.focus); else $scope.view = 'list';
+				Loading.off();
 			});
 		} else setFocusView(searchParams.focus);
 	});
