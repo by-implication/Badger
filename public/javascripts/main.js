@@ -539,10 +539,11 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
 		if(!searchParams.focus || newPath == oldPath){
+			var oldSearch = getSearchParams(oldPath);
+			if(oldSearch.focus && !searchParams.focus) return;
 			Loading.on();
 			$http.get('/meta/explore', {params: searchParams}).success(function(r){
 				$scope.lastRetrieval = r.length;
-				var oldSearch = getSearchParams(oldPath);
 				$scope.leaves = (parseInt(searchParams.offset) > parseInt(oldSearch.offset))
 					? $scope.leaves.concat(r)
 					: r;
