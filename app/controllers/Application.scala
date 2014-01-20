@@ -30,6 +30,10 @@ object Application extends Controller with Secured {
     Redirect(routes.Explore.index)
   }
 
+  def contact = UserAction(){ user => request =>
+    Ok(views.html.contact(user))
+  }
+
   def about = UserAction(){ user => request =>
     Ok(views.html.landing(user))
   }

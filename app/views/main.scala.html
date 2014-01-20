@@ -31,11 +31,6 @@
 		<header>
 			<nav class="left">
 				<ul>
-					<li ng-class="{current: curNav == 'about'}">
-						<a href="@routes.Application.about" target="_self">
-							about
-						</a>
-					</li>
 					<li ng-class="{current: curNav == 'explore'}">
 						<a href="@routes.Explore.index" target="_self">
 							explore
@@ -46,6 +41,16 @@
 							breakdown
 						</a>
 					</li> -->
+					<li ng-class="{current: curNav == 'about'}">
+						<a href="@routes.Application.about" target="_self">
+							about
+						</a>
+					</li>
+					<li ng-class="{current: curNav == 'contact'}">
+						<a href="@routes.Application.contact" target="_self">
+							contact
+						</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="right">
