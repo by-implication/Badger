@@ -30,6 +30,7 @@ object Feedback extends Controller with Secured {
     if(!user.isAnonymous){
       Leaf.findById(id).map { l =>
         if(user.rate(l, stars)){
+          l.updateLastActivity()
           Ok("successfully rated")
         } else {
           InternalServerError("failed to rate")
@@ -47,9 +48,10 @@ object Feedback extends Controller with Secured {
       Leaf.findById(id).map { leaf =>
         commentForm.bindFromRequest.fold(
           errors => BadRequest("grabe lalagyan mo na nga lang ng kahit ano hindi mo pa nagawa"),
-          comment => Comment(NA, user.id, leaf.id, comment).create().map(
-            c => Ok(Json.toJson(c.timestamp))
-          ).getOrElse(InternalServerError("failed to save comment"))
+          comment => Comment(NA, user.id, leaf.id, comment).create().map { c =>
+            leaf.updateLastActivity()
+            Ok(Json.toJson(c.timestamp))
+          }.getOrElse(InternalServerError("failed to save comment"))
         )
       }.getOrElse(BadRequest("no such leaf"))
     } else {
@@ -61,6 +63,7 @@ object Feedback extends Controller with Secured {
     if(!user.isAnonymous){
       Leaf.findById(leafId).map { leaf =>
         if(user.click(leaf, lat, lng)){
+          leaf.updateLastActivity()
           Ok("successfully clicked")
         } else {
           InternalServerError("failed to rate")

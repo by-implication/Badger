@@ -22,7 +22,8 @@ object Leaf extends LeafGen {
     val sortField = sort match {
       case "Year" => "leaf_year"
       case "Rating" => "leaf_rating"
-      case _ => "leaf_total"
+      case "Latest Activity" => "leaf_last_activity"
+      case _ => "leaf_total" // Amount
     }
 
     val sortOrder = order match {
@@ -105,10 +106,13 @@ case class Leaf(
   kind: Option[String] = None,
   id: Pk[Int] = NA,
   stars: Int = 0,
-  ratings: Int = 0
+  ratings: Int = 0,
+  lastActivity: Option[Timestamp] = None
 ) extends LeafCCGen with Entity[Leaf]
 // GENERATED case class end
 {
+
+  def updateLastActivity() = copy(lastActivity = Some(Time.now)).save()
 
   def clicks: Long = DB.withConnection { implicit c =>
     SQL("SELECT COUNT(*) FROM clicks WHERE leaf_id = {id}")
@@ -188,9 +192,10 @@ trait LeafGen extends EntityCompanion[Leaf] {
     get[Option[String]]("leaf_kind") ~
     get[Pk[Int]]("leaf_id") ~
     get[Int]("leaf_stars") ~
-    get[Int]("leaf_ratings") map {
-      case dptCd~dptDsc~agyType~ownerCd~ownerDsc~fpapCd~fpapDsc~areaCd~areaDsc~ps~mooe~co~net~year~kind~id~stars~ratings =>
-        Leaf(dptCd, dptDsc, agyType, ownerCd, ownerDsc, fpapCd, fpapDsc, areaCd, areaDsc, ps, mooe, co, net, year, kind, id, stars, ratings)
+    get[Int]("leaf_ratings") ~
+    get[Option[Timestamp]]("leaf_last_activity") map {
+      case dptCd~dptDsc~agyType~ownerCd~ownerDsc~fpapCd~fpapDsc~areaCd~areaDsc~ps~mooe~co~net~year~kind~id~stars~ratings~lastActivity =>
+        Leaf(dptCd, dptDsc, agyType, ownerCd, ownerDsc, fpapCd, fpapDsc, areaCd, areaDsc, ps, mooe, co, net, year, kind, id, stars, ratings, lastActivity)
     }
   }
 
@@ -232,7 +237,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
             leaf_kind,
             leaf_id,
             leaf_stars,
-            leaf_ratings
+            leaf_ratings,
+            leaf_last_activity
           ) VALUES (
             {dptCd},
             {dptDsc},
@@ -251,7 +257,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
             {kind},
             DEFAULT,
             {stars},
-            {ratings}
+            {ratings},
+            {lastActivity}
           )
         """).on(
           'dptCd -> o.dptCd,
@@ -271,7 +278,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
           'kind -> o.kind,
           'id -> o.id,
           'stars -> o.stars,
-          'ratings -> o.ratings
+          'ratings -> o.ratings,
+          'lastActivity -> o.lastActivity
         ).executeInsert()
         id.map(i => o.copy(id=Id(i.toInt)))
       }
@@ -295,7 +303,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
             leaf_kind,
             leaf_id,
             leaf_stars,
-            leaf_ratings
+            leaf_ratings,
+            leaf_last_activity
           ) VALUES (
             {dptCd},
             {dptDsc},
@@ -314,7 +323,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
             {kind},
             {id},
             {stars},
-            {ratings}
+            {ratings},
+            {lastActivity}
           )
         """).on(
           'dptCd -> o.dptCd,
@@ -334,7 +344,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
           'kind -> o.kind,
           'id -> o.id,
           'stars -> o.stars,
-          'ratings -> o.ratings
+          'ratings -> o.ratings,
+          'lastActivity -> o.lastActivity
         ).executeInsert().flatMap(x => Some(o))
       }
     }
@@ -359,7 +370,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
         leaf_kind={kind},
         leaf_id={id},
         leaf_stars={stars},
-        leaf_ratings={ratings}
+        leaf_ratings={ratings},
+        leaf_last_activity={lastActivity}
       where leaf_id={id}
     """).on(
       'dptCd -> o.dptCd,
@@ -379,7 +391,8 @@ trait LeafGen extends EntityCompanion[Leaf] {
       'kind -> o.kind,
       'id -> o.id,
       'stars -> o.stars,
-      'ratings -> o.ratings
+      'ratings -> o.ratings,
+      'lastActivity -> o.lastActivity
     ).executeUpdate() > 0
   }
 

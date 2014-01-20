@@ -215,7 +215,7 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 });
 
 app.factory('Sort', function($location){
-	var fields = ['Amount', 'Year', 'Ratings'];
+	var fields = ['Amount', 'Year', 'Ratings', 'Latest Activity'];
 	var field = fields.indexOf($location.search().sort)
 	if(field == -1) field = 0;
 	var orders = ['Ascending', 'Descending'];
