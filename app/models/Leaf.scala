@@ -15,7 +15,7 @@ object Leaf extends LeafGen {
     Json.toJson(SQL("SELECT DISTINCT leaf_year FROM leafs ORDER BY leaf_year").list(scalar[Int]))
   }
 
-  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], year: Option[Int], offset: Int, sort: String, order: String): Seq[Leaf] = DB.withConnection { implicit c =>
+  def exploreQuery(dptDscs: Seq[String], areaDscs: Seq[String], year: Option[Int], offset: Int, sort: String, order: String): (Seq[Leaf], Long) = DB.withConnection { implicit c =>
 
     val constraints = Seq(dptDscs, areaDscs).filter(!_.isEmpty)
 
@@ -30,19 +30,24 @@ object Leaf extends LeafGen {
       case _ => "ASC"
     }
 
-    SQL("""SELECT *,
-      COALESCE(leaf_ps, 0) + COALESCE(leaf_mooe, 0) + COALESCE(leaf_co, 0) + COALESCE(leaf_net, 0) AS leaf_total,
-      CASE WHEN leaf_ratings != 0 THEN leaf_stars / leaf_ratings ELSE 0 END AS leaf_rating
+    val conds = {"""
       FROM leafs leaf
       WHERE (
         leaf_ps IS NOT NULL
         OR leaf_mooe IS NOT NULL
         OR leaf_co IS NOT NULL
         OR leaf_net IS NOT NULL
-      )""" +
+      )
+      """ +
       (if(!dptDscs.isEmpty){ "AND leaf_dpt_dsc = ANY({dptDscs}) " } else {""}) +
       (if(!areaDscs.isEmpty){ "AND leaf_area_dsc = ANY({areaDscs}) " } else {""}) +
-      year.map(y => "AND leaf_year = {year}").getOrElse("") +
+      year.map(y => "AND leaf_year = {year}").getOrElse("")
+    }
+
+    val list = SQL("""SELECT *,
+      COALESCE(leaf_ps, 0) + COALESCE(leaf_mooe, 0) + COALESCE(leaf_co, 0) + COALESCE(leaf_net, 0) AS leaf_total,
+      CASE WHEN leaf_ratings != 0 THEN leaf_stars / leaf_ratings ELSE 0 END AS leaf_rating
+    """ + conds +
       "ORDER BY " + sortField + " " + sortOrder +
       " LIMIT 30 OFFSET {offset}"
     ).on(
@@ -51,6 +56,11 @@ object Leaf extends LeafGen {
       'year -> year,
       'offset -> offset
     ).list(Leaf.simple)
+
+    val count = SQL("SELECT COUNT(*)" + conds).as(scalar[Long].single)
+
+    (list, count)
+
   }
 
   def query(kind: String, year: Int, dpt_cd: String, owner_cd: String, fpap_cd: String)(implicit user: User): Option[JsObject] = DB.withConnection { implicit c =>

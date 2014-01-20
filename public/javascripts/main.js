@@ -540,10 +540,11 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 			if(oldSearch.focus && !searchParams.focus) return;
 			Loading.on();
 			$http.get('/explore/meta', {params: searchParams}).success(function(r){
-				$scope.lastRetrieval = r.length;
+				$scope.lastRetrieval = r.list.length;
+				$scope.total = r.count;
 				$scope.leaves = (parseInt(searchParams.offset) > parseInt(oldSearch.offset))
-					? $scope.leaves.concat(r)
-					: r;
+					? $scope.leaves.concat(r.list)
+					: r.list;
 				if(searchParams.focus) setFocusView(searchParams.focus); else $scope.view = 'list';
 				Loading.off();
 			});

@@ -33,7 +33,11 @@ object Explore extends Controller with Secured {
   def meta(category: Option[Int], region: Option[Int], year: Option[Int], offset: Int, sort: String, order: String) = UserAction(){ implicit user => request =>
     val dptDscs: Seq[String] = category.map(Category.findById(_).get.subcats.list).getOrElse(Seq.empty[String])
     val areaDscs: Seq[String] = region.map(Location.findById(_).get.areas.list).getOrElse(Seq.empty[String])
-    Ok(Json.toJson(Leaf.exploreQuery(dptDscs, areaDscs, year, offset, sort, order).map(_.toJson(user))))
+    val (list, count) = Leaf.exploreQuery(dptDscs, areaDscs, year, offset, sort, order)
+    Ok(Json.obj(
+      "list" -> list.map(_.toJson(user)),
+      "count" -> count
+    ))
   }
 
   def focus(id: Int) = UserAction(){ user => request =>
