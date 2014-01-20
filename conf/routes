@@ -6,25 +6,27 @@
 GET     /					controllers.Application.landing()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file		controllers.Assets.at(path="/public", file)
 
 GET			/about					controllers.Application.about()
-GET     /explore				controllers.Application.explore()
-GET     /breakdown			controllers.Application.breakdown()
-GET			/meta/explore		controllers.Application.exploreMeta(category: Option[Int], region: Option[Int], year: Option[Int], offset: Int, sort: String, order: String)
-GET			/meta/breakdown	controllers.Application.breakdownMeta(kind: String, year: Int, dpt: String, owner: String, fpap: String)
-GET			/comments				controllers.Application.comments(id: Int)
+GET			/calcTotals			controllers.Application.calculateTotals
 
-# login & signup
-GET			/login		controllers.Application.account
-POST		/login		controllers.Application.login
-POST		/signup		controllers.Application.signup
-GET			/logout		controllers.Application.logout
+# explore
+GET     /explore				controllers.Explore.index()
+GET			/explore/meta		controllers.Explore.meta(category: Option[Int], region: Option[Int], year: Option[Int], offset: Int, sort: String, order: String)
+GET			/focus					controllers.Explore.focus(id: Int)
+
+# breakdown
+GET     /breakdown			controllers.Breakdown.index()
+GET			/breakdown/meta	controllers.Breakdown.meta(kind: String, year: Int, dpt: String, owner: String, fpap: String)
+
+# account
+GET			/login		controllers.Account.index
+POST		/login		controllers.Account.login
+POST		/signup		controllers.Account.signup
+GET			/logout		controllers.Account.logout
 
 # feedback	
-POST		/rate/:id/:stars		controllers.Application.rate(id: Int, stars: Int)
-POST		/comment/:id				controllers.Application.comment(id: Int)
-POST		/click/:leafId/:lat/:lng		controllers.Application.click(leafId: Int, lat: Double, lng: Double)
-
-# utility scripts
-# GET			/calcTotals				controllers.Application.calculateTotals
+POST		/rate/:id/:stars						controllers.Feedback.rate(id: Int, stars: Int)
+POST		/comment/:id								controllers.Feedback.comment(id: Int)
+POST		/click/:leafId/:lat/:lng		controllers.Feedback.click(leafId: Int, lat: Double, lng: Double)

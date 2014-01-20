@@ -86,7 +86,7 @@ app
 				if(Focus.value.userClick){
 					var lat = Focus.value.userClick.lat;
 					var lng = Focus.value.userClick.lng;
-					scope.marker[Focus.value.id] = new L.marker([lat, lng]).addTo(scope.map)
+					scope.marker[Focus.value.id] = new L.marker([lat, lng], {color: '#000'}).addTo(scope.map)
 		  			.bindPopup('Thanks for your contribution, ' + loggedIn + '! :)')
 		  			.openPopup();
 				}
@@ -123,9 +123,6 @@ app
 				$scope.click.deactivate = function(){
 					$scope.specialView.deactivate('click');
 					$scope.map.off('click', this.listener);
-				}
-				$scope.click.text = function(){ 
-					return this.active() ? 'Cancel' : 'Point this out!'; 
 				}
 			}
 		}
@@ -193,7 +190,7 @@ app.factory('Comments', function($rootScope, $http, loggedIn, Focus){
 			var fid = Focus.value.id;
 			if(!this.cache[fid]){
 				this.cache[fid] = [{content: 'Loading...'}];
-				$http.get('/comments?' + $.param({id: fid})).success(function(r){ 
+				$http.get('/focus?' + $.param({id: fid})).success(function(r){ 
 					c.cache[fid] = r;
 				});
 			}
@@ -350,7 +347,7 @@ app.factory('Regions', function($rootScope, $http, $location, regions){
 							}
 						}
 					);
-					$http.get('/meta/explore', {params: {id: id, kind: 'loc'}}).success(function(response){
+					$http.get('/explore/meta', {params: {id: id, kind: 'loc'}}).success(function(response){
 						r.rating.cache[response.id] = r.rating.forItem(response);
 					});
 				}
@@ -415,7 +412,7 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 	$scope.years = Years;
 	$scope.leaves = [];
 	$scope.ribbons = {
-		'academia': {
+		'education': {
 			'icon': 'fa-pencil',
 			'color': '#006B80'
 		}, 
@@ -542,7 +539,7 @@ app.controller('Explore', function($scope, $http, $location, Comments, Categorie
 			var oldSearch = getSearchParams(oldPath);
 			if(oldSearch.focus && !searchParams.focus) return;
 			Loading.on();
-			$http.get('/meta/explore', {params: searchParams}).success(function(r){
+			$http.get('/explore/meta', {params: searchParams}).success(function(r){
 				$scope.lastRetrieval = r.length;
 				$scope.leaves = (parseInt(searchParams.offset) > parseInt(oldSearch.offset))
 					? $scope.leaves.concat(r)
@@ -612,7 +609,7 @@ app.controller('Breakdown', function($scope, $http, $location){
 
 	$scope.$watch(function(){ return $location.absUrl(); }, function(newPath, oldPath){
 		var searchParams = $location.search();
-		$http.get('/meta/breakdown', {params: searchParams}).success(function(r){
+		$http.get('/breakdown/meta', {params: searchParams}).success(function(r){
 			console.log(r);
 		});
 	});

@@ -6,7 +6,7 @@
   <div class="container">
     <div id="login-signup" ng-init="current = 'login'">
       <div id="login" class="section" ng-show="current == 'login'">
-        @form(action = routes.Application.login) {
+        @form(action = routes.Account.login) {
 
           <h2>Log in</h2>
 
@@ -31,7 +31,7 @@
         <button class="btn btn-block" ng-click="current = 'signup'">Sign up for a new account</button>
       </div>
       <div id="signup" class="section" ng-show="current == 'signup'">
-      	@form(action = routes.Application.signup) {
+      	@form(action = routes.Account.signup) {
       		<h2>Sign up</h2>
 
           @inputText(

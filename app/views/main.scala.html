@@ -37,12 +37,12 @@
 						</a>
 					</li>
 					<li ng-class="{current: curNav == 'explore'}">
-						<a href="@routes.Application.explore" target="_self">
+						<a href="@routes.Explore.index" target="_self">
 							explore
 						</a>
 					</li>
 					<!-- <li ng-class="{current: curNav == 'breakdown'}">
-						<a href="@routes.Application.breakdown" target="_self">
+						<a href="@routes.Breakdown.index" target="_self">
 							breakdown
 						</a>
 					</li> -->
@@ -51,13 +51,13 @@
 			<nav class="right">
 				<ul>
 					<li ng-class="{current: curNav == 'signup'}">
-						<a ng-if="!loggedIn" href="@routes.Application.account" target="_self">
+						<a ng-if="!loggedIn" href="@routes.Account.index" target="_self">
 							sign up / log in
 						</a>
 						<a ng-if="loggedIn" ng-cloak>
 							hello, {{loggedIn}}!
 						</a>
-						<a ng-if="loggedIn" href="@routes.Application.logout" target="_self">
+						<a ng-if="loggedIn" href="@routes.Account.logout" target="_self">
 							logout
 						</a>
 					</li>
