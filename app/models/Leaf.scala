@@ -57,7 +57,12 @@ object Leaf extends LeafGen {
       'offset -> offset
     ).list(Leaf.simple)
 
-    val count = SQL("SELECT COUNT(*)" + conds).as(scalar[Long].single)
+    val count = SQL("SELECT COUNT(*)" + conds).on(
+      'dptDscs -> PGStringList(dptDscs),
+      'areaDscs -> PGStringList(areaDscs),
+      'year -> year,
+      'offset -> offset
+    ).as(scalar[Long].single)
 
     (list, count)
 
