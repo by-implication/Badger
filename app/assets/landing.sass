@@ -177,6 +177,53 @@ header
 
 .creators
 	background: #49879c
+	text-align: center
+	padding: 18px 0
+	color: white
+	height: 200px
+
+	h2
+		font-size: 24px
+		font-style: italic
+		margin: 14px 0
+
+	a, span
+		display: block
+		color: white
+		margin-left: 70px
+
+	.name
+		margin-top: 2px
+
+	.twitter
+		font-size: 0.8em
+
+	div
+		position: relative
+		text-align: left
+		display: inline-block
+		width: 220px
+		margin: 10px
+		padding: 10px
+
+		&:hover img
+			border: 6px solid rgba(255,255,255,1)
+			left: -4px
+			top: -4px
+
+	img
+		box-sizing: content-box
+		position: absolute
+		left: 0
+		top: 0
+		float: left
+		width: 60px
+		height: 60px
+		border-radius: 50%
+		border: 2px solid rgba(255,255,255,0.7)
+		margin-right: 20px
+		+transition( all 0.2s )
+
 
 .faq
 	background: #ccc
