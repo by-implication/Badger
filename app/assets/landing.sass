@@ -176,11 +176,11 @@ header
 
 
 .creators
+	display: block
 	background: #49879c
 	text-align: center
-	padding: 18px 0
+	padding: 28px 0
 	color: white
-	height: 200px
 
 	h2
 		font-size: 24px
@@ -189,8 +189,14 @@ header
 
 	a, span
 		display: block
+		color: #c4f0ff
+		margin: 2px 0 2px 70px 
+		+transition( all 0.2s )
+
+	a:hover
+		border-left: 3px solid #b5ecff
+		padding-left: 5px
 		color: white
-		margin-left: 70px
 
 	.name
 		margin-top: 2px
@@ -198,7 +204,7 @@ header
 	.twitter
 		font-size: 0.8em
 
-	div
+	li
 		position: relative
 		text-align: left
 		display: inline-block
