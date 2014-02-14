@@ -233,6 +233,7 @@ header
 			top: -4px
 
 	img
+		-moz-box-sizing: content-box
 		box-sizing: content-box
 		position: absolute
 		left: 0
@@ -247,13 +248,19 @@ header
 
 
 .faq
-	background: #ccc
+	padding: 1px
+	background: #ddd
+	color: #444
 
 	h2
 		text-align: center
+		margin: 35px 0 0 0
+		text-transform: lowercase
+		font-style: italic
 
 	section
-		line-height: 22px
+		font-size: 14px
+		line-height: 26px
 		-webkit-column-count: 3
 		-moz-column-count: 3
 		column-count: 3
@@ -261,3 +268,41 @@ header
 		-moz-column-gap: 26px
 		column-gap: 26px
 		margin: 50px 0
+
+	h3
+		font-size: 16px
+		font-weight: bold
+		color: #005567
+
+	p
+		margin-bottom: 13px
+
+	aside
+		display: inline
+		color: #555
+	
+	a
+		display: inline
+		border-bottom: 1px solid #888
+		padding: 2px 0
+		color: #000
+		+transition( all 0.3s )
+
+		&:hover
+			background: #ccc
+			border-bottom: 1px solid #444
+
+	footer
+		text-align: center
+
+		a
+			position: relative
+			top: -30px
+			border-bottom: none
+			opacity: 0.6
+			+transition( all 0.3s )
+			border-bottom: 1px solid transparent
+
+			&:hover
+				opacity: 1
+				border-bottom: 1px solid #333
