@@ -25,7 +25,11 @@
 			app.value('regions', @Html(budget.models.Location.json.toString));
 			app.value('years', @Html(budget.models.Leaf.yearsJson.toString));
 		</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		@if(curNav == "about"){
+			<meta name="viewport" content="width=960">
+		} else {
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		}
 	</head>
 	<body ng-controller="Main" ng-init="curNav = '@curNav'">
 		<header>
