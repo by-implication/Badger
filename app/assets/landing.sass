@@ -165,15 +165,30 @@ header
 	
 
 	.screenshot
+		display: block
+		overflow: hidden
+		text-align: center
 		margin: 0 auto
 		color: black
 		width: 80%
-		opacity: 0.5
+		opacity: 1
 		height: 170px
 		display: block
 		background: #C7B299
 		border-radius: 10px
 
+		img
+			max-height: 100%
+			+transition(all 0.3s)
+
+	.explore:hover img
+		+transform( translateX(-10px) translateY(-10px) scale(1.2) )
+
+	.rate:hover img
+		+transform( translateX(30px) translateY(-20px) scale(1.3) )
+
+	.contribute:hover img
+		+transform( translateX(30px) translateY(-20px) scale(1.3) )
 
 .creators
 	display: block
